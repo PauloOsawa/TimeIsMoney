@@ -3,7 +3,7 @@ import Head from 'next/head'
 import css from '@/styles/Home.module.css'
 import CpFrmTimeMoney from '@/components/cpforms/CpFrmTimeMoney'
 
-export default function Home() {
+export default function Home({ hoje }) {
 
   const [cldvTxt, setCldvTxt] = useState(css.dvtxt)
   const frmView = !(cldvTxt === css.dvtxt)
