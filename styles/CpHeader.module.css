@@ -1,80 +1,49 @@
-.header, .header > div { display: flex; align-items: center; padding: 8px; }
-.header { flex-wrap: wrap; justify-content: space-evenly;  }
-
-.header > div { gap: 8px; }
-/*#region ====================== FONTS =========== */
-.header h1 { font-size: 2.35em; }
-.header h1, .header span { font-style: italic; }
-/* #endregion */
+.header, .header > div { display: flex; align-items: center; padding: 8px 3px; }
+.header { font-style: italic; flex-wrap: wrap; justify-content: space-evenly; }
 
 /*#region ====================== DV LOGO =========== */
-.dvlogo { width: 23em; }
+.dvlogo { width: 23em; gap: 12px; }
 
-.dvlogo svg > text {
-  font-style: italic; font-weight: 900; fill: white;
-  stroke-linecap: round; stroke-linejoin: round; paint-order: stroke;
+.dvlogo svg > :is(path, text) {
+  font-weight: 700; fill: white; stroke-linecap: round;
+  stroke-linejoin: round; paint-order: stroke;
 }
 
-/* --------------------------------------------- */
 .dimg {
-  height: 110px; width: 110px;
-  border-radius: 50%;
-  display: flex;
-  background-color: white;
-  background-image: radial-gradient(at 40% 35%, white, black 70%);
-  border: 2px solid var(--cor);
-  box-shadow: 0 0 12px white;
+  height: 110px; width: 110px; display: flex; border-radius: 50%;
+  background: radial-gradient(at 40% 35%, white, black 70%);
+  border: 2px solid var(--cor); box-shadow: 0 0 12px white;
 }
 
-.svimg {
-  height: 95%; width: 95%; margin: auto;
-}
+.svimg { width: 93%; height: 89%; margin: auto; margin-top: 6px; }
 
 .svimg > polygon {
-  fill: rgb(100, 0, 0); opacity: .3;
-  stroke: white;  stroke-width: 2px;
+  fill: rgb(100, 0, 0); opacity: .3; stroke: white; stroke-width: 2px;
 }
 
-.svimg > text {
-  font-size: 94px; stroke-width: 4px;
-}
-
-.svimg > .txta {  fill: var(--corb);  stroke: white; }
-
-.svimg > .txtb { stroke: var(--corb); stroke-width: 7px; opacity: .8; }
+.svimg > .pthtxa { fill: var(--corb); stroke: white; stroke-width: 3px; }
+.svimg > .pthtxb { stroke: var(--corb); stroke-width: 9px; opacity: .8;}
 
 /* --------------------------------------------- */
 .svtit { font-size: 2.4em; width: 65%; height: 70px; }
 
 .svtit > text {
-  transform: translate(.1%, 70%);
+  transform: translate(.5%, 70%);
   stroke: red;
   stroke-width:4px;
   stroke-dasharray: 190;
   stroke-dashoffset: 0;
-  /* animation: fxstroke 3s infinite; */
+  /* animation: fxstroke 3s 2; */
 }
 
 /* #endregion */
 
-/*#region ====================== DV USER =========== */
-.dvuser { flex: .9 .5 400px;  flex-direction: column; }
-
+.dvuser { flex: .9 .5 400px; flex-direction: column; }
 .dvuser > span { color: inherit; font-size: 1.7em; }
 
-.dvuser svg { width: 2em; vertical-align: -55%; }
-
-.dvuser a { font-size: 1.1em; margin: 0 5px; text-decoration: 1px underline; }
-
-/* #endregion */
-
 /*#region ====================== CORES =========== */
-.header h1, .dimg + svg > text, .header span { text-shadow: 2px 2px 4px red; }
-.dvuser svg { filter: drop-shadow(1px 1px 3px red); }
-.dvuser a:hover {
-  text-shadow: 1px 1px 2px red, 2px 2px 3px red;
-  transition: .2s; cursor: pointer;
-}
+.svtit > text, .header span { text-shadow: 2px 2px 4px red; }
+
 /* #endregion */
 
 @keyframes ofdist {  0%, 100% { offset-distance: 0%; } 50% { offset-distance: 100%; }   }
