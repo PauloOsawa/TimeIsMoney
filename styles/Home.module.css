@@ -1,7 +1,27 @@
-.main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
+.dvtxt {
+  width: 96%; max-width: 1024px; max-height: 70vh; margin: 10px auto;
+  padding: 10px; visibility: visible; opacity: 1;
+  box-shadow: 2px 2px 4px rgb(100, 100, 100); overflow: hidden;
+  transition: max-height .5s ease-out;
+}
+
+.hiden {
+  max-height: 0; padding: 0; margin: 0 auto; visibility: hidden; opacity: 0;
+  transition: max-height .2s;
+}
+/* ---------------------------------------------------------- */
+.main > h1 {
+  font-size: 2.3em; font-style: italic;
+  color: white; -webkit-text-fill-color: white;
+  text-shadow: 0 0 3px var(--corb), 2px 2px 2px var(--corb);
+}
+
+.dvinit {
+  margin: 15px auto; display: flex; align-items: center;
+  justify-content: center; gap: 18px; color: rgb(220, 0, 0);
+}
+
+.dvinit > h2 {
+  font-weight: 700; font-style: italic; padding: 0;
+  text-shadow: 1px 2px 2px rgb(83, 83, 83);
 }
