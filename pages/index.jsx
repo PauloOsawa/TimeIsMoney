@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import css from '@/styles/Home.module.css'
+import CpFrmTimeMoney from '@/components/cpforms/CpFrmTimeMoney'
 
 export default function Home() {
 
@@ -8,7 +9,8 @@ export default function Home() {
   const frmView = !(cldvTxt === css.dvtxt)
 
   // ---------------------------------------------------
-  const iniciar = () => console.log('PROJETO EM CONSTRUÇÃO',  );
+  const iniciar = () => setCldvTxt(`${css.dvtxt} ${css.hiden}`);
+  function hideFrm(){ if (cldvTxt !== css.dvtxt) { setCldvTxt(css.dvtxt); } }
 
   return (
     <>
@@ -49,8 +51,13 @@ export default function Home() {
           </div>
         </div>
 
+        {!!frmView && <CpFrmTimeMoney hoje={hoje} hideFrm={hideFrm} />}
 
       </main>
     </>
   )
+}
+// ---------------------------------------------------
+export async function getStaticProps(){
+  return { props: { hoje: Date.now() }}
 }
