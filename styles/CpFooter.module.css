@@ -1,0 +1,34 @@
+.footer{ font-size: .9em; font-style: italic; display: flex; flex-direction: column; }
+.footer h2{ font-weight: 400; }
+
+.dvfooter, .dvfooter > div, .dvfooter a { display: flex; align-items: center; }
+
+.pright{
+  width: 100%; line-height: 1.3em; padding:0 0 .3em 0;
+  margin-bottom: 18px; border-bottom: 2px solid white;
+}
+
+.dvfooter { justify-content: space-around; }
+
+.dvfooter > div { width: 25%; height: 60px; margin: 0 10px; justify-content: center; }
+
+.vercelLogo { min-width: 120px; width: auto; height: auto; }
+
+.dvfooter svg { height: 30px; fill: white; }
+
+/*#region ====================== CORES =========== */
+.dvfooter { text-shadow: 2px 2px 4px red; }
+.vercelLogo { filter: invert(1) drop-shadow(2px 2px 4px red); }
+.dvfooter svg { filter: drop-shadow(2px 2px 4px red); }
+/* #endregion */
+
+
+/*#region =========================================== media screen =============== */
+
+@media screen and (max-width: 600px) {
+  .dvfooter { flex-wrap: wrap; }
+  .dvfooter > div { width: 80%; }
+  .dvfooter > div:not(:first-child) {  border-top: 1px solid var(--cor); }
+}
+
+/* #endregion */

@@ -1,6 +1,9 @@
 @charset "utf-8";
+/* CSS Document */
 /**
-  * Documento CSS global criado por Paulo Osawa
+  * Documento CSS criado por Paulo Osawa
+  * Estilo Global Destinado aos projetos Next for All
+  * Colaboradores:
 */
 
 /*#region =========================== BEGIN ===== */
@@ -54,18 +57,14 @@ li { line-height: 1.4em; }
 
 header, main, footer { width: 100%; overflow: hidden; }
 header, footer { min-height: 15vh; padding: 8px 20px; }
-main { min-height: 69.5vh; padding: 4px; }
-main:has(.metalbox) { padding: 0 0 10px 0; }
-main > * { margin: 20px auto; padding: 0 20px; }
+main { min-height: 69.5vh; padding:0 0 10px 0; }
 /*#endregion*/
 
 /*#region ========================================== FORMS ==== */
-button, input, select, option { font-size: inherit; border-radius: 4px; }
-/* form * { font-size: inherit; } */
+button, input, select, option, textarea { font-size: inherit; border-radius: 4px; }
 
 [type=checkbox], [type=radio] { width: 20px; height: 20px; }
 option:disabled { display: none; }
-
 select, input, textarea { padding: 6px .4em; outline: none;  }
 button, [type=button], [type=reset], [type=submit]{ padding: 6px 1.4em; }
 /* ------------------------------------------------------------------- */
@@ -74,12 +73,13 @@ select, button, [type=button], [type=reset], [type=submit]{ border-style: outset
 [type=email], [type=number], [type=tel], [type=date] { border-style: inset; }
 /* ------------------------------------------------------------------- */
 input { color: black; } 
+textarea { resize: none; }
 input::placeholder, input::-moz-placeholder { color: black;  opacity: .4; }
 [type=file], textarea:focus, 
 input:focus:not([type=button],[type=reset], [type=submit], [type=checkbox], [type=radio]) { 
   box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.3);
 }
-input:invalid{ color: rgba(255, 0, 0, 0.6); }
+input:invalid, textarea:invalid{ color: rgba(255, 0, 0, 0.6); }
 
 /*#endregion*/
 
