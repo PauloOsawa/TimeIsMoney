@@ -1,0 +1,65 @@
+.frma {
+  width: 90%; max-width: 1200px; max-height: 80vh; margin: 10px auto; padding: 0 8px;
+  border-radius: 6px; visibility: visible; opacity: 1;
+  border: 1px solid rgb(197, 197, 197); box-shadow: 2px 2px 4px rgb(100, 100, 100);
+  transition: max-height .6s;
+}
+.frma > h1 {
+  font-size: 2.3em; font-style: italic;
+  color: white; text-shadow: 2px 2px 2px var(--corb);
+}
+
+.lbtns { display: flex; justify-content: flex-end; gap: 30px; margin: 15px auto; }
+/*#region ----------------------------------------------- FIELDS GLOBAL  ----------- */
+.fld {
+  overflow-y: auto; height: auto; margin: 8px auto; padding: 0 10px;
+}
+.fld:not(.actv) { opacity: 0; visibility: hidden; display: none; }
+.fld.actv {
+  opacity: 1; visibility: visible; display: block; transition: all 2.4s;
+}
+
+.hiden, .hidenb { max-height: 0; visibility: hidden; opacity: 0; transition: max-height .1s, visibility .1s; }
+.hidenb {
+  max-height: 0; visibility: hidden; opacity: 0; display: none;
+}
+
+.fld legend { font-style: italic; padding: 0 7px; vertical-align: text-top; }
+.fld > h3 { font-style: italic; padding: 0; }
+.fld > *:not(legend) { margin-bottom: 10px; }
+.fld label { margin-left: 15px; }
+.fld input, .fld select { margin: 0 5px; }
+.fld > button, .fld [type="radio"] {  margin: 0 10px; }
+.flxcol {  display: flex; flex-direction: column; justify-content: center; align-items: flex-end; }
+/*#endregion ------------------------------ */
+
+/*#region ---------------------- CORES -------- */
+.fld legend { color: var(--cor);}
+.fld > h3 { color: var(--corb);  }
+/*#endregion ------------------------------ */
+.dvDt, .dvsaldo { padding: 15px; border: 1px inset whitesmoke; }
+
+/*#region --------------------------- FLD CAR -------- */
+.dvcar > h3 { font-style: italic;  color: var(--corb);  }
+.dvcar > button {  margin: 0 10px; }
+/*#endregion ------------------------------ */
+
+/*#region ------------------------- DV FINAL ----- */
+.dvfinal:not(.hidenb) {
+  max-height: 90vh; visibility: visible; transition: max-height .4s .12s, visibility .4s .12s;
+  border: 1px solid red;
+}
+
+/*#endregion ------------------------------ */
+
+/*#region ------------------------- TEST ----- */
+
+.ldvtst { margin-top: 50px; }
+.ldvtst button { margin: 0 10px; }
+.dvdads {
+ text-align: left; width: fit-content; margin: 5px auto; max-height: 40vh;
+ overflow-y: scroll; border: 1px solid red;
+}
+.dvdads p { line-height: 1.3em; }
+.dvdads p:nth-child(odd) { background-color: rgb(220, 220, 220); }
+/*#endregion ------------------------------ */
