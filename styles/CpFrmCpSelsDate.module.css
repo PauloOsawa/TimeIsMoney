@@ -1,0 +1,6 @@
+.dvSelsDt{
+  display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+}
+.dvSelsDt > div, .dvSelsDt button {
+  margin: 5px;
+}
