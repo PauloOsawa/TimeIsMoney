@@ -32,10 +32,18 @@ export default function Home({ hoje }) {
             <br />conjunto com datas, além de curiosidades diversas, com várias opções de ecolha!
           </p>
           <h3>Funciona Basicamente Assim:</h3>
-          <p>
-            Você insere diversos tipos de gastos, lucros, e até poupanças!!
-            <br />Depois escolhe uma data futura, ou um saldo desejado e verá todo o saldo credor ou devedor!
-          </p>
+          <p>Você insere diversos tipos de gastos e lucros (anuais, mensais e até diários)!!
+          <br />Além disso, cálculo de poupança com juros compostos estão inclusos!!</p>
+
+          <div className={css.dvopts}>
+            <p>Depois de inserir tudo, desde salário até conta de luz, você poderá escolher:</p>
+            <ul>
+              <li>- Qualquer data futura, e saber o saldo resultante naquela data!</li>
+              <li>ou</li>
+              <li>- Qualquer valor, e saber a data exata que irá conseguir (ou não)!</li>
+            </ul>
+          </div>
+
           <p>
             Pra começar a brincadeira, perguntaremos informações básicas,
             <br />para calcular curiosidades além de uma simples planilha!
@@ -44,7 +52,8 @@ export default function Home({ hoje }) {
             OBS.: <b>Não armazenamos cookies nem quaisquer informações</b> suas OK?
             <br />Você pode inventar tudo, mas pra conferir depois será mais difícil!
           </p>
-
+          <p>Lembrando que todo abatimento será sempre no 1o dia do mês ok?</p>
+          
           <div className={css.dvinit}>
             <h2>VAMOS COMEÇAR???</h2>
             <button className='btncor' onClick={iniciar}>SIM</button>

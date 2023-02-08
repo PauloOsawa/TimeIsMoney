@@ -2,7 +2,7 @@
   width: 90%; max-width: 1200px; max-height: 80vh; margin: 10px auto; padding: 0 8px;
   border-radius: 6px; visibility: visible; opacity: 1;
   border: 1px solid rgb(197, 197, 197); box-shadow: 2px 2px 4px rgb(100, 100, 100);
-  transition: max-height .6s;
+  transition: max-height .4s;
 }
 .frma > h1 {
   font-size: 2.3em; font-style: italic;
@@ -16,7 +16,7 @@
 }
 .fld:not(.actv) { opacity: 0; visibility: hidden; display: none; }
 .fld.actv {
-  opacity: 1; visibility: visible; display: block; transition: all 2.4s;
+  opacity: 1; visibility: visible; display: block; transition: all 1.4s;
 }
 
 .hiden, .hidenb { max-height: 0; visibility: hidden; opacity: 0; transition: max-height .1s, visibility .1s; }
