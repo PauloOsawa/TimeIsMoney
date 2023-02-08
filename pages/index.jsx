@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import css from '@/styles/Home.module.css'
+import CpRelogio from '@/components/design/CpRelogio'
 import CpFrmTimeMoney from '@/components/cpforms/CpFrmTimeMoney'
 
 export default function Home({ hoje }) {
@@ -24,7 +25,11 @@ export default function Home({ hoje }) {
       </Head>
       <main className={css.main}>
         <div className='metalbox'> <h1 className='tita'>Time Is Money</h1> </div>
-        <h1>Time Is Money</h1>
+        <div className={css.dvtitle}>
+          <CpRelogio hoje={hoje} />
+          <h1>Time Is Money</h1>
+          <div className={css.dvmoney}> </div>
+        </div>
 
         <div className={cldvTxt} >
           <p>
