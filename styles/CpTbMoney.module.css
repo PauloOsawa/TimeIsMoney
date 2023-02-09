@@ -1,0 +1,57 @@
+.dvmoney > h3, .dvmoney > p {
+  font-style: italic; padding: 0; font-size: 1.1em;
+}
+
+.dvmoney > h3 {
+  font-size: 1.3em; text-decoration: underline; color: var(--corb);
+}
+
+.pmsg:empty{ opacity: 0; max-height:0; transition: 1s; }
+.pmsg{ max-height: 100px; margin: 0 auto; padding: 0; opacity: 1; color: red; transition: max-height .6s; }
+.dvmoney > *:not(button) { margin-bottom: 15px; }
+.dvmoney > button:nth-last-child(n+1) { margin: 0 20px; }
+
+.tbmoney{
+  width: 100%; padding: 5px; border-radius: 7px;
+  border: 1px solid var(--corb);
+}
+
+.tbmoney thead {  color: white; background-color: var(--corb); }
+
+.tbmoney > tbody {  color: var(--corb); }
+.tbmoney > tbody > tr:nth-child(odd){ background-color: rgb(231, 231, 231); }
+.trexp:not(:only-child){ display: none; }
+.tbmoney th, .tbmoney td { padding: 5px 10px; }
+
+.tbmoney .desc{ width: 50%; }
+.tbmoney .periodo{ width: 25%; }
+.tbmoney .price{  width: 15%; }
+.tbmoney svg{  height: 25px; cursor: pointer; }
+.tbmoney td.price{ text-align: right; }
+/* ------------------------------------------ */
+.dvsetvals {
+  display: flex; justify-content: space-evenly; align-items: center;
+  gap: 10px;  flex-wrap: wrap;
+}
+.dvsetvals input { margin: 0 5px; }
+.dvsetvals .desc { width: 200px; }
+.preco { width: 95px; text-align: right; }
+.price span { font-size: 2em; vertical-align: middle;  }
+.cents { width: 60px;}
+
+.dvjuros {
+  vertical-align: middle; border: 1px solid rgba(255, 0, 0, 0.2); display: none;
+}
+
+.dvjuros label {  vertical-align: middle; }
+
+.dvjuros > input[type=checkbox] { width: 25px; height: 25px; vertical-align: middle; }
+
+.inptjuros { width: 1px; visibility: hidden;  margin: 0; }
+.dvjuros select { width: 1px; visibility: hidden; }
+
+.dvjuros > input[type=checkbox]:checked ~ :is(input, select){
+  width: fit-content; visibility: visible; text-align: center;
+}
+
+.trexp { color: black; font-style: italic; opacity: .5;}
