@@ -28,6 +28,26 @@ export default function CpSelsDate({ setDate }){
       <div>
         <label htmlFor="selAno">Ano:</label>
         <select name="selAno" className={css.selAno} defaultValue='1990' onChange={e => setaDt(e.target)}>
+          <option value="1950">1950</option>
+          <option value="1951">1951</option>
+          <option value="1952">1952</option>
+          <option value="1953">1953</option>
+          <option value="1954">1954</option>
+          <option value="1955">1955</option>
+          <option value="1956">1956</option>
+          <option value="1957">1957</option>
+          <option value="1958">1958</option>
+          <option value="1959">1959</option>
+          <option value="1960">1960</option>
+          <option value="1961">1961</option>
+          <option value="1962">1962</option>
+          <option value="1963">1963</option>
+          <option value="1964">1964</option>
+          <option value="1965">1965</option>
+          <option value="1966">1966</option>
+          <option value="1967">1967</option>
+          <option value="1968">1968</option>
+          <option value="1969">1969</option>
           <option value="1970">1970</option>
           <option value="1971">1971</option>
           <option value="1972">1972</option>
