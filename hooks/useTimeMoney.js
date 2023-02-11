@@ -83,16 +83,19 @@ export default function useTimeMoney(hoje) {
   }
   //#endregion ----
 
-  //#region ======================================== CALC FIM
-  const setFinalResults = () => {
+
+
+  //#region ================================= FINAL FUNCTIONS
+  const setFinalResults = (arTxts) => {
     console.log('setFinalResults',  );
     const results = []
     results.push('linha a');
     results.push('linha b');
     // setDados({...dados, result:[...results]})
-
+    setDados({...dados, result:[...arTxts]})
   }
 
+  //#region ================================= CALC FUNCTIONS
   const calcByDt = (dtCalc, saldos) => {
     console.log('calcByDt',  );
     let total = 0;
@@ -116,6 +119,318 @@ export default function useTimeMoney(hoje) {
     console.log('difAnos = ', difAnos, valAno );
     total += valAno;
   }
+
+  //#region =============================  setDtsByVal ======
+
+  //#region ========= log msg functions ======
+  let objMsg = []
+  const adMsg = (m) => objMsg.push(m);
+  const consLog = (...obs) => { (obs ?? objMsg).forEach(ob => console.log( ob, '\n' ))  }
+  const cLg = (...obs) => console.log(...obs);
+
+  const showLogs = (val, subval, obval, somaTAno, somaMes, somaDias) => {
+    cLg('val=',val, 'subval=', fxPrc(subval));
+    cLg(obval);
+    let somas = {sTAno: somaTAno, sMes: somaMes, sDias: somaDias}
+    cLg(somas, '\n');
+  }
+  const showPoup = () => {
+    const m = fxPrc(objPoupanca.montante);
+    let { capital: c , juros: jj, tempo: tt, periodo: p, isAm } = objPoupanca
+    // c = parseFloat(c.toFixed(2));
+    const arp = isAm ? ['Meses','% ao Mês'] : ['Anos','% ao Ano'];
+    jj = parseInt((jj-1)*100);
+    cLg('Capital: R$', c,'com Juros de', jj, arp[1],'em',tt, arp[0], '= R$', m,'(Montante)');
+    // cLg( {...objPoupanca, montante: m} );
+
+  }
+  const setMsg = (arTudo, obval) => {
+    console.log('setMsg',  );
+  }
+  // #endregion
+
+  //#region ================ BY VAL helper functions
+  const setFinalDts = (arDts) => {
+    const [anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, anoIni, mesIni, diaIni] = arDts;
+    const qdts = { qtDias: qtDias, qtMeses:qtMeses, qtAnos:qtAnos, anosBi:anosBisextos }
+    // const qdts = { qtAnos:qtAnos, qtMeses:qtMeses, qtDias: qtDias, anosBi:anosBisextos }
+    const dtIni = { anoHj: anoIni ?? arDtHj[0], mesHj: mesIni ?? arDtHj[1], diaHj: diaIni ?? arDtHj[2] }
+    // const dtBini = dthj.toLocaleDateString()
+    const dtBini = new Date(dtIni.anoHj, dtIni.mesHj, dtIni.diaHj).toLocaleDateString()
+    // const dt = { ano:arDts[4], mes:arDts[5], dia:arDts[6] }
+    const dbt = new Date(arDts[4], arDts[5], arDts[6]).toLocaleDateString()
+    // consLog( qdts, dtIni, dt);
+    consLog( qdts, (dtBini + '  --  ' + dbt));
+    const txt = "A data que irá conseguir este valor é " + dbt;
+    setFinalResults([txt])
+    // consLog( qdts, dt, (dtBini + '  --  ' + dbt));
+    // console.log('dt = ', dt );
+  }
+
+  const getValsPeriodo = (Anual, Mensal, Diário, ano, mes) => {
+    const somaPAno = (Diário*365) + (Mensal*12);
+    const sdias = Diário*30;
+    return [somaPAno + Anual, somaPAno, (sdias + Mensal), sdias ];
+  }
+
+  const valEhMaior = (va, vb, eq) => {
+    eq = eq ?? false;
+    const [a, b] = vb >= 0 ? [va, vb] : [vb, va];
+    return !eq ? a > b : a >= b;
+  }
+  //#endregion
+
+  //#region ========================== POUPANÇA
+  const objPoupanca = { montante:0, capital:0, juros:0, tempo:0, periodo:false, isAm:false }
+
+  const setPoupanca = (poupanca) => {
+    for (const k in poupanca) { objPoupanca[k] = poupanca[k]; }
+    if(!('montante' in poupanca)){ objPoupanca.montante = poupanca?.capital ?? objPoupanca.capital}
+    if('juros' in poupanca){
+      const jj = poupanca.juros;
+      objPoupanca.juros = Number.isInteger(jj) ? (1+ jj / 100 ) : jj;
+    }
+    if('periodo' in poupanca){ objPoupanca.isAm = (objPoupanca.periodo === 'mensal') }
+  }
+
+  const getMontantePoupanca = (tempo, isAno) => {
+    tempo = !!isAno && objPoupanca.isAm ? tempo * 12 : tempo;
+    const montante = objPoupanca.capital * Math.pow(objPoupanca.juros, tempo);
+    return montante;
+  }
+
+  const getTempoParaMontante = (m, c, j) => {
+    let {montante, capital, juros} =(m && c && j && {montante:m, capital:c, juros:j}) ?? objPoupanca;
+    juros = Number.isInteger(juros) ? 1 + juros / 100 : juros;
+    // let tempo = Math.log2(montante / capital) / Math.log2(1 + juros / 100);
+    let tempo = Math.log2(montante / capital) / Math.log2(juros);
+    tempo = Math.round(tempo);
+    return tempo;
+  }
+
+  const somaMontante = (toSet) => {
+    const obm = objPoupanca.montante > 0 ? objPoupanca.montante : objPoupanca.capital;
+    const mont = obm*objPoupanca.juros;
+    if(toSet){ objPoupanca.montante = mont; objPoupanca.tempo++; }
+    return ( mont - obm);
+  }
+  // #endregion
+
+  // ------------------------------------------------
+  const getYearsByVal = (ano, val, somaAno, valDiario, poupanca) => {
+    let [restoVal, vtotalAno, vmont, vsum, qtdAnos, qtdAnosBis] = [val, somaAno, 0, 0, 0, 0];
+    if(poupanca){ vmont = getMontantePoupanca(1, 'isAno'); vtotalAno += vmont; }
+    if(valEhMaior(vtotalAno, val)){ return [0, 0, val]; }
+
+    const setaResto = () => {
+      qtdAnosBis = getQtdAnosBis(ano, qtdAnos);
+      vsum = somaAno*qtdAnos + vmont + qtdAnosBis*valDiario;
+      restoVal = val - vsum;
+    }
+
+    qtdAnos = parseInt(val / vtotalAno);
+    setaResto();
+
+    if(!poupanca){
+      if(restoVal >= vtotalAno){ cLg('-------- add +1 ano, restval > tano'); qtdAnos++; setaResto(); }
+      return [qtdAnos, qtdAnosBis, restoVal];
+    }
+    // ------------------------------------
+    const retEnd = () => {
+      if(poupanca && qtdAnos >= 1){
+        const tempo = objPoupanca.isAm ? qtdAnos*12 : qtdAnos;
+        objPoupanca.tempo += tempo;
+        objPoupanca.montante = getMontantePoupanca(objPoupanca.tempo);
+        // setPoupanca({montante:vmont, tempo: tempo});
+      }
+      return [qtdAnos, qtdAnosBis, restoVal];
+    }
+    // ------------------------------------
+    if(qtdAnos === 0 || qtdAnos === 1){ return retEnd(); }
+    const isNeg = qtdAnos < 0;
+
+    const passouVal = () => {
+      vmont = getMontantePoupanca(qtdAnos, 'isAno'); setaResto(); return vsum > val;
+      // cLg('qtdAnos = ', qtdAnos, 'vmont + somaAno*qtdAnos=',vmont + somaAno*qtdAnos );
+    }
+
+    if(isNeg){
+      const {capital, juros } = poupanca;
+      qtdAnos = parseInt( getTempoParaMontante(val, capital, juros)/12);
+      let somval = val - qtdAnos*somaAno;
+      qtdAnos = parseInt( getTempoParaMontante(somval, capital, juros)/12);
+    }
+
+    let passou = passouVal();
+    while (!passou) { qtdAnos++; passou = passouVal(); }
+
+    if(isNeg){ restoVal = vsum - val; return retEnd(); }
+
+    while (passou) { qtdAnos--; passou = passouVal(); }
+
+    return retEnd();
+  }
+
+  // ------------------------ retorna data, qtds, val e valresto  ----
+
+  const setDtsByVal = (val, obval, poupanca, arDtIni) => {
+    // #region ------------- variaveis internas
+    arDtIni = arDtIni ?? (Array.isArray(poupanca) ? poupanca : arDtHj);
+    if (val === 0) { return setFinalDts([0, 0, 0, 0, ...arDtIni]); }
+    const temPoupanca = !!poupanca && !(Array.isArray(poupanca));
+    if (temPoupanca) { setPoupanca(poupanca) }
+    const [hasPoupMes, hasPoupAno] = temPoupanca ? [objPoupanca.isAm, !objPoupanca.isAm] : [false,false];
+    const vmontUm = temPoupanca ? getMontantePoupanca(1) : 0;
+    let [vmontMes, vmontAno] = hasPoupMes ? [vmontUm, getMontantePoupanca(12)] : [0, vmontUm]
+
+    const [valPos, valNeg, { Anual, Mensal, Diário }] = [(val > 0), (val > 0 ? 1 : -1), obval];
+    const isDaysCount = Diário*valNeg > 0 && Diário !== 0;
+    let [ano, mes, dia, subval] = [...arDtIni, val]
+    let[qtAnos, qtMeses, qtDias, anosBisextos, viraAno, viraMes] = [0, 0, 0, 0, 0, 0]
+    let [ somaTAno, somaPAno, somaMes, somaDias ] =  getValsPeriodo(Anual, Mensal, Diário, ano, mes);
+    // #endregion
+    const arVals = [ Diário, somaDias, somaMes, (somaMes + vmontMes), somaPAno, somaTAno, (somaTAno + vmontAno)];
+    let arValMeses = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    arValMeses.forEach((dias, i) => { arValMeses[i] = Mensal + Diário * dias; })
+    const last = arVals[arVals.length - 1];
+    const zerouVal = (vtemp) => valPos ? (vtemp ?? subval) <= 0 : (vtemp ?? subval) >= 0;
+    const endSetDts = (msge) => {
+      cLg('\n',' --------------------------------- endSetDts----ZEROUVAL =',zerouVal() );
+      showLogs(val, subval, obval, somaTAno, somaMes, somaDias);
+      setFinalDts([anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, ...arDtIni]);
+      if (temPoupanca) { showPoup(); }
+    }
+    const getNextMaxVal = (vals) => (vals ?? arVals).find(v => valEhMaior(v, subval, true));
+    let nextMaxVal = getNextMaxVal();
+    cLg('val =',val, obval );
+    cLg('arvals=',...arVals);
+    // ------------------------------------------
+    console.log('nextMaxVal = ', nextMaxVal );
+    if (!nextMaxVal) {
+      const sameSign = valEhMaior(last, valNeg, true)
+      const notPossible = (!valPos && last > 0) || (!sameSign && !temPoupanca)
+      if (notPossible) { console.log('----------IMPOSSIVEL'); return endSetDts(); }
+    }
+
+    let qdiasMes = getDiasNoMes(mes, ano);
+    let [diasRest, sumdays] = [qdiasMes - dia, Diário*(qdiasMes -1)];
+    // ---------------------------------------------------
+    const passouAno = () => {
+      const va = Anual + (hasPoupAno ? somaMontante(true) : 0);
+      viraAno++; ano++;
+      if(ano % 4 === 0){ anosBisextos++; }
+      cLg('\n ======== passou ANO ================= ',ano,'subval=',fxPrc(subval) ,'-', va,'=',fxPrc(subval-va)  ,'PPAoano', hasPoupAno);
+      subval -= va;
+    }
+
+    const passouMes = (vmes) => {
+      const dif = hasPoupMes ? somaMontante(true) : 0;
+      const msg = !vmes ? 'SÓ MENSAL' : 'MES FULL';
+      if(!vmes){ viraMes++; } else { qtMeses++; }
+      vmes = vmes ?? Mensal + dif + (mes !== 1 ? 0 : isFevBi(mes, ano)*Diário);
+      mes++;
+      cLg('dif =',fxPrc(dif),'qtm=',qtMeses,'---- passou Mes=',mes,msg, fxPrc(vmes - dif), 'subval=',fxPrc(subval),'-',fxPrc(vmes),'=', fxPrc(subval-vmes));
+      subval -= vmes;
+      if(mes > 11){ mes = 0; passouAno(); }
+    }
+
+    const setNiuDays = () => {
+      qdiasMes = getDiasNoMes(mes, ano); [diasRest, sumdays] = [(qdiasMes - dia), (Diário*(qdiasMes -1))];
+    }
+
+    const somaDays = (qd) => {
+      cLg(qd,'+(somaDays dia=', dia, 'qtDias=',qtDias,') subv=',subval, '-', qd*Diário, subval-qd*Diário)
+      dia += qd; qtDias += qd;
+      subval -= qd*Diário;
+      if(dia > qdiasMes){ dia -= qdiasMes; passouMes(); }
+    }
+
+    const sumMeses = (isLoop) => {
+      let i = mes;
+      for (i; i < 12; i++){
+        let v = arValMeses[i] + (hasPoupMes ? somaMontante() : 0);
+        if(i === 1 && ano % 4 === 0){v += Diário; }
+        if(valEhMaior(v, subval)){ break; }
+        passouMes(v);
+        if(zerouVal()){ break; }
+        if(i === 11){ i = !isLoop ? i : -1; }
+      }
+      return (!zerouVal() && mes === 0);
+    }
+    // #region ========================== FECHA ANO
+    const fechaMes = () => {
+      if (dia === 1) { return true; }
+      if(valEhMaior(diasRest*Diário, subval)){ somaDays(Math.ceil(subval/Diário)); return false; }
+      somaDays(diasRest + 1); return !zerouVal();
+    }
+    if (!fechaMes()) { cLg('NAO FECHOU MES'); return endSetDts(); }
+
+    const fechaAno = () => {
+      if (mes === 0) { return true; }
+      if (!sumMeses()){
+        console.log('!sumMeses',  );
+        if (zerouVal()) { return false; }
+        setNiuDays();
+        if(!isDaysCount || !valEhMaior(sumdays, subval)){
+          passouMes(); return (!zerouVal() && mes === 0);
+        }
+        if(valEhMaior(diasRest*Diário, subval)){ somaDays(Math.ceil(subval/Diário)); return false; }
+      }
+      return zerouVal();
+    }
+    if (!fechaAno()) {
+      cLg('NAO FECHOU fechaAno');
+      // return endSetDts();
+    }
+    // #endregion ========================== MIN
+
+    if(!valEhMaior(last, subval)){
+      const oldMont = temPoupanca ? objPoupanca.montante : 0;
+      [qtAnos, anosBisextos, subval] = getYearsByVal(ano, subval, somaTAno, Diário, poupanca);
+      ano += qtAnos;
+      let sumt = qtAnos*somaTAno;
+      let sumb = anosBisextos*Diário;
+      let msgs = ['\n val>sTAno, ano=', ano,'qtanos=',qtAnos, '*', somaTAno,'(somTano) + anosBi(',anosBisextos,')*diario =']
+      let mont = !temPoupanca ? '' : '+ poup=';
+      cLg(...msgs, sumt ,'+', sumb,'=',sumt+sumb, mont,oldMont,(temPoupanca && fxPrc(objPoupanca.montante)), 'subval=',fxPrc(subval) );
+    }
+    cLg('FIM DO ANO - Parou em ', ano, mes,dia,'qtMes=',qtMeses,'subval=',fxPrc(subval),'sumdays', sumdays);
+    cLg(' ---------------------------------- MESES ----------------------- ');
+    const endMeses = () => {
+      if(!valEhMaior(arValMeses[mes], subval)){
+        sumMeses(true); if (zerouVal()){ return true; }
+      }
+      setNiuDays();
+      if(!isDaysCount || !valEhMaior(sumdays, subval)){
+        cLg('sumdays',sumdays,'nao chega',subval,'ou diario neg',Diário,'---- subdias add mes FULL');
+        subval -= (arValMeses[mes] - Mensal);
+        passouMes();
+        qtMeses++;
+        if(zerouVal()){ return true; }
+        setNiuDays();
+      }
+      return zerouVal();
+    }
+
+    if(endMeses()){ return endSetDts(); }
+
+    if(valEhMaior(Diário)){ somaDays(1); return endSetDts(); }
+
+    if(!valEhMaior(sumdays, subval) && endMeses()){ return endSetDts(); }
+
+    cLg(' ---------------------------------- dias ----------------------- ');
+    const tempQtdias = Math.ceil(subval/Diário);
+    somaDays(tempQtdias);
+
+    cLg('dia=',dia ,'mes',mes,'qtDias=', qtDias, 'diasRest=',diasRest, 'qdiasMes',qdiasMes,'subval', fxPrc(subval) )
+    if (zerouVal()) { return endSetDts(); }
+    cLg('DIA FIM NÃO PAROU ------------------------')
+    if(valEhMaior(Diário)){ somaDays(1); return endSetDts(); }
+    if(!valEhMaior(sumdays, subval) && endMeses()){ return endSetDts(); }
+    return endSetDts();
+  }
+  // #endregion
+
 
   const calcByVal = (val, saldos) => {
     console.log('calcByVal',  );
@@ -158,21 +473,22 @@ export default function useTimeMoney(hoje) {
     totalVal = somaMes;
     totalMeses++;
   }
+  //#endregion ==========
 
+  //#endregion ==========
   const somaVals = (tipo) => {
     const obval = {Anual: 0, Mensal: 0, Diário: 0}
     if(!tipo in dados){ console.log('sem', tipo ); return obval; }
-    dados[tipo].forEach(val => {  obval[val.periodo] += val.valor; });
+    dados[tipo].forEach(val => { obval[val.periodo] += val.valor; });
     return obval;
   }
 
   const setSaldos = () => {
-    // const obGastos = {Anual: 0, Mensal: 0, Diário: 0}
+
     const saldos = { totalLucro: somaVals('lucros'), totalGasto: somaVals('gastos') }
-    // const obLucros = somaVals('lucros');
-    // const obGastos = somaVals('gastos');
+
     const obSaldos = {}
-    for(let k in saldos.totalLucro){  obSaldos[k] = saldos.totalLucro[k] - saldos.totalGasto[k]; }
+    for(let k in saldos.totalLucro){ obSaldos[k] = saldos.totalLucro[k] - saldos.totalGasto[k]; }
     saldos.totalSaldos = obSaldos;
 
     const somaDiasInMes = obSaldos.Diário*30;
@@ -182,9 +498,6 @@ export default function useTimeMoney(hoje) {
     const totalSomas = { somaAnual: somaAnoMeses, somaMensalDias: somaMensalDias, somaDiasInMes: somaDiasInMes }
 
     return {...saldos, ...totalSomas};
-    // setValsDts(obj, saldos);
-    // return {totalLucro: obLucros, totalGasto: obGastos, totalSaldos: obSaldos }
-    // setDados({...dados, totalLucro: {...obLucros}, totalGasto: {...obGastos}, totalSaldos: {...obSaldos}});
   }
 
   const calcAll = (obj) => {
@@ -193,10 +506,15 @@ export default function useTimeMoney(hoje) {
     if(!!obj?.dtCalc){
       calcByDt(obj.dtCalc, saldos );
     } else {
-      calcByVal(obj.saldoCalc, saldos );
+      // obval = {Anual: -1000, Mensal: 650, Diário: -10}
+      const val = obj.saldoCalc;
+      const obval = {...saldos.totalSaldos}
+      setDtsByVal(val, obval )
+      // console.log('obval', obval, val );
+      // calcByVal(obj.saldoCalc, saldos );
     }
     // setCurious();
-    setFinalResults();
+    // setFinalResults();
 
   }
   //#endregion =======================================

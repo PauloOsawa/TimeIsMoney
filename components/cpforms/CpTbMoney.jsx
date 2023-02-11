@@ -96,7 +96,7 @@ export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
       </table>
 
       <div className={css.dvsetvals}>
-        <input type="text" className={css.desc} placeholder="Descrição:" pattern="([ ]?[a-zA-Zçãõáéíú]{3,15}){1,3}" ref={inptnome} required />
+        <input type="text" className={css.desc} placeholder="Descrição:" pattern="([a-zA-Zçãõáéíú]{3,15}[ ]?){1,3}" ref={inptnome} required />
 
         <select name="selperiodo" defaultValue='Mensal' ref={selfreq}>
           <option value="Diário">Diário</option>

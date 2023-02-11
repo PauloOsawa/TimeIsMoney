@@ -61,5 +61,6 @@
  overflow-y: scroll; border: 1px solid red;
 }
 .dvdads p { line-height: 1.3em; }
+.dvdads p span { white-space: pre; }
 .dvdads p:nth-child(odd) { background-color: rgb(220, 220, 220); }
 /*#endregion ------------------------------ */

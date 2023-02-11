@@ -11,6 +11,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const sthj = dados.dtHoje.toISOString().slice(0, 10);
 
   const fldact = useRef();
+  const dvresults = useRef();
 
   //#region ============================== DATA OBJ functions ======
   const checkExistKname = (tipo, nome) => {
@@ -18,25 +19,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     return !!ob;
   }
 
-  const endCalc = (e) => {
-    let ob;
-    if (typeof e === 'number') {
-      console.log('calcular A DATA val=', e);
-      ob = {saldoCalc: e}
-      // calcAll({saldoCalc: e});
-      // return;
-    } else {
-      const inpdt = e.target.previousElementSibling;
-      if(inpdt.nodeName !== 'INPUT' || !inpdt?.validity?.valid){ console.log('invalido',  ); return; }
-      const strdt = inpdt.value  + ' 00:00';
-      ob = {dtCalc: new Date(strdt)}
-      // setDados({...dados, dtCalc: new Date(strdt)});
-      // calcAll({dtCalc: new Date(strdt)});
-      e.preventDefault();
-    }
-    calcAll(ob);
-    viewElm(css.dvfinal);
-  }
   //#endregion ---------
 
   //#region =========================== HTML RENDER functions ======
@@ -67,14 +49,45 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     el.classList.remove(css.hidenb);
   }
 
+  const clearResults = () => {
+    const alltxts = dvresults.current.querySelectorAll('p');
+    console.log('alltxts = ', alltxts );
+    if(alltxts.length){ alltxts.forEach((p) => p.remove()) }
+  }
+
   const showDvCalc = (e) => {
     const idx = e.target.value === 'data' ? 0 : 1;
     [css.dvDt, css.dvsaldo].forEach((cl, i) => {
       const toHide = (idx !== i);
       viewElm(cl, toHide);
     })
+    viewElm(css.dvfinal, true);
   }
   //#endregion ---------
+
+  //#region ---------------------- FLDSET fldcalc --------
+
+  const endCalc = (e) => {
+    let ob;
+    if (typeof e === 'number') {
+      console.log('calcular A DATA val=', e);
+      ob = {saldoCalc: e}
+      // calcAll({saldoCalc: e});
+      // return;
+    } else {
+      const inpdt = e.target.previousElementSibling;
+      if(inpdt.nodeName !== 'INPUT' || !inpdt?.validity?.valid){ console.log('invalido',  ); return; }
+      const strdt = inpdt.value  + ' 00:00';
+      ob = {dtCalc: new Date(strdt)}
+      // setDados({...dados, dtCalc: new Date(strdt)});
+      // calcAll({dtCalc: new Date(strdt)});
+      e.preventDefault();
+    }
+    calcAll(ob);
+    viewElm(css.dvfinal);
+  }
+
+  //#endregion --------
 
   //#region -------------- FLDSET fldgastos fldlucros ----
   const setaLucros = (l) => {
@@ -127,7 +140,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   function strFy(data){
     const isAr = Array.isArray(data);
     if(!isAr || !Object.keys(data[0]).length){ return JSON.stringify(data) }
-    return data.map((v, i) => (<><br />{JSON.stringify(v)} </>));
+    return data.map((v, ki) => (<span key={ki}><br />  {JSON.stringify(v)}</span>));
   }
 
   function degubTags(){
@@ -214,9 +227,9 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
     </form>
 
-    <div className={`${css.dvfinal} ${css.hidenb}`}>
+    <div className={`${css.dvfinal} ${css.hidenb}`} ref={dvresults}>
       <h3>RESULTS</h3>
-      {!!dados?.result?.map((r, i) => (
+      {dados?.result?.map((r, i) => (
         <p key={i}>{r}</p>
       ))}
     </div>
