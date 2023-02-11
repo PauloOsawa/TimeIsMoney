@@ -11,41 +11,8 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const sthj = dados.dtHoje.toISOString().slice(0, 10);
 
   const fldact = useRef();
-  //#region ---------------------------- HTML ------------
-  const submit = (e) => { e.preventDefault(); console.log('submit = ' ); }
-  const reseta = (e) => { console.log('reset'); hideFrm(); }
-  const goFld = (fld) => {
-    if ( !fld || fld.nodeName !== 'FIELDSET') { console.log('noField',  ); return; }
-    fldact.current.classList.remove(css.actv);
-    fld.classList.add(css.actv);
-    fldact.current = fld;
-  }
-  const showNextFld = (e) => {
-    if (e?.target) { e.preventDefault() }
-    goFld(fldact.current.nextElementSibling);
-  }
 
-  const backfld = (e) => {
-    e.preventDefault();
-    goFld(fldact.current.previousElementSibling);
-    // console.log('backfld', fldact.current.name );
-  }
-  const viewElm = (cls, toHide) => {
-    const el = document.querySelector('.'+cls);
-    if (toHide) { el.classList.add(css.hidenb); return; }
-    el.classList.remove(css.hidenb);
-  }
-
-  const showDvCalc = (e) => {
-    const idx = e.target.value === 'data' ? 0 : 1;
-    [css.dvDt, css.dvsaldo].forEach((cl, i) => {
-      const toHide = (idx !== i);
-      viewElm(cl, toHide);
-    })
-  }
-  //#endregion ---------------------
-
-  //#region -------------------------- DATA --------------
+  //#region ============================== DATA OBJ functions ======
   const checkExistKname = (tipo, nome) => {
     const ob = (tipo in dados) ? dados[tipo].find(obj => obj.nome === nome) : false;
     return !!ob;
@@ -70,14 +37,53 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     calcAll(ob);
     viewElm(css.dvfinal);
   }
-  //#endregion ---------------------
+  //#endregion ---------
 
-  // ---------------------------------------- FN FLDS -----------
+  //#region =========================== HTML RENDER functions ======
+
+  //#region ---------------------- form and global -------
+  const submit = (e) => { e.preventDefault(); console.log('submit = ' ); }
+  const reseta = (e) => { console.log('reset'); hideFrm(); }
+  const goFld = (fld) => {
+    if ( !fld || fld.nodeName !== 'FIELDSET') { console.log('noField',  ); return; }
+    fldact.current.classList.remove(css.actv);
+    fld.classList.add(css.actv);
+    fldact.current = fld;
+  }
+  const showNextFld = (e) => {
+    if (e?.target) { e.preventDefault() }
+    goFld(fldact.current.nextElementSibling);
+  }
+
+  const backfld = (e) => {
+    e.preventDefault();
+    goFld(fldact.current.previousElementSibling);
+    // console.log('backfld', fldact.current.name );
+  }
+
+  const viewElm = (cls, toHide) => {
+    const el = document.querySelector('.'+cls);
+    if (toHide) { el.classList.add(css.hidenb); return; }
+    el.classList.remove(css.hidenb);
+  }
+
+  const showDvCalc = (e) => {
+    const idx = e.target.value === 'data' ? 0 : 1;
+    [css.dvDt, css.dvsaldo].forEach((cl, i) => {
+      const toHide = (idx !== i);
+      viewElm(cl, toHide);
+    })
+  }
+  //#endregion ---------
+
+  //#region -------------- FLDSET fldgastos fldlucros ----
   const setaLucros = (l) => {
     console.log('setaLucros',  );
     setDados({...dados, lucros: l});
   }
-  //#region ----------------------------------- CAR ---------
+  //#endregion
+
+  //#region --------------------------- FLDSET fldcar ----
   const setIpva = (ipva, compPrice) => {
     if (!checkExistKname('gastos', 'IPVA')) {
       addMoney('gastos', ['IPVA','Anual', ipva ]);
@@ -100,14 +106,16 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
   //#endregion ---------
 
-  //#region ------------------------------------ NIVER ----
+  //#region ------------------------- FLDSET fldNasc ----
   const setDtbirth = (d) => {
     if (!d || !d.length || d.length != 3) { return; }
-    console.log('d = ', d );
     setbirth(d);
     showNextFld();
+    console.log('d = ', d );
   }
-  //#endregion ---------------------------------------
+  //#endregion ---------
+
+  //#endregion ---------
 
   return (
     <>

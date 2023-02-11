@@ -5,9 +5,12 @@
 .dvmoney > h3 {
   font-size: 1.3em; text-decoration: underline; color: var(--corb);
 }
+.dvmoney > .pmsg{
+  font-weight: bold; max-height: 100px; height: auto; margin: 10px auto;
+  padding: 5px 0;  opacity: 1; color: white; background-color: var(--corb); transition: .6s;
+}
+.dvmoney > .pmsg.hiden{ opacity: 0; max-height: 0; padding: 0; margin: 0; transition: .6s; }
 
-.pmsg:empty{ opacity: 0; max-height:0; transition: 1s; }
-.pmsg{ max-height: 100px; margin: 0 auto; padding: 0; opacity: 1; color: red; transition: max-height .6s; }
 .dvmoney > *:not(button) { margin-bottom: 15px; }
 .dvmoney > button:nth-last-child(n+1) { margin: 0 20px; }
 
@@ -26,7 +29,7 @@
 .tbmoney .desc{ width: 50%; }
 .tbmoney .periodo{ width: 25%; }
 .tbmoney .price{  width: 15%; }
-.tbmoney svg{  height: 25px; cursor: pointer; }
+.tbmoney svg{ height: 25px; cursor: pointer; }
 .tbmoney td.price{ text-align: right; }
 /* ------------------------------------------ */
 .dvsetvals {
