@@ -73,7 +73,7 @@ export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
   return (
     <div className={css.dvmoney}>
       <h3>MEUS {title}</h3>
-      <p>Adicione Todos os {title} que deseja calcular, seja por dia, mês ou ano!</p>
+      <p>Adicione Todos os <b>{title}</b> que deseja calcular, seja por dia, mês ou ano!</p>
       <p className={`${css.pmsg} ${css.hiden}`} ref={pmsg}></p>
       <table className={css.tbmoney}>
         <thead>

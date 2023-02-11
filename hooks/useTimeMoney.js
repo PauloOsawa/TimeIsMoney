@@ -10,17 +10,31 @@ export default function useTimeMoney(hoje) {
   }
 
   const [dados, setDados] = useState({ ...userdata});
+
+  //#region ======================================== DATE AND PRICE HELPERS
+  const arDiasMeses = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   const mesesMaxDays = [ 0, 2, 4, 6, 7, 9, 11 ]
+  const mesesMinDays = [ 1, 3, 5, 8, 10 ]
   const diasSemana = [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado' ]
   const meses = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
     'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ]
 
-  //#region ======================================== DATE HELPERS
+  const ehBisexto = ano => ano % 4 === 0;
+  const isFevBi = (mes, ano) => (mes === 1 && ano % 4 === 0) ? 1 : 0;
+
+  const getQtdAnosBis = (ano, qtanos) => {
+    let qtdAnosbis = ehBisexto(ano) ? 1 : 0;
+    const absQtanos = Math.abs(qtanos);
+    qtdAnosbis += parseInt(absQtanos/4);
+    if (((ano % 4) + (absQtanos % 4)) > 3) {  qtdAnosbis++; }
+    return qtdAnosbis;
+  }
+
   const getDiasNoMes = (mes, ano) => {
-    if (mes === 1) {  return (ano % 4 === 0) ? 29 : 28; }
-    return mesesMaxDays.includes(mes) ? 31 : 30;
+    if (mes === 1) { return (ano % 4 === 0) ? 29 : 28; }
+    return mesesMinDays.includes(mes) ? 30 : 31;
   }
 
   const getNumDays = (ms) => {
@@ -28,6 +42,8 @@ export default function useTimeMoney(hoje) {
     // console.log('totDays = ', totDays );
     return (totDays);
   }
+
+  const fxPrc = (p) => parseFloat(p.toFixed(2));
   //#endregion =======================================
 
   const setgastos = (gastos) => { setDados({...dados, gastos: gastos}); }

@@ -117,6 +117,40 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   //#endregion ---------
 
+  //#region ------------------------------------- DEBUG ---------
+  function showDados(e, showdiv){
+    console.log('dados:', dados );
+    if(showdiv){
+      document.querySelector('.'+css.dvdads).classList.toggle(css.hidenb);
+    }
+  }
+  function strFy(data){
+    const isAr = Array.isArray(data);
+    if(!isAr || !Object.keys(data[0]).length){ return JSON.stringify(data) }
+    return data.map((v, i) => (<><br />{JSON.stringify(v)} </>));
+  }
+
+  function degubTags(){
+    return (
+      <div>
+        <div className={css.ldvtst}>
+          {/* <button onClick={ e => showUserData(e)}>userData</button> */}
+          <button onClick={showDados}>DADOS</button>
+          <button onClick={hideFrm}>RESET</button>
+        </div>
+        <div> dtHoje: {dados.dtHoje?.toLocaleString()} </div>
+        <div onClick={e => showDados(e,'e')}> dtNasc: {dados.dtNasc?.toLocaleString()} </div>
+        <div className={`${css.dvdads} ${css.hidenb}`}>
+          <h3>dados</h3>
+          {Object.keys(dados).map((k,i) => (
+            <p key={i}>{k} : {strFy(dados[k])}</p>
+          ))}
+        </div>
+      </div>
+    )
+  }
+  //#endregion ---------------------------------------------------
+
   return (
     <>
     <form name='frma' className={css.frma} onSubmit={submit} onReset={reseta}>
@@ -186,6 +220,8 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
         <p key={i}>{r}</p>
       ))}
     </div>
+
+    {degubTags()}
     </>
   )
 }
