@@ -6,10 +6,27 @@ export default function useTimeMoney(hoje) {
   const arDtHj = [dthj.getFullYear(), dthj.getMonth(), dthj.getDate()]
 
   const userdata = {
-    dtHoje: dthj ?? null, dtNasc: null, idade: 0,
+    dtHoje: dthj ?? null, dtNasc: null, idade: 0, diasVida: 0, diasPosNiver: 0, diasRestPniver: 0,
+    totalLucro: {Anual: 0, Mensal: 0, Diário: 0},
+    totalGasto: {Anual: 0, Mensal: 0, Diário: 0},
+    totalSaldos: {Anual: 0, Mensal: 0, Diário: 0}
   }
 
   const [dados, setDados] = useState({ ...userdata});
+
+  const resultados = {
+    idade: [
+      `Você tem ${dados.idade} anos de idade, totalizando ${dados.diasVida} dias de vida até hoje!!`,
+      `Restam ${dados.diasRestPniver} dias para seu próximo aniversário!!`,
+      `Se passaram ${dados.diasPosNiver} dias do seu último aniversário!!`,
+    ],
+    saldos: [
+      `Seus GASTOS totalizam R$ ${dados.totalGasto.Anual.toFixed(2)} Anuais, R$ ${dados.totalGasto.Mensal.toFixed(2)} Mensais, e R$ ${dados.totalGasto.Diário.toFixed(2)} Diários`,
+      `Seus LUCROS totalizam R$ ${dados.totalLucro.Anual.toFixed(2)} Anuais, R$ ${dados.totalLucro.Mensal.toFixed(2)} Mensais, e R$ ${dados.totalLucro.Diário.toFixed(2)} Diários`,
+      `Os SALDOS resultantes são de R$ ${dados.totalSaldos.Anual.toFixed(2)} Anuais, R$ ${dados.totalSaldos.Mensal.toFixed(2)} Mensais, e R$ ${dados.totalSaldos.Diário.toFixed(2)} Diários`,
+
+    ]
+  }
 
   //#region ======================================== DATE AND PRICE HELPERS
   const arDiasMeses = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -47,6 +64,7 @@ export default function useTimeMoney(hoje) {
   //#endregion =======================================
 
   const setgastos = (gastos) => { setDados({...dados, gastos: gastos}); }
+  const setlucros = (lucros) => { setDados({...dados, lucros: lucros});}
 
   const addMoney = (tipo, arMoney) => {
     const obj = { nome: arMoney[0], periodo: arMoney[1], valor: arMoney[2] }
@@ -67,8 +85,10 @@ export default function useTimeMoney(hoje) {
 
     const objIdade = {
       idade: lastAnoNiver - anoNasc,
-      diasPosNiver: diasPosNiver.toFixed(1),
-      diasRestPniver: diasRestPniver.toFixed(1)
+      // diasPosNiver: diasPosNiver.toFixed(1),
+      diasPosNiver: Math.floor(diasPosNiver),
+      diasRestPniver: Math.ceil(diasRestPniver)
+      // diasRestPniver: diasRestPniver.toFixed(1)
     }
     return objIdade;
   }
@@ -77,9 +97,10 @@ export default function useTimeMoney(hoje) {
     const dtNasc = new Date(d[0], d[1], d[2], 0);
     if (!(!dados?.dtNasc || dados.dtNasc?.getTime() !== dtNasc.getTime())) { return; }
     const diasVida = parseInt(getNumDays(dthj - dtNasc));
-    const objNiver = {  arNasc: d, dtNasc: dtNasc, diasVida: diasVida }
+    const objNiver = { arNasc: d, dtNasc: dtNasc, diasVida: diasVida }
     const objIdade = setaIdade(d);
     setDados({...dados, ...objNiver, ...objIdade});
+    return objIdade.idade;
   }
   //#endregion ----
 
@@ -92,7 +113,7 @@ export default function useTimeMoney(hoje) {
     results.push('linha a');
     results.push('linha b');
     // setDados({...dados, result:[...results]})
-    setDados({...dados, result:[...arTxts]})
+    setDados({...dados, result:[...arTxts, ...resultados.idade, ...resultados.saldos]})
   }
 
   //#region ================================= CALC FUNCTIONS
@@ -319,7 +340,7 @@ export default function useTimeMoney(hoje) {
       const va = Anual + (hasPoupAno ? somaMontante(true) : 0);
       viraAno++; ano++;
       if(ano % 4 === 0){ anosBisextos++; }
-      cLg('\n ======== passou ANO ================= ',ano,'subval=',fxPrc(subval) ,'-', va,'=',fxPrc(subval-va)  ,'PPAoano', hasPoupAno);
+      cLg('\n ===== passou ANO ======= ',ano,'subval=',fxPrc(subval) ,'-', va,'=',fxPrc(subval-va)  ,'PoupAoano', hasPoupAno);
       subval -= va;
     }
 
@@ -378,9 +399,9 @@ export default function useTimeMoney(hoje) {
       }
       return zerouVal();
     }
-    if (!fechaAno()) {
-      cLg('NAO FECHOU fechaAno');
-      // return endSetDts();
+    if (!fechaAno() && zerouVal()) {
+      cLg('NAO FECHOU fechaAno MAS zerouVal e subval =' , subval);
+      return endSetDts();
     }
     // #endregion ========================== MIN
 
@@ -391,8 +412,8 @@ export default function useTimeMoney(hoje) {
       let sumt = qtAnos*somaTAno;
       let sumb = anosBisextos*Diário;
       let msgs = ['\n val>sTAno, ano=', ano,'qtanos=',qtAnos, '*', somaTAno,'(somTano) + anosBi(',anosBisextos,')*diario =']
-      let mont = !temPoupanca ? '' : '+ poup=';
-      cLg(...msgs, sumt ,'+', sumb,'=',sumt+sumb, mont,oldMont,(temPoupanca && fxPrc(objPoupanca.montante)), 'subval=',fxPrc(subval) );
+      let mont = !temPoupanca ? 'semPoup' : '+ poup=';
+      cLg(...msgs, sumt,'+', sumb,'=',sumt+sumb, mont, oldMont,(temPoupanca && fxPrc(objPoupanca.montante)), 'subval=',fxPrc(subval) );
     }
     cLg('FIM DO ANO - Parou em ', ano, mes,dia,'qtMes=',qtMeses,'subval=',fxPrc(subval),'sumdays', sumdays);
     cLg(' ---------------------------------- MESES ----------------------- ');
@@ -483,10 +504,17 @@ export default function useTimeMoney(hoje) {
     return obval;
   }
 
+  const setNiwSaldos = () => {
+    const saldos = { totalLucro: somaVals('lucros'), totalGasto: somaVals('gastos') }
+    const obSaldos = {}
+    for(let k in saldos.totalLucro){ obSaldos[k] = saldos.totalLucro[k] - saldos.totalGasto[k]; }
+    saldos.totalSaldos = obSaldos;
+    setDados({...dados, ...saldos});
+  }
+
   const setSaldos = () => {
 
     const saldos = { totalLucro: somaVals('lucros'), totalGasto: somaVals('gastos') }
-
     const obSaldos = {}
     for(let k in saldos.totalLucro){ obSaldos[k] = saldos.totalLucro[k] - saldos.totalGasto[k]; }
     saldos.totalSaldos = obSaldos;
@@ -501,14 +529,14 @@ export default function useTimeMoney(hoje) {
   }
 
   const calcAll = (obj) => {
-    // setDados({...dados, ...obj});
     const saldos = setSaldos();
+
     if(!!obj?.dtCalc){
       calcByDt(obj.dtCalc, saldos );
     } else {
       // obval = {Anual: -1000, Mensal: 650, Diário: -10}
       const val = obj.saldoCalc;
-      const obval = {...saldos.totalSaldos}
+      const obval = {...dados.totalSaldos}
       setDtsByVal(val, obval )
       // console.log('obval', obval, val );
       // calcByVal(obj.saldoCalc, saldos );
@@ -520,6 +548,6 @@ export default function useTimeMoney(hoje) {
   //#endregion =======================================
 
   return {
-    dados, setbirth, addMoney, setgastos, setDados, calcAll
+    dados, setbirth, addMoney, setgastos, setlucros, setNiwSaldos, setDados, calcAll, resultados
   }
 }

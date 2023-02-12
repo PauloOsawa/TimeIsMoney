@@ -7,7 +7,7 @@ import CpFrmInptPrice from "./CpFrmInptPrice";
 
 export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
-  const { dados, setbirth, addMoney, setgastos, setDados, calcAll } = useTimeMoney(hoje);
+  const { dados, setbirth, addMoney, setgastos, setlucros, setNiwSaldos, setDados, calcAll, resultados } = useTimeMoney(hoje);
   const sthj = dados.dtHoje.toISOString().slice(0, 10);
 
   const fldact = useRef();
@@ -90,9 +90,10 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#endregion --------
 
   //#region -------------- FLDSET fldgastos fldlucros ----
-  const setaLucros = (l) => {
-    console.log('setaLucros',  );
-    setDados({...dados, lucros: l});
+  const setaSaldos = () => {
+    console.log('setaSaldos',  );
+    setNiwSaldos();
+    showNextFld();
   }
   //#endregion
 
@@ -122,9 +123,9 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#region ------------------------- FLDSET fldNasc ----
   const setDtbirth = (d) => {
     if (!d || !d.length || d.length != 3) { return; }
-    setbirth(d);
-    showNextFld();
-    console.log('d = ', d );
+    const idade = setbirth(d);
+    const nxtFld = !(idade < 18) ? fldact.current.nextElementSibling : document.querySelector('fieldset[name=fldgastos]');
+    goFld(nxtFld);
   }
   //#endregion ---------
 
@@ -157,6 +158,11 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
           <h3>dados</h3>
           {Object.keys(dados).map((k,i) => (
             <p key={i}>{k} : {strFy(dados[k])}</p>
+          ))}
+
+          <h3>resultados</h3>
+          {Object.keys(resultados).map((rk,ri) => (
+            <p key={ri}>{rk} : {strFy(resultados[rk])}</p>
           ))}
         </div>
       </div>
@@ -195,7 +201,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
       <fieldset name='fldlucros' className={css.fld}>
         <legend>Lucros</legend>
-        <CpTbMoney title={'LUCROS'} valores={dados?.lucros ?? []} setaVals={setaLucros} voltar={backfld} fecha={showNextFld} />
+        <CpTbMoney title={'LUCROS'} valores={dados?.lucros ?? []} setaVals={setlucros} voltar={backfld} fecha={setaSaldos} />
       </fieldset>
 
       <fieldset name='fldcalc' className={css.fld}>
