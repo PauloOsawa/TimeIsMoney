@@ -140,6 +140,7 @@ export default function useTimeMoney(hoje) {
     total += valAno;
 
     const txt = "Até esta data, você irá conseguir o valor de R$ " + total.toFixed(2) + "!!";
+    console.log('CÁLCULOS DE POUPANÇA AINDA NÃO IMPLEMENTADOS',  );
     setFinalResults([txt]);
   }
 

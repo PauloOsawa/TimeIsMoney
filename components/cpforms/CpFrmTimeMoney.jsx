@@ -89,7 +89,14 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   //#endregion --------
 
-  //#region -------------- FLDSET fldgastos fldlucros ----
+  //#region ---------------------- FLDSET fldpoupanca --------
+  const setPoupanca = () => {
+    console.log('setPoupanca',  );
+
+  }
+  //#endregion --------
+
+  //#region ------------------------- FLDSET fldlucros ----
   const setaSaldos = () => {
     console.log('setaSaldos',  );
     setNiwSaldos();
@@ -197,6 +204,18 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       <fieldset name='fldgastos' className={css.fld}>
         <legend>Despesas</legend>
         <CpTbMoney title={'GASTOS'} valores={dados?.gastos ?? []} setaVals={setgastos} fecha={showNextFld} />
+      </fieldset>
+
+      <fieldset name='fldpoupanca' className={css.fld}>
+        <legend>Poupança</legend>
+        <div className={css.dvcar}>
+          <h3>Você Possui Alguma Poupança?</h3>
+          <button onClick={showNextFld} className="btncor">NÃO</button>
+          <button onClick={showNextFld} className="btncor">SIM</button>
+        </div>
+        <div className={`${css.dvpoup} ${css.hidenb}`}>
+          <CpFrmInptPrice title={'Quanto você possui hoje, e quais são os juros?'} getVals={setPoupanca} />
+        </div>
       </fieldset>
 
       <fieldset name='fldlucros' className={css.fld}>

@@ -44,6 +44,11 @@
 .dvcar > button {  margin: 0 10px; }
 /*#endregion ------------------------------ */
 
+/*#region --------------------------- FLD POUPANÇA -------- */
+.dvpoup > h3 { font-style: italic;  color: var(--corb);  }
+.dvpoup > button {  margin: 0 10px; }
+/*#endregion ------------------------------ */
+
 /*#region ------------------------- DV FINAL ----- */
 .dvfinal:not(.hidenb) {
   max-height: 90vh; visibility: visible; transition: max-height .4s .12s, visibility .4s .12s;
