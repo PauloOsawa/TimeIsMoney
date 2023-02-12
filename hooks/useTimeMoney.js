@@ -105,7 +105,6 @@ export default function useTimeMoney(hoje) {
   //#endregion ----
 
 
-
   //#region ================================= FINAL FUNCTIONS
   const setFinalResults = (arTxts) => {
     console.log('setFinalResults',  );
@@ -121,7 +120,7 @@ export default function useTimeMoney(hoje) {
     console.log('calcByDt',  );
     let total = 0;
     const arDtCalc = [dtCalc.getFullYear(), dtCalc.getMonth(), dtCalc.getDate()]
-    const {Anual, Mensal, Diário } = saldos.totalSaldos;
+    const {Anual, Mensal, Diário } = dados.totalSaldos;
 
     const totDias = parseInt(getNumDays(dtCalc - dthj));
     const valDias = Diário*totDias;
@@ -139,6 +138,9 @@ export default function useTimeMoney(hoje) {
     const valAno = Anual*difAnos;
     console.log('difAnos = ', difAnos, valAno );
     total += valAno;
+
+    const txt = "Até esta data, você irá conseguir o valor de R$ " + total.toFixed(2) + "!!";
+    setFinalResults([txt]);
   }
 
   //#region =============================  setDtsByVal ======
@@ -529,10 +531,11 @@ export default function useTimeMoney(hoje) {
   }
 
   const calcAll = (obj) => {
-    const saldos = setSaldos();
+    // const saldos = setSaldos();
 
     if(!!obj?.dtCalc){
-      calcByDt(obj.dtCalc, saldos );
+      // calcByDt(obj.dtCalc, saldos );
+      calcByDt(obj.dtCalc );
     } else {
       // obval = {Anual: -1000, Mensal: 650, Diário: -10}
       const val = obj.saldoCalc;
