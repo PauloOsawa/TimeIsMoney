@@ -7,7 +7,7 @@ import CpFrmInptPrice from "./CpFrmInptPrice";
 
 export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
-  const { dados, setbirth, addMoney, setgastos, setlucros, setNiwSaldos, setDados, calcAll, resultados } = useTimeMoney(hoje);
+  const { dados, setbirth, addMoney, setgastos, setlucros, setNiwSaldos, setPoupData, setDados, calcAll, resultados } = useTimeMoney(hoje);
   const sthj = dados.dtHoje.toISOString().slice(0, 10);
 
   const fldact = useRef();
@@ -90,9 +90,28 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#endregion --------
 
   //#region ---------------------- FLDSET fldpoupanca --------
-  const setPoupanca = (montante) => {
-    console.log('setPoupanca', montante );
+  const validaPoupanca = (montante) => {
+    // const objPoupanca = { montante:0, capital:0, juros:0, tempo:0, periodo:false, isAm:false }
+    const inputjuros = document.querySelector('.'+css.inptjuros);
+    if(!inputjuros.validity.valid){ return false; }
+    const juros = parseFloat(inputjuros.value.replace(',', '.'));
 
+    const selperiodo = inputjuros.nextElementSibling;
+    const periodo = selperiodo.item(selperiodo.selectedIndex).value;
+
+    const isam = (periodo === 'mensal');
+    const objPoupanca = { montante: montante, juros: juros, periodo: periodo, isAm: isam }
+
+    // console.log('inputjuros.value = ', objPoupanca );
+    return objPoupanca;
+  }
+
+  const setaPoupanca = (montante) => {
+    // console.log('setaaPoupanca', montante ?? 'sem poupanca');
+    if(!montante){ setPoupData(); return; }
+    const objPoup = validaPoupanca(montante);
+    if(objPoup){ setPoupData(objPoup); showNextFld(); return; }
+    console.log('sem objPoup',  );
   }
 
   const resetPoup = (e) => {
@@ -104,7 +123,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     console.log('dvpouphid', dvshowpoup,  dvhidepoup);
     dvshowpoup.classList.add(css.hidenb);
     dvhidepoup.classList.remove(css.hidenb);
-    setPoupanca();
+    setaPoupanca();
     showNextFld();
   }
 
@@ -252,7 +271,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
                 <option value="anual">%a.a</option>
               </select>
             </div>
-            <CpFrmInptPrice getVals={setPoupanca} onCancel={resetPoup} />
+            <CpFrmInptPrice getVals={setaPoupanca} onCancel={resetPoup} />
           </div>
 
         </div>

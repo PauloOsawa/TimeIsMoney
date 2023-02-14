@@ -217,6 +217,14 @@ export default function useTimeMoney(hoje) {
     if('periodo' in poupanca){ objPoupanca.isAm = (objPoupanca.periodo === 'mensal') }
   }
 
+  const setPoupData = (poupanca) => {
+    console.log('setPoupData',  poupanca);
+    const haspoup = !!poupanca;
+    const niuPoup = poupanca ?? { montante:0, capital:0, juros:0, tempo:0, periodo:false, isAm:false }
+    setPoupanca(niuPoup);
+    setDados({...dados, poupanca: {...niuPoup}});
+  }
+
   const getMontantePoupanca = (tempo, isAno) => {
     tempo = !!isAno && objPoupanca.isAm ? tempo * 12 : tempo;
     const montante = objPoupanca.capital * Math.pow(objPoupanca.juros, tempo);
@@ -552,6 +560,6 @@ export default function useTimeMoney(hoje) {
   //#endregion =======================================
 
   return {
-    dados, setbirth, addMoney, setgastos, setlucros, setNiwSaldos, setDados, calcAll, resultados
+    dados, setbirth, addMoney, setgastos, setlucros, setNiwSaldos, setPoupData, setDados, calcAll, resultados
   }
 }
