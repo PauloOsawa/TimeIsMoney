@@ -29,7 +29,7 @@ export default function CpFrmInptPrice({ title, getVals, action, onCancel }){
   const cancelar = (e) => {
     e.preventDefault();
     resetInputs();
-    onCancel();
+    onCancel(e);
   }
 
   return (

@@ -25,36 +25,50 @@
 }
 
 .fld legend { font-style: italic; padding: 0 7px; vertical-align: text-top; }
-.fld > h3 { font-style: italic; padding: 0; }
+.fld h3 { font-style: italic; }
+.fld > h3 { padding: 0; }
 .fld > *:not(legend) { margin-bottom: 10px; }
 .fld label { margin-left: 15px; }
 .fld input, .fld select { margin: 0 5px; }
-.fld > button, .fld [type="radio"] {  margin: 0 10px; }
-.flxcol {  display: flex; flex-direction: column; justify-content: center; align-items: flex-end; }
+.fld > button, .fld [type="radio"] { margin: 0 10px; }
+.flxcol { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; }
 /*#endregion ------------------------------ */
 
-/*#region ---------------------- CORES -------- */
-.fld legend { color: var(--cor);}
-.fld > h3 { color: var(--corb);  }
-/*#endregion ------------------------------ */
 .dvDt, .dvsaldo { padding: 15px; border: 1px inset whitesmoke; }
 
 /*#region --------------------------- FLD CAR -------- */
-.dvcar > h3 { font-style: italic;  color: var(--corb);  }
+
 .dvcar > button {  margin: 0 10px; }
 /*#endregion ------------------------------ */
 
 /*#region --------------------------- FLD POUPANÇA -------- */
-.dvpoup > h3 { font-style: italic;  color: var(--corb);  }
-.dvpoup > button {  margin: 0 10px; }
+
+/* .dvpoup { display: flex; } */
+.dvpoup > button { margin: 0 10px; }
+
+.dvinptspoup {
+  margin: 10px auto; display: flex; justify-content: center;
+  flex-wrap: wrap; gap: 15px;
+}
+
+.inptjuros{
+  width: 50px;
+}
 /*#endregion ------------------------------ */
 
 /*#region ------------------------- DV FINAL ----- */
 .dvfinal:not(.hidenb) {
-  max-height: 90vh; visibility: visible; transition: max-height .4s .12s, visibility .4s .12s;
+  max-height: 90vh; visibility: visible;
+  transition: max-height .4s .12s, visibility .4s .12s;
   border: 1px solid red;
 }
 
+/*#endregion ------------------------------ */
+
+/*#region ---------------------- CORES -------- */
+.fld legend { color: var(--cor);}
+/* .fld > h3 { color: var(--corb); } */
+.fld :is(h3) { color: var(--corb); }
 /*#endregion ------------------------------ */
 
 /*#region ------------------------- TEST ----- */
