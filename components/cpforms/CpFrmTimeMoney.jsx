@@ -90,9 +90,20 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#endregion --------
 
   //#region ---------------------- FLDSET fldpoupanca --------
-  const setPoupanca = () => {
-    console.log('setPoupanca',  );
+  const setPoupanca = (montante) => {
+    console.log('setPoupanca', montante );
 
+  }
+  const resetPoup = () => {
+    console.log('resetPoup',  );
+
+  }
+
+  const showDvPoup = (e) => {
+    e.preventDefault()
+    const dvask = e.target.parentNode;
+    dvask.classList.add(css.hidenb);
+    dvask.nextElementSibling.classList.remove(css.hidenb);
   }
   //#endregion --------
 
@@ -206,21 +217,36 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
         <CpTbMoney title={'GASTOS'} valores={dados?.gastos ?? []} setaVals={setgastos} fecha={showNextFld} />
       </fieldset>
 
+      <fieldset name='fldlucros' className={css.fld}>
+        <legend>Lucros</legend>
+        <CpTbMoney title={'LUCROS'} valores={dados?.lucros ?? []} setaVals={setlucros} voltar={backfld} fecha={setaSaldos} />
+      </fieldset>
+
       <fieldset name='fldpoupanca' className={css.fld}>
         <legend>Poupança</legend>
         <div className={css.dvcar}>
           <h3>Você Possui Alguma Poupança?</h3>
           <button onClick={showNextFld} className="btncor">NÃO</button>
-          <button onClick={showNextFld} className="btncor">SIM</button>
+          <button onClick={showDvPoup} className="btncor">SIM</button>
         </div>
-        <div className={`${css.dvpoup} ${css.hidenb}`}>
-          <CpFrmInptPrice title={'Quanto você possui hoje, e quais são os juros?'} getVals={setPoupanca} />
-        </div>
-      </fieldset>
 
-      <fieldset name='fldlucros' className={css.fld}>
-        <legend>Lucros</legend>
-        <CpTbMoney title={'LUCROS'} valores={dados?.lucros ?? []} setaVals={setlucros} voltar={backfld} fecha={setaSaldos} />
+        <div className={`${css.dvpoup} ${css.hidenb}`}>
+          <h3>Para podermos calcular, informe os JUROS e o MONTANTE (valor atual)!</h3>
+          <div className={css.dvjuros}>
+            <label>Juros:</label>
+            <input type="text" className={css.inptjuros} defaultValue={0.5} size={2} pattern={"[0-9]{1,2}([,.]{1}[0-9]{1,2}){0,1}"} />
+
+            <select name="seljuros" className={css.seljuros}>
+              <option value="mensal">%a.m</option>
+              <option value="anual">%a.a</option>
+            </select>
+          </div>
+          <div className={css.dvmontante}>
+
+          </div>
+          <CpFrmInptPrice title={'Quanto você possui hoje, e quais são os juros?'} getVals={setPoupanca} onCancel={resetPoup} />
+          {/* <button onClick={resetPoup} className='btncor'>CANCELAR</button> */}
+        </div>
       </fieldset>
 
       <fieldset name='fldcalc' className={css.fld}>

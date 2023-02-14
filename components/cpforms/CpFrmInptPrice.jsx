@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import css from '@/styles/CpFrmInptPrice.module.css';
 
-export default function CpFrmInptPrice({ title, getVals, action }){
+export default function CpFrmInptPrice({ title, getVals, action, onCancel }){
 
   const inptreais = useRef();
   const inptcents = useRef();
@@ -26,6 +26,12 @@ export default function CpFrmInptPrice({ title, getVals, action }){
     }
   }
 
+  const cancelar = (e) => {
+    e.preventDefault();
+    resetInputs();
+    onCancel();
+  }
+
   return (
     <>
       <div className={css.price}>
@@ -34,6 +40,7 @@ export default function CpFrmInptPrice({ title, getVals, action }){
         <span>,</span>
         <input type="number" className={css.cents} min='0' max='99' defaultValue='00' ref={inptcents} required/>
         <button className='btncor' onClick={retVals}>{action ?? 'OK'}</button>
+        {!!onCancel && <button className='btncor' onClick={cancelar}>CANCELAR</button>}
       </div>
     </>
   )

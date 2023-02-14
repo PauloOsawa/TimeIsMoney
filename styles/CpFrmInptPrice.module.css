@@ -1,11 +1,15 @@
-.title { 
+.title {
   font-style: italic; font-weight: bold;
   color: var(--corb);
   /* text-shadow: 1px 1px 1px red; */
 }
-.price { 
+.price {
   padding-bottom: 8px;
  }
 .preco { width: 95px; text-align: right; }
 .price span { font-size: 2em; vertical-align: middle;  }
 .cents { width: 60px; }
+
+.price button{
+  margin:0 15px;
+}
