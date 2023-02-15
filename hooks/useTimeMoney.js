@@ -14,6 +14,19 @@ export default function useTimeMoney(hoje) {
 
   const [dados, setDados] = useState({ ...userdata});
 
+  const getSaldos = (keySaldos) => {
+    const arTxt = []
+    if(!dados[keySaldos]) return;
+
+    for (const k in dados[keySaldos]) {
+      if (dados[keySaldos][k] > 0) {
+        const valor = `R$ ${dados[keySaldos][k].toFixed(2)} ${k}`
+        arTxt.push(valor)
+      }
+    }
+    return arTxt.join(', ');
+  }
+
   const resultados = {
     idade: [
       `Você tem ${dados.idade} anos de idade, totalizando ${dados.diasVida} dias de vida até hoje!!`,
@@ -22,6 +35,7 @@ export default function useTimeMoney(hoje) {
     ],
     saldos: [
       `Seus GASTOS totalizam R$ ${dados.totalGasto.Anual.toFixed(2)} Anuais, R$ ${dados.totalGasto.Mensal.toFixed(2)} Mensais, e R$ ${dados.totalGasto.Diário.toFixed(2)} Diários`,
+      // 'Seus GASTOS totalizam ' + getSaldos('totalGasto'),
       `Seus LUCROS totalizam R$ ${dados.totalLucro.Anual.toFixed(2)} Anuais, R$ ${dados.totalLucro.Mensal.toFixed(2)} Mensais, e R$ ${dados.totalLucro.Diário.toFixed(2)} Diários`,
       `Os SALDOS resultantes são de R$ ${dados.totalSaldos.Anual.toFixed(2)} Anuais, R$ ${dados.totalSaldos.Mensal.toFixed(2)} Mensais, e R$ ${dados.totalSaldos.Diário.toFixed(2)} Diários`,
 
@@ -29,6 +43,8 @@ export default function useTimeMoney(hoje) {
   }
 
   //#region ======================================== DATE AND PRICE HELPERS
+  const fxPrc = (p) => parseFloat(p.toFixed(2));
+
   const arDiasMeses = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   const mesesMaxDays = [ 0, 2, 4, 6, 7, 9, 11 ]
   const mesesMinDays = [ 1, 3, 5, 8, 10 ]
@@ -60,7 +76,6 @@ export default function useTimeMoney(hoje) {
     return (totDays);
   }
 
-  const fxPrc = (p) => parseFloat(p.toFixed(2));
   //#endregion =======================================
 
   const setgastos = (gastos) => { setDados({...dados, gastos: gastos}); }
@@ -165,10 +180,12 @@ export default function useTimeMoney(hoje) {
     // c = parseFloat(c.toFixed(2));
     const arp = isAm ? ['Meses','% ao Mês'] : ['Anos','% ao Ano'];
     jj = parseInt((jj-1)*100);
+    const txtpoup = `Capital: R$ ${c} com Juros de ${jj}${arp[1]}, em ${tt} ${arp[0]} = R$ ${m} (Montante)`;
     cLg('Capital: R$', c,'com Juros de', jj, arp[1],'em',tt, arp[0], '= R$', m,'(Montante)');
+    return txtpoup;
     // cLg( {...objPoupanca, montante: m} );
-
   }
+
   const setMsg = (arTudo, obval) => {
     console.log('setMsg',  );
   }
@@ -186,8 +203,18 @@ export default function useTimeMoney(hoje) {
     const dbt = new Date(arDts[4], arDts[5], arDts[6]).toLocaleDateString()
     // consLog( qdts, dtIni, dt);
     consLog( qdts, (dtBini + '  --  ' + dbt));
-    const txt = "A data que irá conseguir este valor é " + dbt;
-    setFinalResults([txt])
+
+    const arTxts = ["A data que irá conseguir este valor é " + dbt];
+    // const txt = "A data que irá conseguir este valor é " + dbt;
+    const anosRes = qtAnos > 0 ? qtAnos + ' Ano(s), ': '';
+    const diasRes = qtDias > 0 ? ' e ' + qtDias + ' Dia(s)': '';
+    arTxts.push(`Restam ${anosRes} ${qtMeses} Meses${diasRes} para isso!!`);
+
+    if(dados.temPoupanca){
+      const txtpoup = showPoup();
+      arTxts.push(txtpoup);
+    }
+    setFinalResults(arTxts);
     // consLog( qdts, dt, (dtBini + '  --  ' + dbt));
     // console.log('dt = ', dt );
   }
@@ -333,6 +360,7 @@ export default function useTimeMoney(hoje) {
       cLg('\n',' --------------------------------- endSetDts----ZEROUVAL =',zerouVal() );
       showLogs(val, subval, obval, somaTAno, somaMes, somaDias);
       setFinalDts([anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, ...arDtIni]);
+
       if (temPoupanca) { showPoup(); }
     }
     const getNextMaxVal = (vals) => (vals ?? arVals).find(v => valEhMaior(v, subval, true));
@@ -367,6 +395,7 @@ export default function useTimeMoney(hoje) {
       cLg('dif =',fxPrc(dif),'qtm=',qtMeses,'---- passou Mes=',mes,msg, fxPrc(vmes - dif), 'subval=',fxPrc(subval),'-',fxPrc(vmes),'=', fxPrc(subval-vmes));
       subval -= vmes;
       if(mes > 11){ mes = 0; passouAno(); }
+      if(qtMeses > 12){ qtAnos++; qtMeses = 0; }
     }
 
     const setNiuDays = () => {
@@ -407,7 +436,11 @@ export default function useTimeMoney(hoje) {
         if (zerouVal()) { return false; }
         setNiuDays();
         if(!isDaysCount || !valEhMaior(sumdays, subval)){
-          passouMes(); return (!zerouVal() && mes === 0);
+          passouMes();
+          qtMeses++;
+          if(qtMeses > 12){ qtAnos++; qtMeses = 0; }
+          console.log('passouMes em fechaAno qtMeses=', qtMeses );
+          return (!zerouVal() && mes === 0);
         }
         if(valEhMaior(diasRest*Diário, subval)){ somaDays(Math.ceil(subval/Diário)); return false; }
       }
@@ -554,8 +587,7 @@ export default function useTimeMoney(hoje) {
       const obval = {...dados.totalSaldos}
       // let pp = {capital:100, juros:2, periodo:'mensal'}
       const pp = dados.temPoupanca ? {...dados?.poupanca} : null;
-      setDtsByVal(val, obval, pp )
-      // console.log('obval', obval, val );
+      setDtsByVal(val, obval, pp );
       // calcByVal(obj.saldoCalc, saldos );
     }
     // setCurious();
