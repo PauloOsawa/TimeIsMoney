@@ -4,15 +4,11 @@ import css from "@/styles/CpTbMoney.module.css";
 
 export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
 
-  // const {gastos} = valores
-  // const [vals, setVals] = useState(valores ?? []);
-
   const pmsg = useRef();
   const inptnome = useRef();
   const selfreq = useRef();
   const inptreais = useRef();
   const inptcents = useRef();
-  const chkjuros = useRef();
 
   // ---------------------------------------------------
   const showMsg = (msg) => {
@@ -20,7 +16,6 @@ export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
     pmsg.current.classList.remove(css.hiden);
     const tmout = setTimeout(() => {
       pmsg.current.classList.add(css.hiden);
-      // pmsg.current.textContent = '';
       clearTimeout(tmout);
     }, 3200)
   }
@@ -108,16 +103,6 @@ export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
           R$ <input type="number" className={css.preco} min={1} max={999999} defaultValue='0' ref={inptreais} required />
           <span>,</span>
           <input type="number" className={css.cents} min='0' max='99' defaultValue='00' ref={inptcents} required />
-        </div>
-
-        <div className={css.dvjuros}>
-          <label>Juros?</label><input type="checkbox" name="chkjuros" ref={chkjuros} />
-          <input type="text" className={css.inptjuros} defaultValue={0.5} size={1} pattern={"[0-9]{1,2}(,[0-9]{1,2}){0,1}"} disabled />
-
-          <select name="seljuros" className={css.seljuros} disabled>
-            <option value="mensal">%a.m</option>
-            <option value="anual">%a.a</option>
-          </select>
         </div>
 
         <button onClick={addVals} >ADICIONAR</button>

@@ -42,19 +42,4 @@
 .price span { font-size: 2em; vertical-align: middle;  }
 .cents { width: 60px;}
 
-.dvjuros {
-  vertical-align: middle; border: 1px solid rgba(255, 0, 0, 0.2); display: none;
-}
-
-.dvjuros label {  vertical-align: middle; }
-
-.dvjuros > input[type=checkbox] { width: 25px; height: 25px; vertical-align: middle; }
-
-.inptjuros { width: 1px; visibility: hidden;  margin: 0; }
-.dvjuros select { width: 1px; visibility: hidden; }
-
-.dvjuros > input[type=checkbox]:checked ~ :is(input, select){
-  width: fit-content; visibility: visible; text-align: center;
-}
-
 .trexp { color: black; font-style: italic; opacity: .5;}
