@@ -109,10 +109,9 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const resetPoup = (e) => {
     console.log('resetPoup',  );
     const inputjuros = document.querySelector('.'+css.inptjuros);
-    if(inputjuros){ inputjuros.value = 0.5; }
+    if(inputjuros){ inputjuros.value = 1; }
     const dvhidepoup = document.querySelector('.'+css.dvpoup);
     const dvshowpoup = document.querySelector('.'+css.dvinptspoup).parentElement;
-    console.log('dvpouphid', dvshowpoup,  dvhidepoup);
     dvshowpoup.classList.add(css.hidenb);
     dvhidepoup.classList.remove(css.hidenb);
     setaPoupanca();
@@ -251,12 +250,13 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
         </div>
 
         <div className={`${css.dvpoup} ${css.hidenb}`}>
-          <h3>Para podermos calcular, informe os JUROS e o MONTANTE (valor atual)!</h3>
-
+          <h3>Informe os JUROS e MONTANTE atuais da poupança!</h3>
+          <p>Obs: Os cálculos interpretarão tais valores como <b>iniciais</b>(capital e data de hoje)!</p>
+          <p>Portanto, os juros deverão estar atualizados igualmente ao montante, caso queira uma simulação real!</p>
           <div className={css.dvinptspoup}>
             <div className={css.dvjuros}>
               <label>Juros:</label>
-              <input type="text" className={css.inptjuros} defaultValue={0.5} size={2} pattern={"[0-9]{1,2}([,.]{1}[0-9]{1,2}){0,1}"} />
+              <input type="text" className={css.inptjuros} defaultValue={1} pattern={"[0-9]{1,2}([,.]{1}[0-9]{1,2}){0,1}"} />
 
               <select name="seljuros" className={css.seljuros}>
                 <option value="mensal">%a.m</option>

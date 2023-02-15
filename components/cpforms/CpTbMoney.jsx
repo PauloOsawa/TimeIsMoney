@@ -64,6 +64,9 @@ export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
     return fecha();
   }
 
+  const removeZero = (e) => {
+    if(e.target.value === '0'){ e.target.value = ''; }
+  }
   // ---------------------------------------------------
   return (
     <div className={css.dvmoney}>
@@ -100,7 +103,7 @@ export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
         </select>
 
         <div className={css.price}>
-          R$ <input type="number" className={css.preco} min={1} max={999999} defaultValue='0' ref={inptreais} required />
+          R$ <input type="number" className={css.preco} min={1} max={999999} defaultValue='0' onBeforeInput={removeZero} ref={inptreais} required />
           <span>,</span>
           <input type="number" className={css.cents} min='0' max='99' defaultValue='00' ref={inptcents} required />
         </div>

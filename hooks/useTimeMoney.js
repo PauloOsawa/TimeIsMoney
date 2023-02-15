@@ -144,9 +144,9 @@ export default function useTimeMoney(hoje) {
     let { capital: c , juros: jj, tempo: tt, periodo: p, isAm } = objPoupanca
     // c = parseFloat(c.toFixed(2));
     const arp = isAm ? ['Meses','% ao Mês'] : ['Anos','% ao Ano'];
-    jj = parseInt((jj-1)*100);
-    const txtpoup = `Capital: R$ ${c} com Juros de ${jj}${arp[1]}, em ${tt} ${arp[0]} = R$ ${m} (Montante)`;
-    cLg('Capital: R$', c,'com Juros de', jj, arp[1],'em',tt, arp[0], '= R$', m,'(Montante)');
+    jj = parseFloat((jj-1)*100).toFixed(1);
+    const txtpoup = `Capital: R$ ${c.toFixed(2)} com Juros de ${jj}${arp[1]}, em ${tt} ${arp[0]} = R$ ${m} (Montante)`;
+    cLg('Capital: R$', c.toFixed(2),'com Juros de', jj, arp[1],'em',tt, arp[0], '= R$', m,'(Montante)');
     return txtpoup;
     // cLg( {...objPoupanca, montante: m} );
   }
@@ -325,6 +325,10 @@ export default function useTimeMoney(hoje) {
     const endSetDts = (msge) => {
       cLg('\n',' --------------------------------- endSetDts----ZEROUVAL =',zerouVal() );
       showLogs(val, subval, obval, somaTAno, somaMes, somaDias);
+      if(!!msge && msge === 'NUNCA'){
+        setFinalResults(['Infelizmente você NUNCA irá conseguir este valor!!!']);
+        return;
+      }
       setFinalDts([anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, ...arDtIni]);
     }
     const getNextMaxVal = (vals) => (vals ?? arVals).find(v => valEhMaior(v, subval, true));
@@ -336,7 +340,7 @@ export default function useTimeMoney(hoje) {
     if (!nextMaxVal) {
       const sameSign = valEhMaior(last, valNeg, true)
       const notPossible = (!valPos && last > 0) || (!sameSign && !temPoupanca)
-      if (notPossible) { console.log('----------IMPOSSIVEL'); return endSetDts(); }
+      if (notPossible) { console.log('----------IMPOSSIVEL'); return endSetDts('NUNCA'); }
     }
 
     let qdiasMes = getDiasNoMes(mes, ano);

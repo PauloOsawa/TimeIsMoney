@@ -32,11 +32,15 @@ export default function CpFrmInptPrice({ title, getVals, action, onCancel }){
     onCancel(e);
   }
 
+  const removeZero = (e) => {
+    if(e.target.value === '0'){ e.target.value = ''; }
+  }
+
   return (
     <>
       <div className={css.price}>
         {!!title && <h4 className={css.title}>{title}</h4>}
-        R$ <input type="number" className={css.preco} min={1} max={999999} defaultValue='0' ref={inptreais} required />
+        R$ <input type="number" className={css.preco} min={1} max={999999} defaultValue='0' onBeforeInput={removeZero} ref={inptreais} required />
         <span>,</span>
         <input type="number" className={css.cents} min='0' max='99' defaultValue='00' ref={inptcents} required/>
         <button className='btncor' onClick={retVals}>{action ?? 'OK'}</button>
