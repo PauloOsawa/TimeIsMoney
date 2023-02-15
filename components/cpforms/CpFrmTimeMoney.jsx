@@ -7,7 +7,7 @@ import CpFrmInptPrice from "./CpFrmInptPrice";
 
 export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
-  const { dados, setbirth, addMoney, setgastos, setlucros, setNiwSaldos, setPoupData, setDados, calcAll, resultados } = useTimeMoney(hoje);
+  const { dados, setbirth, addMoney, setgastos, setlucros, setSaldos, setPoupData, calcAll, resultados } = useTimeMoney(hoje);
   const sthj = dados.dtHoje.toISOString().slice(0, 10);
 
   const fldact = useRef();
@@ -47,12 +47,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     const el = document.querySelector('.'+cls);
     if (toHide) { el.classList.add(css.hidenb); return; }
     el.classList.remove(css.hidenb);
-  }
-
-  const clearResults = () => {
-    const alltxts = dvresults.current.querySelectorAll('p');
-    console.log('alltxts = ', alltxts );
-    if(alltxts.length){ alltxts.forEach((p) => p.remove()) }
   }
 
   const showDvCalc = (e) => {
@@ -102,12 +96,10 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     const isam = (periodo === 'mensal');
     const objPoupanca = { montante: montante, juros: juros, periodo: periodo, isAm: isam }
 
-    // console.log('inputjuros.value = ', objPoupanca );
     return objPoupanca;
   }
 
   const setaPoupanca = (montante) => {
-    // console.log('setaaPoupanca', montante ?? 'sem poupanca');
     if(!montante){ setPoupData(); return; }
     const objPoup = validaPoupanca(montante);
     if(objPoup){ setPoupData(objPoup); showNextFld(); return; }
@@ -138,7 +130,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#region ------------------------- FLDSET fldlucros ----
   const setaSaldos = () => {
     console.log('setaSaldos',  );
-    setNiwSaldos();
+    setSaldos();
     showNextFld();
   }
   //#endregion
@@ -287,13 +279,11 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
         </div>
 
         <div className={`${css.dvDt} ${css.hidenb}`}>
-          {/* <h4>Insira uma DATA e saiba QUANTO irá conseguir!</h4> */}
           <input type="date" defaultValue={sthj} min={sthj} max={"2060-11-30"} required />
           <button className="btncor" onClick={endCalc}>CALCULAR</button>
         </div>
 
         <div className={`${css.dvsaldo} ${css.hidenb}`}>
-          {/* <CpFrmInptPrice title={'Insira um VALOR e saiba QUANDO irá conseguir!'} getVals={endCalc} /> */}
           <CpFrmInptPrice getVals={endCalc} action={'CALCULAR'}/>
         </div>
 
