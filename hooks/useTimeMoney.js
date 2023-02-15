@@ -130,36 +130,7 @@ export default function useTimeMoney(hoje) {
     setDados({...dados, result:[...arTxts, ...resultados.idade, ...resultados.saldos]})
   }
 
-  //#region ================================= CALC FUNCTIONS
-  const calcByDt = (dtCalc, saldos) => {
-    console.log('calcByDt',  );
-    let total = 0;
-    const arDtCalc = [dtCalc.getFullYear(), dtCalc.getMonth(), dtCalc.getDate()]
-    const {Anual, Mensal, Diário } = dados.totalSaldos;
-
-    const totDias = parseInt(getNumDays(dtCalc - dthj));
-    const valDias = Diário*totDias;
-    console.log('totDias = ', totDias, valDias );
-    total += valDias;
-
-    const difMesesInAno = arDtCalc[1] >= arDtHj[1] ? arDtCalc[1] - arDtHj[1] : 12 - (arDtHj[1] - arDtCalc[1]);
-    const totAnos = parseInt(totDias/365);
-    const totMeses = totAnos*12 + difMesesInAno;
-    const valMeses = Mensal*totMeses;
-    console.log('totMeses = ', totMeses, valMeses );
-    total += valMeses;
-
-    const difAnos = arDtCalc[0] - arDtHj[0];
-    const valAno = Anual*difAnos;
-    console.log('difAnos = ', difAnos, valAno );
-    total += valAno;
-
-    const txt = "Até esta data, você irá conseguir o valor de R$ " + total.toFixed(2) + "!!";
-    console.log('CÁLCULOS DE POUPANÇA AINDA NÃO IMPLEMENTADOS',  );
-    setFinalResults([txt]);
-  }
-
-  //#region =============================  setDtsByVal ======
+  //#region ========================== CALC FUNCTIONS
 
   //#region ========= log msg functions ======
   let objMsg = []
@@ -191,47 +162,6 @@ export default function useTimeMoney(hoje) {
   }
   // #endregion
 
-  //#region ================ BY VAL helper functions
-  const setFinalDts = (arDts) => {
-    const [anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, anoIni, mesIni, diaIni] = arDts;
-    const qdts = { qtDias: qtDias, qtMeses:qtMeses, qtAnos:qtAnos, anosBi:anosBisextos }
-    // const qdts = { qtAnos:qtAnos, qtMeses:qtMeses, qtDias: qtDias, anosBi:anosBisextos }
-    const dtIni = { anoHj: anoIni ?? arDtHj[0], mesHj: mesIni ?? arDtHj[1], diaHj: diaIni ?? arDtHj[2] }
-    // const dtBini = dthj.toLocaleDateString()
-    const dtBini = new Date(dtIni.anoHj, dtIni.mesHj, dtIni.diaHj).toLocaleDateString()
-    // const dt = { ano:arDts[4], mes:arDts[5], dia:arDts[6] }
-    const dbt = new Date(arDts[4], arDts[5], arDts[6]).toLocaleDateString()
-    // consLog( qdts, dtIni, dt);
-    consLog( qdts, (dtBini + '  --  ' + dbt));
-
-    const arTxts = ["A data que irá conseguir este valor é " + dbt];
-    // const txt = "A data que irá conseguir este valor é " + dbt;
-    const anosRes = qtAnos > 0 ? qtAnos + ' Ano(s), ': '';
-    const diasRes = qtDias > 0 ? ' e ' + qtDias + ' Dia(s)': '';
-    arTxts.push(`Restam ${anosRes} ${qtMeses} Meses${diasRes} para isso!!`);
-
-    if(dados.temPoupanca){
-      const txtpoup = showPoup();
-      arTxts.push(txtpoup);
-    }
-    setFinalResults(arTxts);
-    // consLog( qdts, dt, (dtBini + '  --  ' + dbt));
-    // console.log('dt = ', dt );
-  }
-
-  const getValsPeriodo = (Anual, Mensal, Diário, ano, mes) => {
-    const somaPAno = (Diário*365) + (Mensal*12);
-    const sdias = Diário*30;
-    return [somaPAno + Anual, somaPAno, (sdias + Mensal), sdias ];
-  }
-
-  const valEhMaior = (va, vb, eq) => {
-    eq = eq ?? false;
-    const [a, b] = vb >= 0 ? [va, vb] : [vb, va];
-    return !eq ? a > b : a >= b;
-  }
-  //#endregion
-
   //#region ========================== POUPANÇA
   const objPoupanca = { montante:0, capital:0, juros:0, tempo:0, periodo:false, isAm:false }
 
@@ -240,8 +170,11 @@ export default function useTimeMoney(hoje) {
     if(!('capital' in poupanca)){ objPoupanca.capital = poupanca?.montante ?? objPoupanca.montante}
     if(!('montante' in poupanca)){ objPoupanca.montante = poupanca?.capital ?? objPoupanca.capital}
     if('juros' in poupanca){
-      const jj = poupanca.juros;
-      objPoupanca.juros = (Number.isInteger(jj) && jj > 0) ? (1+ jj / 100 ) : 1+ jj / 100;
+      let jj = poupanca.juros;
+      if(jj !== 0){
+        jj = (Number.isInteger(jj) || jj < 1) ? (1+ jj / 100 ) : jj;
+      }
+      objPoupanca.juros = jj;
     }
     if('periodo' in poupanca){ objPoupanca.isAm = (objPoupanca.periodo === 'mensal') }
   }
@@ -277,7 +210,51 @@ export default function useTimeMoney(hoje) {
   }
   // #endregion
 
-  // ------------------------------------------------
+  //#region ================= FN setDtsByVal ======
+
+  //#region ==== setDtsByVal helper functions
+  const setFinalDts = (arDts) => {
+    const [anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, anoIni, mesIni, diaIni] = arDts;
+    const qdts = { qtDias: qtDias, qtMeses:qtMeses, qtAnos:qtAnos, anosBi:anosBisextos }
+    // const qdts = { qtAnos:qtAnos, qtMeses:qtMeses, qtDias: qtDias, anosBi:anosBisextos }
+    const dtIni = { anoHj: anoIni ?? arDtHj[0], mesHj: mesIni ?? arDtHj[1], diaHj: diaIni ?? arDtHj[2] }
+    // const dtBini = dthj.toLocaleDateString()
+    const dtBini = new Date(dtIni.anoHj, dtIni.mesHj, dtIni.diaHj).toLocaleDateString()
+    // const dt = { ano:arDts[4], mes:arDts[5], dia:arDts[6] }
+    const dbt = new Date(arDts[4], arDts[5], arDts[6]).toLocaleDateString()
+    // consLog( qdts, dtIni, dt);
+    consLog( qdts, (dtBini + '  --  ' + dbt));
+
+    const arTxts = ["A data que irá conseguir este valor é " + dbt];
+    // const txt = "A data que irá conseguir este valor é " + dbt;
+    const anosRes = qtAnos > 0 ? qtAnos + ' Ano(s), ': '';
+    const mesesRest = qtMeses > 0 ? qtMeses + ' Meses': '';
+    let diasRes = qtMeses > 0 ? 'e ' : '';
+    diasRes = qtDias > 0 ? diasRes + qtDias + ' Dia(s)': '';
+
+    arTxts.push(`Restam ${anosRes} ${mesesRest} ${diasRes} para isso!!`);
+
+    if(dados.temPoupanca){
+      const txtpoup = showPoup();
+      arTxts.push(txtpoup);
+    }
+    setFinalResults(arTxts);
+    // consLog( qdts, dt, (dtBini + '  --  ' + dbt));
+    // console.log('dt = ', dt );
+  }
+
+  const getValsPeriodo = (Anual, Mensal, Diário, ano, mes) => {
+    const somaPAno = (Diário*365) + (Mensal*12);
+    const sdias = Diário*30;
+    return [somaPAno + Anual, somaPAno, (sdias + Mensal), sdias ];
+  }
+
+  const valEhMaior = (va, vb, eq) => {
+    eq = eq ?? false;
+    const [a, b] = vb >= 0 ? [va, vb] : [vb, va];
+    return !eq ? a > b : a >= b;
+  }
+
   const getYearsByVal = (ano, val, somaAno, valDiario, poupanca) => {
     let [restoVal, vtotalAno, vmont, vsum, qtdAnos, qtdAnosBis] = [val, somaAno, 0, 0, 0, 0];
     if(poupanca){ vmont = getMontantePoupanca(1, 'isAno'); vtotalAno += vmont; }
@@ -331,6 +308,7 @@ export default function useTimeMoney(hoje) {
 
     return retEnd();
   }
+  //#endregion
 
   // ------------------------ retorna data, qtds, val e valresto  ----
 
@@ -360,8 +338,7 @@ export default function useTimeMoney(hoje) {
       cLg('\n',' --------------------------------- endSetDts----ZEROUVAL =',zerouVal() );
       showLogs(val, subval, obval, somaTAno, somaMes, somaDias);
       setFinalDts([anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, ...arDtIni]);
-
-      if (temPoupanca) { showPoup(); }
+      // if (temPoupanca) { showPoup(); }
     }
     const getNextMaxVal = (vals) => (vals ?? arVals).find(v => valEhMaior(v, subval, true));
     let nextMaxVal = getNextMaxVal();
@@ -497,53 +474,51 @@ export default function useTimeMoney(hoje) {
     if(!valEhMaior(sumdays, subval) && endMeses()){ return endSetDts(); }
     return endSetDts();
   }
-  // #endregion
+  //#endregion
 
+  //#region ================ FN calcByDt =========
+  const calcByDt = (dtCalc, saldos) => {
+    console.log('calcByDt',  );
+    let total = 0;
+    const arDtCalc = [dtCalc.getFullYear(), dtCalc.getMonth(), dtCalc.getDate()]
+    const {Anual, Mensal, Diário } = dados.totalSaldos;
 
-  const calcByVal = (val, saldos) => {
-    console.log('calcByVal',  );
-    const {Anual, Mensal, Diário } = saldos.totalSaldos;
-    let [ano, mes, dia] = [...arDtHj]
-    const getSumDiasMes = (mes, ano) => Diário*getDiasNoMes(mes, ano);
-    let totalDias = 0;
-    let totalMeses = 0;
-    let totalAnos = 0;
-    let totalVal = 0;
-    const retorna = () => {
-      return { totais:[totalAnos, totalMeses, totalDias], arData: [ano + totalAnos, mes, dia ]  }
+    const totDias = parseInt(getNumDays(dtCalc - dthj));
+    const valDias = Diário*totDias;
+    console.log('totDias =', totDias, 'valDias =', valDias );
+    total += valDias;
+
+    const difMesesInAno = arDtCalc[1] >= arDtHj[1] ? arDtCalc[1] - arDtHj[1] : 12 - (arDtHj[1] - arDtCalc[1]);
+    const totAnos = parseInt(totDias/365);
+    const totMeses = totAnos*12 + difMesesInAno;
+    const valMeses = Mensal*totMeses;
+    console.log('totMeses =', totMeses, 'valMeses =', valMeses );
+    total += valMeses;
+
+    const difAnos = arDtCalc[0] - arDtHj[0];
+    const valAno = Anual*difAnos;
+    console.log('difAnos = ', difAnos, 'valAno =', valAno );
+    total += valAno;
+
+    const arTxt = ["Até esta data, você irá conseguir o valor de R$ " + total.toFixed(2) + "!!"];
+
+    if(dados.temPoupanca){
+      setPoupanca(dados.poupanca);
+      const tempo = dados.poupanca.isAm ? totMeses : totAnos;
+      const montante = getMontantePoupanca(tempo, !dados.poupanca.isAm);
+      const difMont = montante - dados.poupanca.montante;
+
+      let txtPoup = "Além disso, sua poupança renderá R$ " + difMont.toFixed(2);
+      txtPoup += " neste período totalizando R$ " + (difMont+total).toFixed(2)+' !!';
+
+      arTxt.push(txtPoup);
     }
 
-    let somaDiasInMes = getSumDiasMes(mes, ano);
-    if (somaDiasInMes >= val){totalDias = parseInt(val/Diário); retorna(); }
-
-    let somaMes = Mensal + somaDiasInMes;
-    if (somaMes >= val) { totalMeses++; totalDias += getDiasNoMes(mes, ano); retorna(); }
-
-    const somaInAno = (Mensal*12) + (Diário*365);
-    if (somaInAno >= val) {
-      totalMeses = parseInt(val/somaMes);
-      totalDias = (totalMeses*30) + (totalMeses/2) + (totalMeses % 30);
-      retorna();
-    }
-    const somaAno = Anual + (Mensal*12) + (Diário*365);
-    const mediaMes = somaAno/12;
-
-    if (somaAno >= val) { totalMeses++; totalDias = getDiasNoMes(mes, ano); }
-
-    if (mediaMes < 0) { retorna(); }
-
-    if (val < somaDiasInMes || val < somaMes) {
-      totalDias = val < somaDiasInMes ? parseInt(val/Diário) : tdias;
-      totalMeses = val < somaDiasInMes ? 0 : 1;
-      retorna();
-    }
-
-    totalVal = somaMes;
-    totalMeses++;
+    setFinalResults(arTxt);
   }
-  //#endregion ==========
+  //#endregion ==========================
 
-  //#endregion ==========
+  //#endregion ===================================
   const somaVals = (tipo) => {
     const obval = {Anual: 0, Mensal: 0, Diário: 0}
     if(!tipo in dados){ console.log('sem', tipo ); return obval; }
