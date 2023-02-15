@@ -159,6 +159,7 @@ export default function useTimeMoney(hoje) {
     cLg(somas, '\n');
   }
   const showPoup = () => {
+    console.log('objPoupanca = ', objPoupanca );
     const m = fxPrc(objPoupanca.montante);
     let { capital: c , juros: jj, tempo: tt, periodo: p, isAm } = objPoupanca
     // c = parseFloat(c.toFixed(2));
@@ -209,10 +210,11 @@ export default function useTimeMoney(hoje) {
 
   const setPoupanca = (poupanca) => {
     for (const k in poupanca) { objPoupanca[k] = poupanca[k]; }
+    if(!('capital' in poupanca)){ objPoupanca.capital = poupanca?.montante ?? objPoupanca.montante}
     if(!('montante' in poupanca)){ objPoupanca.montante = poupanca?.capital ?? objPoupanca.capital}
     if('juros' in poupanca){
       const jj = poupanca.juros;
-      objPoupanca.juros = Number.isInteger(jj) ? (1+ jj / 100 ) : jj;
+      objPoupanca.juros = (Number.isInteger(jj) && jj > 0) ? (1+ jj / 100 ) : 1+ jj / 100;
     }
     if('periodo' in poupanca){ objPoupanca.isAm = (objPoupanca.periodo === 'mensal') }
   }
@@ -220,9 +222,9 @@ export default function useTimeMoney(hoje) {
   const setPoupData = (poupanca) => {
     console.log('setPoupData',  poupanca);
     const haspoup = !!poupanca;
-    const niuPoup = poupanca ?? { montante:0, capital:0, juros:0, tempo:0, periodo:false, isAm:false }
+    const niuPoup = poupanca ?? { montante: 0, capital: 0, juros: 0, tempo: 0, periodo: false, isAm:false };
     setPoupanca(niuPoup);
-    setDados({...dados, poupanca: {...niuPoup}});
+    setDados({...dados, poupanca: {...objPoupanca}, temPoupanca: haspoup});
   }
 
   const getMontantePoupanca = (tempo, isAno) => {
@@ -311,6 +313,7 @@ export default function useTimeMoney(hoje) {
     if (val === 0) { return setFinalDts([0, 0, 0, 0, ...arDtIni]); }
     const temPoupanca = !!poupanca && !(Array.isArray(poupanca));
     if (temPoupanca) { setPoupanca(poupanca) }
+    console.log('setDtsByVal temPoupanca ', temPoupanca, poupanca );
     const [hasPoupMes, hasPoupAno] = temPoupanca ? [objPoupanca.isAm, !objPoupanca.isAm] : [false,false];
     const vmontUm = temPoupanca ? getMontantePoupanca(1) : 0;
     let [vmontMes, vmontAno] = hasPoupMes ? [vmontUm, getMontantePoupanca(12)] : [0, vmontUm]
@@ -549,7 +552,9 @@ export default function useTimeMoney(hoje) {
       // obval = {Anual: -1000, Mensal: 650, Diário: -10}
       const val = obj.saldoCalc;
       const obval = {...dados.totalSaldos}
-      setDtsByVal(val, obval )
+      // let pp = {capital:100, juros:2, periodo:'mensal'}
+      const pp = dados.temPoupanca ? {...dados?.poupanca} : null;
+      setDtsByVal(val, obval, pp )
       // console.log('obval', obval, val );
       // calcByVal(obj.saldoCalc, saldos );
     }
