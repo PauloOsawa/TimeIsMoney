@@ -26,18 +26,23 @@ export default function useTimeMoney(hoje) {
     }
     return arTxt.join(', ');
   }
+  const getBrPrc = (p) => {
+    if(p === 0){ return '0,00';}
+    if(Number.isInteger(p)){ return p.toLocaleString() + ',00';}
+    return parseFloat(p.toFixed(2)).toLocaleString().replace(/([,][0-9])$/, '$10').replace(/([^,][0-9]{2})$/, "$1,00");
+  }
 
   const resultados = {
     idade: [
-      `Você tem ${dados.idade} anos de idade, totalizando ${dados.diasVida} dias de vida até hoje!!`,
+      `Você tem ${dados.idade} anos de idade, totalizando ${dados.diasVida.toLocaleString()} dias de vida até hoje!!`,
       `Restam ${dados.diasRestPniver} dias para seu próximo aniversário!!`,
       `Se passaram ${dados.diasPosNiver} dias do seu último aniversário!!`,
     ],
     saldos: [
-      `Seus GASTOS totalizam R$ ${dados.totalGasto.Anual.toFixed(2)} Anuais, R$ ${dados.totalGasto.Mensal.toFixed(2)} Mensais, e R$ ${dados.totalGasto.Diário.toFixed(2)} Diários`,
+      `Seus GASTOS totalizam R$ ${getBrPrc(dados.totalGasto.Anual)} Anuais, R$ ${getBrPrc(dados.totalGasto.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalGasto.Diário)} Diários`,
       // 'Seus GASTOS totalizam ' + getSaldos('totalGasto'),
-      `Seus LUCROS totalizam R$ ${dados.totalLucro.Anual.toFixed(2)} Anuais, R$ ${dados.totalLucro.Mensal.toFixed(2)} Mensais, e R$ ${dados.totalLucro.Diário.toFixed(2)} Diários`,
-      `Os SALDOS resultantes são de R$ ${dados.totalSaldos.Anual.toFixed(2)} Anuais, R$ ${dados.totalSaldos.Mensal.toFixed(2)} Mensais, e R$ ${dados.totalSaldos.Diário.toFixed(2)} Diários`,
+      `Seus LUCROS totalizam R$ ${getBrPrc(dados.totalLucro.Anual)} Anuais, R$ ${getBrPrc(dados.totalLucro.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalLucro.Diário)} Diários`,
+      `Os SALDOS resultantes são de R$ ${getBrPrc(dados.totalSaldos.Anual)} Anuais, R$ ${getBrPrc(dados.totalSaldos.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalSaldos.Diário)} Diários`,
 
     ]
   }
@@ -45,8 +50,8 @@ export default function useTimeMoney(hoje) {
   //#region ======================================== DATE AND PRICE HELPERS
   const fxPrc = (p) => parseFloat(p.toFixed(2));
 
-  const mesesMinDays = [ 1, 3, 5, 8, 10 ]
-  const diasSemana = [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado' ]
+  const mesesMinDays = [ 1, 3, 5, 8, 10 ];
+  const diasSemana = [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado' ];
   const meses = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
     'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
@@ -140,13 +145,14 @@ export default function useTimeMoney(hoje) {
   }
   const showPoup = () => {
     console.log('objPoupanca = ', objPoupanca );
-    const m = fxPrc(objPoupanca.montante);
+    const m = getBrPrc(objPoupanca.montante);
     let { capital: c , juros: jj, tempo: tt, periodo: p, isAm } = objPoupanca
     // c = parseFloat(c.toFixed(2));
+    c = getBrPrc(c);
     const arp = isAm ? ['Meses','% ao Mês'] : ['Anos','% ao Ano'];
     jj = parseFloat((jj-1)*100).toFixed(1);
-    const txtpoup = `Capital: R$ ${c.toFixed(2)} com Juros de ${jj}${arp[1]}, em ${tt} ${arp[0]} = R$ ${m} (Montante)`;
-    cLg('Capital: R$', c.toFixed(2),'com Juros de', jj, arp[1],'em',tt, arp[0], '= R$', m,'(Montante)');
+    const txtpoup = `Capital: R$ ${c} com Juros de ${jj}${arp[1]}, em ${tt} ${arp[0]} = R$ ${m} (Montante)`;
+    cLg('Capital: R$', c,'com Juros de', jj, arp[1],'em',tt, arp[0], '= R$', m,'(Montante)');
     return txtpoup;
     // cLg( {...objPoupanca, montante: m} );
   }

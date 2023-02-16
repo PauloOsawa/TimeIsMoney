@@ -252,7 +252,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
         <div className={`${css.dvpoup} ${css.hidenb}`}>
           <h3>Informe os JUROS e MONTANTE atuais da poupança!</h3>
           <p>Obs: Os cálculos interpretarão tais valores como <b>iniciais</b>(capital e data de hoje)!</p>
-          <p>Portanto, os juros deverão estar atualizados igualmente ao montante, caso queira uma simulação real!</p>
           <div className={css.dvinptspoup}>
             <div className={css.dvjuros}>
               <label>Juros:</label>
