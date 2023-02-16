@@ -51,7 +51,7 @@ export default function useTimeMoney(hoje) {
   const fxPrc = (p) => parseFloat(p.toFixed(2));
 
   const mesesMinDays = [ 1, 3, 5, 8, 10 ];
-  const diasSemana = [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado' ];
+  const diasSemana = [ 'Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado' ];
   const meses = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
     'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
@@ -143,19 +143,7 @@ export default function useTimeMoney(hoje) {
     let somas = {sTAno: somaTAno, sMes: somaMes, sDias: somaDias}
     cLg(somas, '\n');
   }
-  const showPoup = () => {
-    console.log('objPoupanca = ', objPoupanca );
-    const m = getBrPrc(objPoupanca.montante);
-    let { capital: c , juros: jj, tempo: tt, periodo: p, isAm } = objPoupanca
-    // c = parseFloat(c.toFixed(2));
-    c = getBrPrc(c);
-    const arp = isAm ? ['Meses','% ao Mês'] : ['Anos','% ao Ano'];
-    jj = parseFloat((jj-1)*100).toFixed(1);
-    const txtpoup = `Capital: R$ ${c} com Juros de ${jj}${arp[1]}, em ${tt} ${arp[0]} = R$ ${m} (Montante)`;
-    cLg('Capital: R$', c,'com Juros de', jj, arp[1],'em',tt, arp[0], '= R$', m,'(Montante)');
-    return txtpoup;
-    // cLg( {...objPoupanca, montante: m} );
-  }
+
   // #endregion
 
   //#region ========================== POUPANÇA
@@ -202,6 +190,20 @@ export default function useTimeMoney(hoje) {
     const mont = obm*objPoupanca.juros;
     if(toSet){ objPoupanca.montante = mont; objPoupanca.tempo++; }
     return ( mont - obm);
+  }
+
+  const showPoup = () => {
+    console.log('objPoupanca = ', objPoupanca );
+    const m = getBrPrc(objPoupanca.montante);
+    let { capital: c , juros: jj, tempo: tt, periodo: p, isAm } = objPoupanca
+    // c = parseFloat(c.toFixed(2));
+    c = getBrPrc(c);
+    const arp = isAm ? ['Meses','% ao Mês'] : ['Anos','% ao Ano'];
+    jj = parseFloat((jj-1)*100).toFixed(1);
+    const txtpoup = `Capital: R$ ${c} com Juros de ${jj}${arp[1]}, em ${tt} ${arp[0]} = R$ ${m} (Montante)`;
+    cLg('Capital: R$', c,'com Juros de', jj, arp[1],'em',tt, arp[0], '= R$', m,'(Montante)');
+    return txtpoup;
+    // cLg( {...objPoupanca, montante: m} );
   }
   // #endregion
 
@@ -498,19 +500,31 @@ export default function useTimeMoney(hoje) {
     console.log('difAnos = ', difAnos, 'valAno =', valAno );
     total += valAno;
 
-    const arTxt = ["Até esta data, você irá conseguir o valor de R$ " + total.toFixed(2) + "!!"];
+    const diaWeek = dtCalc.getDay();
+    const txtDia = ([0, 6].includes(diaWeek) ? 'Um ': 'Uma ') + diasSemana[diaWeek];
+    let txtTotal = "Até "+ dtCalc.toLocaleDateString() +", "+ txtDia +", você terá um saldo TOTAL de R$ ";
 
-    if(dados.temPoupanca){
-      setPoupanca(dados.poupanca);
-      const tempo = dados.poupanca.isAm ? totMeses : totAnos;
-      const montante = getMontantePoupanca(tempo, !dados.poupanca.isAm);
-      const difMont = montante - dados.poupanca.montante;
-
-      let txtPoup = "Além disso, sua poupança renderá R$ " + difMont.toFixed(2);
-      txtPoup += " neste período totalizando R$ " + (difMont+total).toFixed(2)+' !!';
-
-      arTxt.push(txtPoup);
+    if(!dados.temPoupanca){
+      txtTotal += getBrPrc(total) + (total < 0 ? ' (devedor)!!' : '!!');
+      return setFinalResults([txtTotal]);
     }
+    // ---------------------- RESULTADOS COM POUPANCA
+    const arTxt = [];
+
+    setPoupanca(dados.poupanca);
+    const isMensal = dados.poupanca.isAm;
+    const tempo = isMensal ? totMeses : totAnos;
+
+    const txtTempo = tempo + (!isMensal ? ' Ano(s)' : (tempo > 1 ? ' Meses' : ' Mês'));
+    const montante = getMontantePoupanca(tempo, !isMensal);
+    const difMont = montante - dados.poupanca.montante;
+    const totalPoup = difMont+total;
+
+    txtTotal += getBrPrc(totalPoup) + (totalPoup < 0 ? ' DEVEDOR!!' : '!!');
+    arTxt.push(txtTotal);
+    arTxt.push("Com saldo de lucros/gastos de R$ " + getBrPrc(total) + ", somado a renda de sua poupança de R$ " + getBrPrc(difMont) + "!!");
+
+    arTxt.push("Além disso, o montante da poupança será de R$ " + getBrPrc(montante) + ", com tempo decorrido de " + txtTempo + "!!");
 
     setFinalResults(arTxt);
   }
