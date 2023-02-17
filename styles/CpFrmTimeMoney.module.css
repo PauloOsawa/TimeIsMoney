@@ -1,8 +1,8 @@
 .frma {
-  width: 90%; max-width: 1200px; max-height: 80vh; margin: 10px auto; padding: 0 8px;
+  width: 98%; max-width: 1024px; max-height: 80vh; margin: 10px auto; padding: 0 1.4vw;
   border-radius: 6px; visibility: visible; opacity: 1;
   border: 1px solid rgb(197, 197, 197); box-shadow: 2px 2px 4px rgb(100, 100, 100);
-  transition: max-height .4s;
+  /* transition: max-height .2s; */
 }
 .frma > h1 {
   font-size: 2.3em; font-style: italic;
@@ -12,11 +12,11 @@
 .lbtns { display: flex; justify-content: flex-end; gap: 30px; margin: 15px auto; }
 /*#region ----------------------------------------------- FIELDS GLOBAL  ----------- */
 .fld {
-  overflow-y: auto; height: auto; margin: 8px auto; padding: 0 10px;
+  overflow-y: auto; height: auto; margin: 8px auto; padding: 0 1vw;
 }
 .fld:not(.actv) { opacity: 0; visibility: hidden; display: none; }
 .fld.actv {
-  opacity: 1; visibility: visible; display: block; transition: all 1.4s;
+  opacity: 1; visibility: visible; display: block; transition: all .4s;
 }
 
 .hiden, .hidenb { max-height: 0; visibility: hidden; opacity: 0; transition: max-height .1s, visibility .1s; }
@@ -58,28 +58,32 @@
 
 /*#region ------------------------- DV FINAL ----- */
 .dvfinal{
+  margin: 10px auto; padding: 10px; max-height: 0vh; visibility: hidden;
   overflow-y: scroll; scroll-behavior: smooth;
-  scroll-snap-type: y; scroll-snap-stop: always;
+  scroll-snap-type: y; scroll-snap-stop: normal;
+  background-color: var(--corb); color: white;
   border: 1px solid red;
 }
 .dvfinal:not(.hidenb) {
-  max-height: 120px; height: auto; visibility: visible;
+  max-height: 150px; height: auto; visibility: visible;
   transition: max-height .4s, visibility .3s .1s;
 }
 
 .dvfinal.hidenb {
-  max-height: 0vh; visibility: hidden; display: block;
-  transition: max-height .1s, visibility .1s;
+  display: block; transition: max-height .1s, visibility .1s;
 }
 
 .dvfinal p {
-  font-size: 1.1em; font-weight: 500; font-style: italic;
-  color: var(--corb);
+  font-size: 1.2em; font-weight: normal; font-style: italic;
+  transition: font-weight .1s;
+  /* color: var(--corb); */
 }
 
 .dvfinal:not(.hidenb) .scrolviw{
+  font-size: 1.2em; font-weight: bold;
+  transition: font-weight .4s;
   scroll-snap-align: center;
-  color: blue;
+  /* color: blue; */
 }
 /*#endregion ------------------------------ */
 

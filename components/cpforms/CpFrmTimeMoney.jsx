@@ -32,7 +32,11 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const isShowRes = () => !!dvresults.current && !dvresults.current?.classList.contains(css.hidenb);
 
   const submit = (e) => { e.preventDefault(); console.log('submit = ' ); }
-  const reseta = (e) => { console.log('reset'); hideFrm(); }
+  const reseta = (e) => {
+    console.log('reset');
+    if(fldact.current.getAttribute('disabled')){ return e.preventDefault(); }
+    hideFrm();
+  }
   const goFld = (fld) => {
     if ( !fld || fld.nodeName !== 'FIELDSET') { console.log('noField',  ); return; }
     fldact.current.classList.remove(css.actv);
@@ -46,7 +50,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   const backfld = (e) => {
     e.preventDefault();
-    if(isShowRes()){ console.log('ssssss'); return; }
+    if(isShowRes()){ console.log('Showing Results'); return; }
     goFld(fldact.current.previousElementSibling);
     // console.log('backfld', fldact.current.name );
   }
@@ -70,15 +74,14 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     viewElm(css.dvfinal, !!toHide);
     if(!toHide){
       blockForm(true);
-
-      let pnext = dvresults.current?.querySelector('p');
+      dvresults.current?.scrollTo({ top:0, behavior: 'smooth'});
+      let pnext = dvresults.current?.querySelector('h3');
       if(pnext){ pnext.classList.add(css.scrolviw); }
 
       const intervalo = setInterval(() => {
         console.log('interv' );
         pnext = dvresults.current?.querySelector('.'+css.scrolviw);
         if(!pnext){
-          dvresults.current?.scrollTo({ top:0, behavior: 'smooth'});
           blockForm();
           return clearInterval(intervalo);
         }
@@ -87,7 +90,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
         const nexp = pnext.nextElementSibling;
         if(nexp){ nexp.classList.add(css.scrolviw); }
 
-      }, 2000);
+      }, 5000);
 
     }
   }
