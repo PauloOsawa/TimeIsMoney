@@ -1,31 +1,33 @@
 .dvmoney > h3, .dvmoney > p {
-  font-style: italic; padding: 0; font-size: 1.1em;
+  font-style: italic; font-size: 1.1em; padding: 0; margin: 0;
 }
 .dvmoney > h3 {
   font-size: 1.3em; text-decoration: underline; color: var(--corb);
 }
 .dvmoney > .pmsg{
-  font-weight: bold; max-height: 100px; height: auto; margin: 10px auto;
-  padding: 5px 0; opacity: 1; color: white; background-color: var(--corb); transition: .6s;
+  font-weight: bold; max-height: 100px; height: auto; visibility: visible; padding: 5px;
+  transition: .3s; opacity: 1; color: white; background-color: var(--corb);
 }
-.dvmoney > .pmsg.hiden{ opacity: 0; max-height: 0; padding: 0; margin: 0; transition: .6s; }
+.dvmoney > .pmsg.hiden{ opacity: 0; max-height: 0; margin: 0; padding: 0px; visibility: hidden; }
 
 .dvmoney > *:not(button) { margin-bottom: 15px; }
 .dvmoney > button:nth-last-child(n+1) { margin: 0 20px; }
 
 /*#region ----------------------- TABELA ---- */
 .tbmoney{
-  width: 100%; padding: 5px; border-radius: 7px;
-  border: 1px solid var(--corb);
+  width: 100%; border-radius: 7px; padding: 3px;
+  border: 1px solid var(--corb); box-sizing: border-box;
 }
+.tbmoney th, .tbmoney td { padding: 5px 10px; }
+.trexp { color: black; font-style: italic; opacity: .5; }
+.trexp:not(:only-child){ display: none; }
 
-.tbmoney thead { color: white; background-color: var(--corb); }
+.tbmoney thead th{ color: white; background-color: var(--corb); }
+.tbmoney thead th:first-child { border-radius: 5px 0 0 0; }
+.tbmoney thead th:last-child { border-radius: 0 5px 0 0; }
 
 .tbmoney > tbody { color: var(--corb); }
 .tbmoney > tbody > tr:nth-child(odd){ background-color: rgb(231, 231, 231); }
-.trexp { color: black; font-style: italic; opacity: .5; }
-.trexp:not(:only-child){ display: none; }
-.tbmoney th, .tbmoney td { padding: 5px 10px; }
 
 .tbmoney .desc{ width: 50%; }
 .tbmoney .periodo{ width: 25%; }
@@ -42,9 +44,11 @@
 }
 .dvsetvals input { margin: 0 5px; }
 .dvsetvals .desc { width: 200px; }
+.dvsetvals .selfreq { padding: 6px 10px; }
 .preco { width: 95px; text-align: right; }
 .price span { font-size: 2em; vertical-align: middle; }
 .cents { width: 70px; }
 
+/* .btadd { color: red; } */
 
 /*#endregion ----------- */

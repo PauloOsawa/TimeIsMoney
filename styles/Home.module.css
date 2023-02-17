@@ -24,7 +24,7 @@
   width: 96%; max-width: 1024px; max-height: 1024px; margin: 10px auto;
   padding: 14px; visibility: visible; opacity: 1;
   box-shadow: 2px 2px 4px rgb(100, 100, 100); overflow: hidden;
-  transition: max-height .1s ease-out;
+  transition: max-height .2s ease-out;
 }
 
 .hiden {

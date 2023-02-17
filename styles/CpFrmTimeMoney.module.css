@@ -1,7 +1,8 @@
 .frma {
-  width: 97%; max-width: 1024px; max-height: 90vh; height: auto; margin: 10px auto;
-  padding: 0 1.4vw; border-radius: 6px; visibility: visible; opacity: 1;
+  width: 96%; max-width: 1024px; max-height: 99vh; height: auto; margin: 10px auto;
+  padding: 0 1vw; border-radius: 6px; visibility: visible; opacity: 1;
   border: 1px solid rgb(197, 197, 197); box-shadow: 2px 2px 4px rgb(100, 100, 100);
+  box-sizing: border-box;
   /* transition: max-height .2s .2s; */
 }
 .frma > h1 {
@@ -12,19 +13,17 @@
 .lbtns { display: flex; justify-content: flex-end; gap: 30px; margin: 15px auto; }
 /*#region ----------------------------------------------- FIELDS GLOBAL  ----------- */
 .fld {
-  overflow-y: auto; height: auto; margin: 8px auto; padding: 0 1.3vw;
+  width: 100%; height: auto; margin: 8px auto; padding: 0 1.2vw;
 }
 .fld:not(.actv) { opacity: 0; visibility: hidden; display: none; }
 .fld.actv {
-  opacity: 1; visibility: visible; display: block; transition: visibility .3s;
+  display: block; opacity: 1; visibility: visible; transition: visibility .3s;
 }
 
-.hiden {
+.hiden, .hidenb {
   max-height: 0; visibility: hidden; opacity: 0; transition: max-height .1s, visibility .1s;
 }
-.hidenb {
-  max-height: 0; visibility: hidden; opacity: 0; display: none;
-}
+.hidenb { display: none; }
 
 .fld legend { font-style: italic; padding: 0 7px; vertical-align: text-top; }
 .fld h3 { font-style: italic; }
