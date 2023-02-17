@@ -8,16 +8,16 @@
 
 /*#region =========================== BEGIN ===== */
 :root {
-  --cor: rgb(121,0,0);	
+  --cor: rgb(121,0,0);
   --corb: rgb(180,0,4);
 
   --corh: hsl(359, 100%, 34%);
   --dgrda: linear-gradient(to right, var(--cor), black 20% 80%, var(--cor));
   --dgrdb: linear-gradient(to right, currentcolor, black 20% 80%, currentcolor);
 
-  --coresmetal: #dedede 0%, #737373 8% 12%, #cccccc 18%, #ffffff 28%, 
-  #ababab 36%, #555555 45%, #828282 50%, #bfbfbf 62%, 
-  #a1a1a1 72%, #ffffff 81%, #a1a1a1 90%, #dedede 100%;  
+  --coresmetal: #dedede 0%, #737373 8% 12%, #cccccc 18%, #ffffff 28%,
+  #ababab 36%, #555555 45%, #828282 50%, #bfbfbf 62%,
+  #a1a1a1 72%, #ffffff 81%, #a1a1a1 90%, #dedede 100%;
   --metal: linear-gradient(115deg, var(--coresmetal));
   --metalbg: linear-gradient(35deg,  #e6e6e6, #ececec, #e6e6e6);
 
@@ -30,22 +30,22 @@
   0 1px 0 red, 0 -1px 0 red, 2px 1px 3px #b40004;
 }
 
-html{font-size: 1rem; box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}	
+html{font-size: 1rem; box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 html, body {
-  padding:0; margin:0; text-align: center; 
+  padding:0; margin:0; text-align: center;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; 
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 body {
-  font-size: clamp(16px, calc(.75rem + .45vw + 1px), 20px); min-width: 360px;  
+  font-size: clamp(16px, calc(.75rem + .45vw + 1px), 20px); min-width: 360px;
 }
 
 article,aside,details,figcaption,figure,footer,header,main,menu,nav,section{display:block}
 a {color: inherit; text-decoration:none;}
 a:active,a:hover{cursor: pointer; outline-width:0}
 ul{ padding:0; margin:0} ul, li {text-decoration:none; list-style:none}
-button, select, option, [type=file], [type=button], [type=reset], 
+button, select, option, [type=file], [type=button], [type=reset],
 [type=submit], [type=checkbox], [type=radio], [type=date] { cursor: pointer; }
 img{border-style:none; max-width:100%; height:auto; vertical-align:middle}
 [hidden] {display: none}
@@ -55,9 +55,9 @@ main > h2, .hb { font-size: 1.7em; font-weight: 600; font-style: italic; }
 p { line-height: 1.45em; padding: .3em 1em; margin:0 auto; }
 li { line-height: 1.5em; }
 
-header, main, footer { width: 100%; overflow: hidden; }
-header, footer { min-height: 15vh; padding: 8px 20px; }
-main { min-height: 69.5vh; padding:0 0 10px 0; }
+header, main, footer { width: 100%; overflow: clip; }
+header, footer { min-height: 13vh; height: auto; padding: 10px 20px; }
+main { min-height: 73vh; height: auto; padding:0 0 10px 0; }
 /*#endregion*/
 
 /*#region ========================================== FORMS ==== */
@@ -69,14 +69,14 @@ select, input, textarea { padding: 6px .4em; outline: none;  }
 button, [type=button], [type=reset], [type=submit]{ padding: 6px 1.4em; }
 /* ------------------------------------------------------------------- */
 select, button, [type=button], [type=reset], [type=submit]{ border-style: outset; }
-[type=text], [type=password], [type=search], 
+[type=text], [type=password], [type=search],
 [type=email], [type=number], [type=tel], [type=date] { border-style: inset; }
 /* ------------------------------------------------------------------- */
-input { color: black; } 
+input { color: black; }
 textarea { resize: none; }
 input::placeholder, input::-moz-placeholder { color: black;  opacity: .4; }
-[type=file], textarea:focus, 
-input:focus:not([type=button],[type=reset], [type=submit], [type=checkbox], [type=radio]) { 
+[type=file], textarea:focus,
+input:focus:not([type=button],[type=reset], [type=submit], [type=checkbox], [type=radio]) {
   box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.3);
 }
 input:invalid, textarea:invalid{ color: rgba(255, 0, 0, 0.6); }
@@ -91,7 +91,7 @@ main { color: black; background: radial-gradient(circle, white 40%, rgb(190,190,
 
 main > h2, .hb {
   color: white; -webkit-text-fill-color: white;
-  -webkit-text-stroke: 1px var(--cor);  
+  -webkit-text-stroke: 1px var(--cor);
   text-shadow: 1px 1px 2px var(--corb);
   paint-order: stroke;
 }
@@ -100,7 +100,7 @@ main > h2, .hb {
 
 /*#region ========================================== CLASSES GLOBAIS ==== */
 .flex {
-  display: flex; align-items: center; 
+  display: flex; align-items: center;
   justify-content: space-around; gap: 10px;
 }
 
@@ -109,7 +109,7 @@ main > h2, .hb {
 
 .tita {
   font-weight: 900; font-style: italic;
-  color: rgb(200,0,0); 
+  color: rgb(200,0,0);
   -webkit-text-stroke: 1px var(--cor);
   text-shadow: 2px 2px 3px rgba(0, 0, 0, .9);
 }
@@ -117,10 +117,10 @@ main > h2, .hb {
 .titb { font-size: 1.5em; font-weight: 600; }
 .titc { font-size: 1.2em; font-weight: 500; }
 
-.metalbox {  
+.metalbox {
   width: 100%; padding:17px 0; margin-bottom: 8px;
   background-color: white;
-  background: 
+  background:
   center top 2px / 100% 12px no-repeat padding-box var(--metal),
   center top 1px / 100% 14px no-repeat padding-box var(--metalbg),
   center bottom 2px / 100% 12px no-repeat padding-box var(--metal),
@@ -130,7 +130,7 @@ main > h2, .hb {
 
   box-shadow: 2px 0px 7px black;
 }
-.metalbox > *:is(h1, h2, h3, p) { 
+.metalbox > *:is(h1, h2, h3, p) {
   text-align: right; line-height: .9em; padding: 0 .7em .2em 0;
   opacity: 0; animation: fadeInRight 1.5s .1s ease-out both;
 }
@@ -138,14 +138,14 @@ main > h2, .hb {
   font-size: inherit; font-weight: bold; padding: 8px 1.5em; border-radius: 7px;
   color: white; background: linear-gradient(var(--cor), var(--corb)); transition: .2s;
 }
-.btncor:hover { 
-  background: linear-gradient(var(--corb), var(--cor)); 
-  filter: brightness(1.3); box-shadow: 1px 1px 2px rgb(40, 40, 40);   
+.btncor:hover {
+  background: linear-gradient(var(--corb), var(--cor));
+  filter: brightness(1.3); box-shadow: 1px 1px 2px rgb(40, 40, 40);
   transition: .2s;
 }
 .btncor:active {  border-style: inset; }
 
-/*#endregion*/ 
+/*#endregion*/
 
 @keyframes fadeInLeft {
   0% { opacity: 0; transform: translateX(-1000px);  }

@@ -220,7 +220,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
   function strFy(data){
     const isAr = Array.isArray(data);
-    if(!isAr || !Object.keys(data[0]).length){ return JSON.stringify(data) }
+    if(!isAr || !data.length || !Object.keys(data[0]).length){ return JSON.stringify(data) }
     return data.map((v, ki) => (<span key={ki}><br />  {JSON.stringify(v)}</span>));
   }
 

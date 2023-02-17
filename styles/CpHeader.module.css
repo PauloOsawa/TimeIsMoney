@@ -1,16 +1,19 @@
-.header, .header > div { display: flex; align-items: center; padding: 8px 3px; }
+.header, .header > div { display: flex; align-items: center; padding: 5px; }
 .header { font-style: italic; flex-wrap: wrap; justify-content: space-evenly; }
 
 /*#region ====================== DV LOGO =========== */
 .dvlogo { width: 23em; gap: 12px; }
 
 .dvlogo svg > :is(path, text) {
-  font-weight: 700; fill: white; stroke-linecap: round;
+  font-weight: bold; fill: white; stroke-linecap: round;
   stroke-linejoin: round; paint-order: stroke;
 }
 
 .dimg {
-  height: 110px; width: 110px; display: flex; border-radius: 50%;
+  height: min(calc(1vw + 86px), 110px);
+  width: min(calc(1vw + 86px), 110px);
+  margin-left: 6px;
+  display: flex; border-radius: 50%;
   background: radial-gradient(at 40% 35%, white, black 70%);
   border: 2px solid var(--cor); box-shadow: 0 0 12px white;
 }

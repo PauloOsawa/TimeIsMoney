@@ -1,8 +1,8 @@
 .frma {
-  width: 98%; max-width: 1024px; max-height: 80vh; margin: 10px auto; padding: 0 1.4vw;
-  border-radius: 6px; visibility: visible; opacity: 1;
+  width: 97%; max-width: 1024px; max-height: 90vh; height: auto; margin: 10px auto;
+  padding: 0 1.4vw; border-radius: 6px; visibility: visible; opacity: 1;
   border: 1px solid rgb(197, 197, 197); box-shadow: 2px 2px 4px rgb(100, 100, 100);
-  /* transition: max-height .2s; */
+  /* transition: max-height .2s .2s; */
 }
 .frma > h1 {
   font-size: 2.3em; font-style: italic;
@@ -12,14 +12,16 @@
 .lbtns { display: flex; justify-content: flex-end; gap: 30px; margin: 15px auto; }
 /*#region ----------------------------------------------- FIELDS GLOBAL  ----------- */
 .fld {
-  overflow-y: auto; height: auto; margin: 8px auto; padding: 0 1vw;
+  overflow-y: auto; height: auto; margin: 8px auto; padding: 0 1.3vw;
 }
 .fld:not(.actv) { opacity: 0; visibility: hidden; display: none; }
 .fld.actv {
-  opacity: 1; visibility: visible; display: block; transition: all .4s;
+  opacity: 1; visibility: visible; display: block; transition: visibility .3s;
 }
 
-.hiden, .hidenb { max-height: 0; visibility: hidden; opacity: 0; transition: max-height .1s, visibility .1s; }
+.hiden {
+  max-height: 0; visibility: hidden; opacity: 0; transition: max-height .1s, visibility .1s;
+}
 .hidenb {
   max-height: 0; visibility: hidden; opacity: 0; display: none;
 }
@@ -37,30 +39,25 @@
 .dvDt, .dvsaldo { padding: 15px; border: 1px inset whitesmoke; }
 
 /*#region --------------------------- FLD CAR -------- */
-
-.dvcar > button {  margin: 0 10px; }
+.dvcar > button { margin: 0 10px; }
 /*#endregion ------------------------------ */
 
 /*#region --------------------------- FLD POUPANÇA -------- */
-
 /* .dvpoup { display: flex; } */
 .dvpoup > button { margin: 0 10px; }
-
 .dvinptspoup {
   margin: 10px auto; display: flex; justify-content: center;
   flex-wrap: wrap; gap: 15px;
 }
 
-.inptjuros{
-  width: 50px;
-}
+.inptjuros{ width: 50px; }
 /*#endregion ------------------------------ */
 
 /*#region ------------------------- DV FINAL ----- */
 .dvfinal{
   margin: 10px auto; padding: 10px; max-height: 0vh; visibility: hidden;
-  overflow-y: scroll; scroll-behavior: smooth;
-  scroll-snap-type: y; scroll-snap-stop: normal;
+  overflow-y: scroll; scroll-behavior: smooth; scroll-snap-type: y;
+  scroll-snap-stop: normal;
   background-color: var(--corb); color: white;
   border: 1px solid red;
 }

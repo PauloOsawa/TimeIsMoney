@@ -1,45 +1,50 @@
 .dvmoney > h3, .dvmoney > p {
   font-style: italic; padding: 0; font-size: 1.1em;
 }
-
 .dvmoney > h3 {
   font-size: 1.3em; text-decoration: underline; color: var(--corb);
 }
 .dvmoney > .pmsg{
   font-weight: bold; max-height: 100px; height: auto; margin: 10px auto;
-  padding: 5px 0;  opacity: 1; color: white; background-color: var(--corb); transition: .6s;
+  padding: 5px 0; opacity: 1; color: white; background-color: var(--corb); transition: .6s;
 }
 .dvmoney > .pmsg.hiden{ opacity: 0; max-height: 0; padding: 0; margin: 0; transition: .6s; }
 
 .dvmoney > *:not(button) { margin-bottom: 15px; }
 .dvmoney > button:nth-last-child(n+1) { margin: 0 20px; }
 
+/*#region ----------------------- TABELA ---- */
 .tbmoney{
   width: 100%; padding: 5px; border-radius: 7px;
   border: 1px solid var(--corb);
 }
 
-.tbmoney thead {  color: white; background-color: var(--corb); }
+.tbmoney thead { color: white; background-color: var(--corb); }
 
-.tbmoney > tbody {  color: var(--corb); }
+.tbmoney > tbody { color: var(--corb); }
 .tbmoney > tbody > tr:nth-child(odd){ background-color: rgb(231, 231, 231); }
+.trexp { color: black; font-style: italic; opacity: .5; }
 .trexp:not(:only-child){ display: none; }
 .tbmoney th, .tbmoney td { padding: 5px 10px; }
 
 .tbmoney .desc{ width: 50%; }
 .tbmoney .periodo{ width: 25%; }
-.tbmoney .price{  width: 15%; }
-.tbmoney svg{ height: 25px; cursor: pointer; }
+.tbmoney .price{ width: 15%; }
+.tbmoney svg{ height: min(calc(1vw + 17px), 25px); }
 .tbmoney td.price{ text-align: right; }
-/* ------------------------------------------ */
+.tbmoney > tbody > tr:not(.trexp) svg{ cursor: pointer; }
+/*#endregion ----------- */
+
+/*#region ----------------------- INPUTS ---- */
 .dvsetvals {
   display: flex; justify-content: space-evenly; align-items: center;
-  gap: 10px;  flex-wrap: wrap;
+  gap: 10px; flex-wrap: wrap;
 }
 .dvsetvals input { margin: 0 5px; }
 .dvsetvals .desc { width: 200px; }
 .preco { width: 95px; text-align: right; }
-.price span { font-size: 2em; vertical-align: middle;  }
-.cents { width: 60px;}
+.price span { font-size: 2em; vertical-align: middle; }
+.cents { width: 70px; }
 
-.trexp { color: black; font-style: italic; opacity: .5;}
+
+/*#endregion ----------- */
