@@ -57,12 +57,30 @@
 /*#endregion ------------------------------ */
 
 /*#region ------------------------- DV FINAL ----- */
-.dvfinal:not(.hidenb) {
-  max-height: 90vh; visibility: visible;
-  transition: max-height .4s .12s, visibility .4s .12s;
+.dvfinal{
+  overflow-y: scroll; scroll-behavior: smooth;
+  scroll-snap-type: y; scroll-snap-stop: always;
   border: 1px solid red;
 }
+.dvfinal:not(.hidenb) {
+  max-height: 120px; height: auto; visibility: visible;
+  transition: max-height .4s, visibility .3s .1s;
+}
 
+.dvfinal.hidenb {
+  max-height: 0vh; visibility: hidden; display: block;
+  transition: max-height .1s, visibility .1s;
+}
+
+.dvfinal p {
+  font-size: 1.1em; font-weight: 500; font-style: italic;
+  color: var(--corb);
+}
+
+.dvfinal:not(.hidenb) .scrolviw{
+  scroll-snap-align: center;
+  color: blue;
+}
 /*#endregion ------------------------------ */
 
 /*#region ---------------------- CORES -------- */
@@ -73,7 +91,7 @@
 
 /*#region ------------------------- TEST ----- */
 
-.ldvtst { margin-top: 50px; }
+.ldvtst { margin: 30px auto; }
 .ldvtst button { margin: 0 10px; }
 .dvdads {
  text-align: left; width: fit-content; margin: 5px auto; max-height: 40vh;

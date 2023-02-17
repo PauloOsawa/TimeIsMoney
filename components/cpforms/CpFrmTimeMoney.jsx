@@ -10,6 +10,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const { dados, setbirth, addMoney, setgastos, setlucros, setSaldos, setPoupData, calcAll, resultados } = useTimeMoney(hoje);
   const sthj = dados.dtHoje.toISOString().slice(0, 10);
 
+  const forma = useRef();
   const fldact = useRef();
   const dvresults = useRef();
 
@@ -23,7 +24,13 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   //#region =========================== HTML RENDER functions ======
 
+  const scrolto = (elm) => {
+    const xxx = 'xxx';
+
+  }
   //#region ---------------------- form and global -------
+  const isShowRes = () => !!dvresults.current && !dvresults.current?.classList.contains(css.hidenb);
+
   const submit = (e) => { e.preventDefault(); console.log('submit = ' ); }
   const reseta = (e) => { console.log('reset'); hideFrm(); }
   const goFld = (fld) => {
@@ -39,6 +46,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   const backfld = (e) => {
     e.preventDefault();
+    if(isShowRes()){ console.log('ssssss'); return; }
     goFld(fldact.current.previousElementSibling);
     // console.log('backfld', fldact.current.name );
   }
@@ -48,18 +56,50 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     if (toHide) { el.classList.add(css.hidenb); return; }
     el.classList.remove(css.hidenb);
   }
+  //#endregion ---------
 
+  const blockForm = (toBlock) => {
+    if(toBlock){
+      fldact.current.setAttribute('disabled','true');
+      return;
+    }
+    fldact.current.removeAttribute('disabled');
+  }
+
+  const showDvResults = (toHide) => {
+    viewElm(css.dvfinal, !!toHide);
+    if(!toHide){
+      blockForm(true);
+
+      let pnext = dvresults.current?.querySelector('p');
+      if(pnext){ pnext.classList.add(css.scrolviw); }
+
+      const intervalo = setInterval(() => {
+        console.log('interv' );
+        pnext = dvresults.current?.querySelector('.'+css.scrolviw);
+        if(!pnext){
+          dvresults.current?.scrollTo({ top:0, behavior: 'smooth'});
+          blockForm();
+          return clearInterval(intervalo);
+        }
+        console.log('pnext',  );
+        pnext.classList.remove(css.scrolviw);
+        const nexp = pnext.nextElementSibling;
+        if(nexp){ nexp.classList.add(css.scrolviw); }
+
+      }, 2000);
+
+    }
+  }
+  //#region ---------------------- FLDSET fldcalc --------
   const showDvCalc = (e) => {
     const idx = e.target.value === 'data' ? 0 : 1;
     [css.dvDt, css.dvsaldo].forEach((cl, i) => {
       const toHide = (idx !== i);
       viewElm(cl, toHide);
     })
-    viewElm(css.dvfinal, true);
+    showDvResults(true);
   }
-  //#endregion ---------
-
-  //#region ---------------------- FLDSET fldcalc --------
 
   const endCalc = (e) => {
     let ob;
@@ -78,7 +118,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       e.preventDefault();
     }
     calcAll(ob);
-    viewElm(css.dvfinal);
+    showDvResults();
   }
 
   //#endregion --------
@@ -209,7 +249,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   return (
     <>
-    <form name='frma' className={css.frma} onSubmit={submit} onReset={reseta}>
+    <form name='frma' className={css.frma} onSubmit={submit} onReset={reseta} ref={forma}>
 
       <fieldset name='fldNasc' className={`${css.fld} ${css.actv}`} ref={fldact}>
         <legend htmlFor='fldNasc'>Nascimento</legend>
@@ -297,7 +337,8 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
     <div className={`${css.dvfinal} ${css.hidenb}`} ref={dvresults}>
       <h3>RESULTS</h3>
-      {dados?.result?.map((r, i) => (
+      {isShowRes() && console.log('render' )}
+      {isShowRes() && dados?.result?.map((r, i) => (
         <p key={i}>{r}</p>
       ))}
     </div>
