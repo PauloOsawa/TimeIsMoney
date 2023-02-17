@@ -4,6 +4,7 @@ import css from "@/styles/CpTbMoney.module.css";
 
 export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
 
+  const hasVals = (!!valores && valores?.length > 0)
   const pmsg = useRef();
   const inptnome = useRef();
   const selfreq = useRef();
@@ -112,7 +113,7 @@ export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
       </div>
 
       {!!voltar && <button onClick={voltar} className='btncor'>VOLTAR</button>}
-      <button onClick={nextField} className='btncor'>PRÓXIMO</button>
+      <button onClick={nextField} className={hasVals ? 'btncor' : 'btncor disable'}>PRÓXIMO</button>
     </div>
   )
 }
