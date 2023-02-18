@@ -125,9 +125,9 @@ export default function useTimeMoney(hoje) {
 
 
   //#region ================================= FINAL FUNCTIONS
-  const setFinalResults = (arTxts) => {
-    console.log('setFinalResults',  );
-    setDados({...dados, result:[...arTxts, ...resultados.saldos, ...resultados.idade]})
+  const setFinalResults = (arTxts, lastCalc) => {
+    console.log('setFinalResults');
+    setDados({...dados, lastCalc: lastCalc, result:[...arTxts, ...resultados.saldos, ...resultados.idade]})
   }
 
   //#region ========================== CALC FUNCTIONS
@@ -211,7 +211,7 @@ export default function useTimeMoney(hoje) {
   //#region ================= FN setDtsByVal ======
 
   //#region ==== setDtsByVal helper functions
-  const setFinalDts = (arDts) => {
+  const setFinalDts = (arDts, val) => {
     const [anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, anoIni, mesIni, diaIni] = arDts;
     const qdts = { qtDias: qtDias, qtMeses:qtMeses, qtAnos:qtAnos, anosBi:anosBisextos }
     // const qdts = { qtAnos:qtAnos, qtMeses:qtMeses, qtDias: qtDias, anosBi:anosBisextos }
@@ -236,7 +236,7 @@ export default function useTimeMoney(hoje) {
       const txtpoup = showPoup();
       arTxts.push(txtpoup);
     }
-    setFinalResults(arTxts);
+    setFinalResults(arTxts, val);
     // consLog( qdts, dt, (dtBini + '  --  ' + dbt));
   }
 
@@ -310,6 +310,10 @@ export default function useTimeMoney(hoje) {
   // ------------------------ retorna data, qtds, val e valresto  ----
 
   const setDtsByVal = (val, obval, poupanca, arDtIni) => {
+    if(!!dados.lastCalc){
+      const difzero = val - dados.lastCalc;
+      if(difzero === 0){ console.log('ja calculado BY VAL===', val ); return; }
+    }
     // #region ------------- variaveis internas
     arDtIni = arDtIni ?? (Array.isArray(poupanca) ? poupanca : arDtHj);
     if (val === 0) { return setFinalDts([0, 0, 0, 0, ...arDtIni]); }
@@ -335,10 +339,10 @@ export default function useTimeMoney(hoje) {
       cLg('\n',' --------------------------------- endSetDts----ZEROUVAL =',zerouVal() );
       showLogs(val, subval, obval, somaTAno, somaMes, somaDias);
       if(!!msge && msge === 'NUNCA'){
-        setFinalResults(['Infelizmente você NUNCA irá conseguir este valor!!!']);
+        setFinalResults(['Infelizmente você NUNCA irá conseguir este valor!!!'], val);
         return;
       }
-      setFinalDts([anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, ...arDtIni]);
+      setFinalDts([anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, ...arDtIni], val);
     }
     const getNextMaxVal = (vals) => (vals ?? arVals).find(v => valEhMaior(v, subval, true));
     let nextMaxVal = getNextMaxVal();
@@ -480,6 +484,7 @@ export default function useTimeMoney(hoje) {
   //#region ================ FN calcByDt =========
   const calcByDt = (dtCalc) => {
     console.log('calcByDt',  );
+
     let total = 0;
     const arDtCalc = [dtCalc.getFullYear(), dtCalc.getMonth(), dtCalc.getDate()]
     const {Anual, Mensal, Diário } = dados.totalSaldos;
@@ -507,7 +512,7 @@ export default function useTimeMoney(hoje) {
 
     if(!dados.temPoupanca){
       txtTotal += getBrPrc(total) + (total < 0 ? ' (devedor)!!' : '!!');
-      return setFinalResults([txtTotal]);
+      return setFinalResults([txtTotal], dtCalc);
     }
     // ---------------------- RESULTADOS COM POUPANCA
     const arTxt = [];
@@ -527,7 +532,7 @@ export default function useTimeMoney(hoje) {
 
     arTxt.push("Além disso, o montante da poupança será de R$ " + getBrPrc(montante) + ", com tempo decorrido de " + txtTempo + "!!");
 
-    setFinalResults(arTxt);
+    setFinalResults(arTxt, dtCalc);
   }
   //#endregion ==========================
 
@@ -548,9 +553,9 @@ export default function useTimeMoney(hoje) {
   }
 
   const calcAll = (obj) => {
-
+    // const vv = Object.values(obj)
     if(!!obj?.dtCalc){
-      calcByDt(obj.dtCalc );
+      calcByDt(obj.dtCalc);
     } else {
       // obval = {Anual: -1000, Mensal: 650, Diário: -10}
       const val = obj.saldoCalc;

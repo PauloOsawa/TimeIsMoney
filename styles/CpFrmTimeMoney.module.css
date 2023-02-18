@@ -68,11 +68,11 @@
 /* .dvfinal.hidenb { transition: max-height .1s, visibility .1s; } */
 .dvfinal p {
   font-size: 1.2em; font-weight: normal; font-style: italic;
-  transition: font-weight .2s;
+  transition: font-weight .1s;
 }
 
 .dvfinal:not(.hidenb) .scrolviw{
-  font-weight: bold; scroll-snap-align: center; transition: font-weight .3s;
+  font-weight: bold; transition: font-weight .3s; scroll-snap-align: center;
 }
 /*#endregion ------------------------------ */
 

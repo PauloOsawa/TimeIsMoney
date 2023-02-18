@@ -8,11 +8,13 @@ import CpFrmInptPrice from "./CpFrmInptPrice";
 export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   const { dados, setbirth, addMoney, setgastos, setlucros, setSaldos, setPoupData, calcAll, resultados } = useTimeMoney(hoje);
-  const sthj = dados.dtHoje.toISOString().slice(0, 10);
+
+  const stDtTomorow = new Date(dados.dtHoje.getFullYear(), dados.dtHoje.getMonth(), dados.dtHoje.getDate() + 1).toISOString().slice(0, 10);
 
   const forma = useRef();
   const fldact = useRef();
   const dvresults = useRef();
+  const stopAnim = useRef(false);
 
   //#region ============================== DATA OBJ functions ======
   const checkExistKname = (tipo, nome) => {
@@ -20,6 +22,13 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     return !!ob;
   }
 
+  const isSameResult = (val) => {
+    if(!dados?.lastCalc){ console.log('sem DADOS',  ); return false; }
+    const same = ((val - dados.lastCalc) === 0);
+    console.log('val, lastCalc, dif, same ', val, dados.lastCalc, (val - dados.lastCalc), same);
+    return same;
+
+  }
   //#endregion ---------
 
   //#region =========================== HTML RENDER functions ======
@@ -33,8 +42,12 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   const submit = (e) => { e.preventDefault(); console.log('submit = ' ); }
   const reseta = (e) => {
+    if(fldact.current.getAttribute('disabled')){
+      stopAnim.current = true;
+      console.log('Showing Results');
+      return e.preventDefault();
+    }
     console.log('reset');
-    if(fldact.current.getAttribute('disabled')){ return e.preventDefault(); }
     hideFrm();
   }
   const goFld = (fld) => {
@@ -50,7 +63,11 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   const backfld = (e) => {
     e.preventDefault();
-    if(isShowRes()){ console.log('Showing Results'); return; }
+    if(isShowRes()){
+      console.log('Showing Results');
+      stopAnim.current = true;
+      return;
+    }
     goFld(fldact.current.previousElementSibling);
     // console.log('backfld', fldact.current.name );
   }
@@ -64,33 +81,39 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   const blockForm = (toBlock) => {
     if(toBlock){
-      fldact.current.setAttribute('disabled','true');
+      fldact.current?.setAttribute('disabled','true');
       return;
     }
-    fldact.current.removeAttribute('disabled');
+    fldact.current?.removeAttribute('disabled');
   }
 
   const showDvResults = (toHide) => {
     viewElm(css.dvfinal, !!toHide);
     if(!toHide){
       blockForm(true);
+      stopAnim.current = false;
       dvresults.current?.scrollTo({ top:0, behavior: 'smooth'});
       let pnext = dvresults.current?.querySelector('h3');
       if(pnext){ pnext.classList.add(css.scrolviw); }
 
       const intervalo = setInterval(() => {
         console.log('interv' );
+        const lostForm = (!forma.current)
+        const isToStop = (stopAnim.current === true);
         pnext = dvresults.current?.querySelector('.'+css.scrolviw);
-        if(!pnext){
-          blockForm();
+        if(lostForm || isToStop || !pnext){
+          stopAnim.current = false;
+          if(!lostForm){
+            blockForm();
+            if(pnext){ pnext.classList.remove(css.scrolviw); }
+          }
           return clearInterval(intervalo);
         }
         console.log('pnext',  );
         pnext.classList.remove(css.scrolviw);
         const nexp = pnext.nextElementSibling;
         if(nexp){ nexp.classList.add(css.scrolviw); }
-
-      }, 5000);
+      }, 4500);
 
     }
   }
@@ -107,17 +130,16 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const endCalc = (e) => {
     let ob;
     if (typeof e === 'number') {
-      console.log('calcular A DATA val=', e);
+      if(isSameResult(e)){ console.log('isSameResult'); return showDvResults(); }
+      console.log('calcular A DATA val=',e);
       ob = {saldoCalc: e}
-      // calcAll({saldoCalc: e});
-      // return;
     } else {
       const inpdt = e.target.previousElementSibling;
-      if(inpdt.nodeName !== 'INPUT' || !inpdt?.validity?.valid){ console.log('invalido',  ); return; }
+      if(inpdt.nodeName !== 'INPUT' || !inpdt?.validity?.valid){ console.log('invalido'); }
       const strdt = inpdt.value  + ' 00:00';
-      ob = {dtCalc: new Date(strdt)}
-      // setDados({...dados, dtCalc: new Date(strdt)});
-      // calcAll({dtCalc: new Date(strdt)});
+      const niuDt = new Date(strdt)
+      if(isSameResult(niuDt)){ console.log('isSameResult'); return showDvResults(); }
+      ob = {dtCalc: niuDt}
       e.preventDefault();
     }
     calcAll(ob);
@@ -301,8 +323,8 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
               <input type="text" className={css.inptjuros} defaultValue={1} pattern={"[0-9]{1,2}([,.]{1}[0-9]{1,2}){0,1}"} />
 
               <select name="seljuros" className={css.seljuros}>
-                <option value="mensal">%a.m</option>
-                <option value="anual">%a.a</option>
+                <option value="mensal">% ao Mês</option>
+                <option value="anual">% ao Ano</option>
               </select>
             </div>
             <CpFrmInptPrice getVals={setaPoupanca} onCancel={resetPoup} />
@@ -321,7 +343,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
         </div>
 
         <div className={`${css.dvDt} ${css.hidenb}`}>
-          <input type="date" defaultValue={sthj} min={sthj} max={"2060-11-30"} required />
+          <input type="date" defaultValue={stDtTomorow} min={stDtTomorow} max={"2060-11-30"} required />
           <button className="btncor" onClick={endCalc}>CALCULAR</button>
         </div>
 
