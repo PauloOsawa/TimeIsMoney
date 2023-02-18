@@ -11,14 +11,13 @@
 .dvmoney > .pmsg.hiden{ opacity: 0; max-height: 0; margin: 0; padding: 0px; visibility: hidden; }
 
 .dvmoney > *:not(button) { margin-bottom: 15px; }
-.dvmoney > button:nth-last-child(n+1) { margin: 0 20px; }
-
+.dvmoney > button:nth-last-child(n+1) { margin: 5px 20px; }
 /*#region ----------------------- TABELA ---- */
 .tbmoney{
-  width: 100%; border-radius: 7px; padding: 3px;
-  border: 1px solid var(--corb); box-sizing: border-box;
+  width: 100%; height: auto; padding: 2px; margin: 0 auto;
+  border: 1px solid var(--corb); border-radius: 7px;
 }
-.tbmoney th, .tbmoney td { padding: 5px 10px; }
+.tbmoney th, .tbmoney td { padding: 5px 8px; }
 .trexp { color: black; font-style: italic; opacity: .5; }
 .trexp:not(:only-child){ display: none; }
 
@@ -29,10 +28,10 @@
 .tbmoney > tbody { color: var(--corb); }
 .tbmoney > tbody > tr:nth-child(odd){ background-color: rgb(231, 231, 231); }
 
-.tbmoney .desc{ width: 50%; }
-.tbmoney .periodo{ width: 25%; }
-.tbmoney .price{ width: 15%; }
-.tbmoney svg{ height: min(calc(1vw + 17px), 25px); }
+.tbmoney .desc{ width: 49%; }
+.tbmoney .periodo{ width: 24%; }
+.tbmoney .price{ width: 14%; }
+.tbmoney svg{ height: min(calc(1vw + 16px), 25px); width: auto; }
 .tbmoney td.price{ text-align: right; }
 .tbmoney > tbody > tr:not(.trexp) svg{ cursor: pointer; }
 /*#endregion ----------- */
@@ -46,7 +45,7 @@
 .dvsetvals .desc { width: 200px; }
 .dvsetvals .selfreq { padding: 6px 10px; }
 .preco { width: 95px; text-align: right; }
-.price span { font-size: 2em; vertical-align: middle; }
+.dvsetvals .price span { font-size: 2em; vertical-align: middle; }
 .cents { width: 70px; }
 
 /* .btadd { color: red; } */

@@ -1,6 +1,6 @@
 .frma {
   width: 96%; max-width: 1024px; max-height: 99vh; height: auto; margin: 10px auto;
-  padding: 0 1vw; border-radius: 6px; visibility: visible; opacity: 1;
+  padding: 0 1.4vw; border-radius: 6px; visibility: visible; opacity: 1;
   border: 1px solid rgb(197, 197, 197); box-shadow: 2px 2px 4px rgb(100, 100, 100);
   box-sizing: border-box;
   /* transition: max-height .2s .2s; */
@@ -13,11 +13,11 @@
 .lbtns { display: flex; justify-content: flex-end; gap: 30px; margin: 15px auto; }
 /*#region ----------------------------------------------- FIELDS GLOBAL  ----------- */
 .fld {
-  width: 100%; height: auto; margin: 8px auto; padding: 0 1.2vw;
+  height: auto; margin: 8px auto; padding: 0 1.4vw; box-sizing: border-box;
 }
 .fld:not(.actv) { opacity: 0; visibility: hidden; display: none; }
 .fld.actv {
-  display: block; opacity: 1; visibility: visible; transition: visibility .3s;
+  max-height: 80vh; opacity: 1; visibility: visible; transition: max-height .1s, visibility .3s;
 }
 
 .hiden, .hidenb {
@@ -31,55 +31,48 @@
 .fld > *:not(legend) { margin-bottom: 10px; }
 .fld label { margin-left: 15px; }
 .fld input, .fld select { margin: 0 5px; }
-.fld > button, .fld [type="radio"] { margin: 0 10px; }
+.fld > button, .fld [type="radio"] { margin: 10px; }
 .flxcol { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; }
 /*#endregion ------------------------------ */
-
-.dvDt, .dvsaldo { padding: 15px; border: 1px inset whitesmoke; }
-
+.dvDt, .dvsaldo { padding-top: 15px; border: 1px inset whitesmoke; }
+.dvDt input, .dvsaldo input { margin-bottom: 15px; }
 /*#region --------------------------- FLD CAR -------- */
 .dvcar > button { margin: 0 10px; }
 /*#endregion ------------------------------ */
 
 /*#region --------------------------- FLD POUPANÇA -------- */
-/* .dvpoup { display: flex; } */
-.dvpoup > button { margin: 0 10px; }
+.dvpoup > button { margin: 10px; }
 .dvinptspoup {
   margin: 10px auto; display: flex; justify-content: center;
   flex-wrap: wrap; gap: 15px;
 }
+.dvinptspoup :is(input[type=number]){ margin-bottom: 15px; }
 
 .inptjuros{ width: 50px; }
 /*#endregion ------------------------------ */
 
-/*#region ------------------------- DV FINAL ----- */
+/*#region ------------------------- DV RESULTS ----- */
 .dvfinal{
-  margin: 10px auto; padding: 10px; max-height: 0vh; visibility: hidden;
-  overflow-y: scroll; scroll-behavior: smooth; scroll-snap-type: y;
-  scroll-snap-stop: normal;
-  background-color: var(--corb); color: white;
-  border: 1px solid red;
+  display: block; max-height: 0vh; margin: 15px auto; padding: 20px 10px;
+  visibility: hidden; overflow-y: scroll; scroll-behavior: smooth;
+  scroll-snap-type: y; scroll-snap-stop: normal; color: white;
+  background-color: var(--corb);
+  -webkit-mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 14% 86%, transparent);
+  mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 14% 86%, transparent);
+  transition: max-height .1s, visibility .1s;
 }
 .dvfinal:not(.hidenb) {
-  max-height: 150px; height: auto; visibility: visible;
+  max-height: 200px; height: auto; visibility: visible;
   transition: max-height .4s, visibility .3s .1s;
 }
-
-.dvfinal.hidenb {
-  display: block; transition: max-height .1s, visibility .1s;
-}
-
+/* .dvfinal.hidenb { transition: max-height .1s, visibility .1s; } */
 .dvfinal p {
   font-size: 1.2em; font-weight: normal; font-style: italic;
-  transition: font-weight .1s;
-  /* color: var(--corb); */
+  transition: font-weight .2s;
 }
 
 .dvfinal:not(.hidenb) .scrolviw{
-  font-size: 1.2em; font-weight: bold;
-  transition: font-weight .4s;
-  scroll-snap-align: center;
-  /* color: blue; */
+  font-weight: bold; scroll-snap-align: center; transition: font-weight .3s;
 }
 /*#endregion ------------------------------ */
 
