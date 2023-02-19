@@ -25,8 +25,9 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const isSameResult = (val) => {
     if(!dados?.lastCalc){ console.log('sem DADOS',  ); return false; }
     const same = ((val - dados.lastCalc) === 0);
+    const reslength = dados.result?.length;
     console.log('val, lastCalc, dif, same ', val, dados.lastCalc, (val - dados.lastCalc), same);
-    return same;
+    return (same && reslength);
 
   }
   //#endregion ---------
@@ -193,7 +194,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   //#region ------------------------- FLDSET fldlucros ----
   const setaSaldos = () => {
-    console.log('setaSaldos',  );
+    console.log('setaSaldos');
     setSaldos();
     showNextFld();
   }
@@ -243,7 +244,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   function strFy(data){
     const isAr = Array.isArray(data);
     if(!isAr || !data.length || !Object.keys(data[0]).length){ return JSON.stringify(data) }
-    return data.map((v, ki) => (<span key={ki}><br />  {JSON.stringify(v)}</span>));
+    return data.map((v, ki) => (<span key={ki}> <br />  {JSON.stringify(v)} </span>));
   }
 
   function degubTags(){
@@ -264,7 +265,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
           <h3>resultados</h3>
           {Object.keys(resultados).map((rk,ri) => (
-            <p key={ri}>{rk} : {strFy(resultados[rk])}</p>
+            <p key={ri}>{rk} : {strFy(resultados[rk])} </p>
           ))}
         </div>
       </div>

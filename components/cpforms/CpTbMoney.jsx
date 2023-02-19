@@ -62,7 +62,7 @@ export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
       showMsg("Adicione Algum Valor para Prosseguir...");
       return e.preventDefault();
     }
-    return fecha();
+    return fecha(e);
   }
 
   const removeZero = (e) => {
