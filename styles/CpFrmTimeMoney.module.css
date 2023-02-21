@@ -1,6 +1,6 @@
 .frma {
-  width: 96%; max-width: 1024px; max-height: 99vh; height: auto; margin: 10px auto;
-  padding: 0 1.4vw; border-radius: 6px; visibility: visible; opacity: 1;
+  width: 96%; max-width: 1024px; max-height: 99vh; height: auto;
+  margin: 10px auto; padding: 0 1.4vw; border-radius: 6px;
   border: 1px solid rgb(197, 197, 197); box-shadow: 2px 2px 4px rgb(100, 100, 100);
   box-sizing: border-box;
   /* transition: max-height .2s .2s; */
@@ -12,39 +12,40 @@
 
 .lbtns { display: flex; justify-content: flex-end; gap: 30px; margin: 15px auto; }
 /*#region ----------------------------------------------- FIELDS GLOBAL  ----------- */
-.fld {
-  height: auto; margin: 8px auto; padding: 0 1.4vw; box-sizing: border-box;
-}
-.fld:not(.actv) { opacity: 0; visibility: hidden; display: none; }
+/* .fld:not(.actv) { height: 0; padding: 0; margin: 0; } */
+.fld { width: 100%; height: auto; margin: 8px auto; padding: 1.4vw; }
+
 .fld.actv {
-  max-height: 80vh; opacity: 1; visibility: visible; transition: max-height .1s, visibility .3s;
+  max-height: 80vh; opacity: 1; visibility: visible; transition: max-height .3s, visibility .2s;
 }
 
-.hiden, .hidenb {
-  max-height: 0; visibility: hidden; opacity: 0; transition: max-height .1s, visibility .1s;
+.hiden, .hidenb, .fld:not(.actv) {
+  max-height: 0; visibility: hidden; display: none;
+  transition: max-height .2s, visibility .1s;
 }
-.hidenb { display: none; }
+.hiden > *, .hidenb > *, .fld:not(.actv) > * { visibility: hidden; }
+
+/* .hidenb { display: none; } */
 
 .fld legend { font-style: italic; padding: 0 7px; vertical-align: text-top; }
 .fld h3 { font-style: italic; }
 .fld > h3 { padding: 0; }
 .fld > *:not(legend) { margin-bottom: 10px; }
 .fld label { margin-left: 15px; }
-.fld input, .fld select { margin: 0 5px; }
+.fld input, .fld select { margin: 5px; }
 .fld > button, .fld [type="radio"] { margin: 10px; }
 .flxcol { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; }
 /*#endregion ------------------------------ */
 .dvDt, .dvsaldo { padding-top: 15px; border: 1px inset whitesmoke; }
-.dvDt input, .dvsaldo input { margin-bottom: 15px; }
 /*#region --------------------------- FLD CAR -------- */
-.dvcar > button { margin: 0 10px; }
+.dvcar > button { margin: 10px; }
 /*#endregion ------------------------------ */
 
 /*#region --------------------------- FLD POUPANÇA -------- */
 .dvpoup > button { margin: 10px; }
 .dvinptspoup {
-  margin: 10px auto; display: flex; justify-content: center;
-  flex-wrap: wrap; gap: 15px;
+  margin: 10px auto; display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 15px;
 }
 .dvinptspoup :is(input[type=number]){ margin-bottom: 15px; }
 
@@ -52,27 +53,43 @@
 /*#endregion ------------------------------ */
 
 /*#region ------------------------- DV RESULTS ----- */
-.dvfinal{
-  display: block; max-height: 0vh; margin: 15px auto; padding: 20px 10px;
-  visibility: hidden; overflow-y: scroll; scroll-behavior: smooth;
-  scroll-snap-type: y; scroll-snap-stop: normal; color: white;
-  background-color: var(--corb);
-  -webkit-mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 14% 86%, transparent);
-  mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 14% 86%, transparent);
-  transition: max-height .1s, visibility .1s;
+.dvfinal.hidenb{
+  transition: max-height .3s, visibility .2s;
+  opacity: 1; display: block;
 }
+.dvfinal{
+  margin: 20px auto; padding: 25px 7px;
+  overflow-y: scroll; scroll-behavior: smooth;
+  scroll-snap-type: y; scroll-snap-stop: normal; color: white;
+  background: var(--dgrda);
+  -webkit-mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
+  mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
+}
+.dvfinal{
+  overflow-wrap: break-word; word-wrap: break-word; white-space: break-spaces;
+}
+
 .dvfinal:not(.hidenb) {
-  max-height: 200px; height: auto; visibility: visible;
-  transition: max-height .4s, visibility .3s .1s;
+  max-height: 300px; height: auto; visibility: visible;
+  background-clip: padding-box;
+  transition: max-height .3s, visibility .3s .1s;
 }
 /* .dvfinal.hidenb { transition: max-height .1s, visibility .1s; } */
 .dvfinal p {
-  font-size: 1.2em; font-weight: normal; font-style: italic;
+  font-size: 1.2em; font-weight: 400; font-style: italic; line-height: 1.5em;
+  margin: 18px auto;
+  /* white-space: break-spaces; */
+  /* -webkit-break-after: right; break-after: right; */
+  /* line-break: loose; */
+  /* break-after: auto; word-wrap: break-word; white-space: break-spaces; */
+  /* text-decoration:  underline 1px; text-underline-offset: 6px; */
+  /* text-align: justify; */
+
   transition: font-weight .1s;
 }
 
 .dvfinal:not(.hidenb) .scrolviw{
-  font-weight: bold; transition: font-weight .3s; scroll-snap-align: center;
+  font-weight: 500; transition: font-weight .3s; scroll-snap-align: center;
 }
 /*#endregion ------------------------------ */
 

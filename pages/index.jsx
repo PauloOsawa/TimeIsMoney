@@ -10,8 +10,12 @@ export default function Home({ hoje }) {
   const frmView = !(cldvTxt === css.dvtxt)
 
   // ---------------------------------------------------
-  const iniciar = () => setCldvTxt(`${css.dvtxt} ${css.hiden}`);
-  function hideFrm(){ if (cldvTxt !== css.dvtxt) { setCldvTxt(css.dvtxt); } }
+  const scrola = (cl) => {
+    setCldvTxt(cl);
+    document.querySelector('.'+css.dvtitle).scrollIntoView({ block:'start', behavior: 'smooth'});
+  }
+  const iniciar = () => scrola(`${css.dvtxt} ${css.hiden}`);
+  function hideFrm(){ if (cldvTxt !== css.dvtxt) { scrola(css.dvtxt); } }
 
   return (
     <>
@@ -33,32 +37,32 @@ export default function Home({ hoje }) {
 
         <div className={cldvTxt} >
           <p>
-            Um projeto divertido e interativo, que realiza diversos cálculos financeiros em
-            <br />conjunto com datas, além de curiosidades diversas, com várias opções de ecolha!
+            Um projeto interativo, que realiza diversos cálculos financeiros, de datas, juros
+            <br /> e curiosidades diversas, tudo junto e com várias opções de escolha!
           </p>
           <h3>Funciona Basicamente Assim:</h3>
           <p>Você insere diversos tipos de gastos e lucros (anuais, mensais e até diários)!!
-          <br />Além disso, cálculo de poupança com juros compostos estão inclusos!!</p>
+          <br />Além disso, aniversários e até poupança também entram na brincadeira!!</p>
 
           <div className={css.dvopts}>
-            <p>Depois de inserir tudo, desde salário até conta de luz, você poderá escolher:</p>
+            <p>Depois de escolher e inserir tudo que tiver vontade, você poderá escolher:</p>
             <ul>
-              <li>- Qualquer data futura, e saber o saldo resultante naquela data!</li>
+              <li>- Qualquer DATA futura, e saber quanto de SALDO terá naquela data!</li>
               <li>ou</li>
-              <li>- Qualquer valor, e saber a data exata que irá conseguir (ou não)!</li>
+              <li>- Qualquer SALDO, e saber a DATA exata que irá conseguir (ou não)!</li>
             </ul>
           </div>
 
           <p>
-            Pra começar a brincadeira, perguntaremos informações básicas,
-            <br />para calcular curiosidades além de uma simples planilha!
+            Para a brincadeira ficar legal, os campos são exibidos e intercalados progressivamente
+            <br />com curiosidades, projetados para uso de celular, e também para não te matar de tédio!
           </p>
           <p>
             OBS.: <b>Não armazenamos cookies nem quaisquer informações</b> suas OK?
             <br />Você pode inventar tudo, mas pra conferir depois será mais difícil!
           </p>
           <p>Lembrando que todo abatimento será sempre no 1o dia do mês ok?</p>
-          
+
           <div className={css.dvinit}>
             <h2>VAMOS COMEÇAR???</h2>
             <button className='btncor' onClick={iniciar}>SIM</button>

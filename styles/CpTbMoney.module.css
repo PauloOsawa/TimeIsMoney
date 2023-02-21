@@ -39,7 +39,7 @@
 /*#region ----------------------- INPUTS ---- */
 .dvsetvals {
   display: flex; justify-content: space-evenly; align-items: center;
-  gap: 10px; flex-wrap: wrap;
+  gap: 18px 10px; flex-wrap: wrap;
 }
 .dvsetvals input { margin: 0 5px; }
 .dvsetvals .desc { width: 200px; }

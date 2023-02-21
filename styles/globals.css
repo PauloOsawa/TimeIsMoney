@@ -99,6 +99,10 @@ main > h2, .hb {
 /*#endregion*/
 
 /*#region ========================================== CLASSES GLOBAIS ==== */
+.nobrk {
+  white-space: nowrap;
+}
+
 .flex {
   display: flex; align-items: center;
   justify-content: space-around; gap: 10px;
