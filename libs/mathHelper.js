@@ -23,6 +23,8 @@ const getBrPrc = (p) => {
   return parseFloat(p.toFixed(2)).toLocaleString().replace(/([,][0-9])$/, '$10').replace(/([^,][0-9]{2})$/, "$1,00");
 }
 
+const getSpanPrc = (p) => (<span className={'nobrk'}>R$ {getBrPrc(p)}</span>);
+
 export {
-  fxPrc, getBrPrc
+  fxPrc, getBrPrc, getSpanPrc
 }

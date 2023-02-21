@@ -26,7 +26,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     if(!dados?.lastCalc){ console.log('sem DADOS',  ); return false; }
     const same = ((val - dados.lastCalc) === 0);
     const reslength = dados.result?.length;
-    console.log('val, lastCalc, dif, same ', val, dados.lastCalc, (val - dados.lastCalc), same);
     return (same && reslength);
 
   }
@@ -49,7 +48,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       return e.preventDefault();
     }
     console.log('reset');
-    hideFrm();
+    return hideFrm(e);
   }
   const goFld = (fld) => {
     if ( !fld || fld.nodeName !== 'FIELDSET') { console.log('noField',  ); return; }
@@ -93,13 +92,14 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     if(!toHide){
       blockForm(true);
       stopAnim.current = false;
+      dvresults.current.scrollIntoView({ block:'start', behavior: 'smooth'});
       dvresults.current?.scrollTo({ top:0, behavior: 'smooth'});
       let pnext = dvresults.current?.querySelector('h3');
       if(pnext){ pnext.classList.add(css.scrolviw); }
 
       const intervalo = setInterval(() => {
         console.log('interv' );
-        const lostForm = (!forma.current)
+        const lostForm = (!forma?.current)
         const isToStop = (stopAnim.current === true);
         pnext = dvresults.current?.querySelector('.'+css.scrolviw);
         if(lostForm || isToStop || !pnext){
@@ -114,7 +114,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
         pnext.classList.remove(css.scrolviw);
         const nexp = pnext.nextElementSibling;
         if(nexp){ nexp.classList.add(css.scrolviw); }
-      }, 4500);
+      }, 4000);
 
     }
   }
@@ -193,8 +193,9 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#endregion --------
 
   //#region ------------------------- FLDSET fldlucros ----
-  const setaSaldos = () => {
-    console.log('setaSaldos');
+  const setaSaldos = (e) => {
+    e.preventDefault();
+    console.log('setaSaldos', );
     setSaldos();
     showNextFld();
   }
@@ -362,7 +363,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     </form>
 
     <div className={`${css.dvfinal} ${css.hidenb}`} ref={dvresults}>
-      <h3>RESULTS</h3>
+      <h3>RESULTADOS</h3>
       {isShowRes() && console.log('render' )}
       {isShowRes() && dados?.result?.map((r, i) => (
         <p key={i}>{r}</p>

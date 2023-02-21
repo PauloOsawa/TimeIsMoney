@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fxPrc, getBrPrc } from "@/libs/mathHelper";
+import { fxPrc, getBrPrc, getSpanPrc } from "@/libs/mathHelper";
 import { mesesMinDays, diasSemana, ehBisexto, isFevBi, getQtdAnosBis, getDiasNoMes, getNumDays, setaIdade } from "@/libs/dateHelper";
 import { objMsg, adMsg, consLog, cLg, showLogs } from "@/libs/logsHelper";
 
@@ -34,9 +34,21 @@ export default function useTimeMoney(hoje) {
     ]
   }
   // --------------------------------------
+  const getBld = (txtini,txtb,txtend) => (<>{txtini} <b>{txtb}</b> {txtend}</>);
+  // --------------------------------------
+  const getSpanSaldo = (saldo, k) => {
+    const txtini = (saldo === 'SALDOS') ? getBld('O', 'SALDO RESULTANTE', 'é de') : getBld('Seus', saldo, 'totalizam');
+
+    return (<>
+      <span>{txtini} {getSpanPrc(dados[k].Anual)} Anuais, </span>
+      <span>{getSpanPrc(dados[k].Mensal)} Mensais, e {getSpanPrc(dados[k].Diário)} Diários!!</span>
+      </>
+    );
+  }
+  // --------------------------------------
   const buildResult = () => {
     const arIdade = [
-      `Você nasceu em ${dados.diaNasc}, tem ${dados.idade} anos de idade, totalizando ${dados.diasVida.toLocaleString()} dias de vida até hoje!!`,
+      `Você nasceu em ${dados.diaNasc},  tem ${dados.idade} anos de idade, totalizando ${dados.diasVida.toLocaleString()} dias de vida até hoje!!`,
       `Se passaram ${dados.diasPosNiver} dias do seu último aniversário, restando ${dados.diasRestPniver} dias para o próximo!!`,
     ];
     const saldos = [
@@ -44,11 +56,20 @@ export default function useTimeMoney(hoje) {
       // 'Seus GASTOS totalizam ' + getSaldos('totalGasto'),
       `Seus LUCROS totalizam R$ ${getBrPrc(dados.totalLucro.Anual)} Anuais, R$ ${getBrPrc(dados.totalLucro.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalLucro.Diário)} Diários`,
       `Os SALDOS resultantes são de R$ ${getBrPrc(dados.totalSaldos.Anual)} Anuais, R$ ${getBrPrc(dados.totalSaldos.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalSaldos.Diário)} Diários`,
-
+      (<><span>
+        Seus <b>GASTOS</b> totalizam R$ {getBrPrc(dados.totalGasto.Anual)} Anuais,</span>
+        <span>
+          R$ {getBrPrc(dados.totalGasto.Mensal)} Mensais, e R$ {getBrPrc(dados.totalGasto.Diário)} Diários
+      </span></>)
     ];
 
+    const bsaldos = [
+      getSpanSaldo('GASTOS', 'totalGasto'),
+      getSpanSaldo('LUCROS', 'totalLucro'),
+      getSpanSaldo('SALDOS', 'totalSaldos'),
+    ]
     resultados.idade.push(...arIdade);
-    resultados.saldos.push(...saldos);
+    resultados.saldos.push(...bsaldos);
   }
 
   // --------------------------------------
@@ -106,7 +127,7 @@ export default function useTimeMoney(hoje) {
     const haspoup = !!poupanca;
     const niuPoup = poupanca ?? { montante: 0, capital: 0, juros: 0, tempo: 0, periodo: false, isAm:false };
     setPoupanca(niuPoup);
-    setDados({...dados, poupanca: {...objPoupanca}, temPoupanca: haspoup});
+    setDados({...dados, poupanca: {...objPoupanca}, temPoupanca: haspoup, lastCalc: 0});
   }
 
   const getMontantePoupanca = (tempo, isAno) => {
