@@ -65,9 +65,8 @@
   -webkit-mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
   mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
 }
-.dvfinal{
-  overflow-wrap: break-word; word-wrap: break-word; white-space: break-spaces;
-}
+
+/* .dvfinal{ overflow-wrap: break-word; word-wrap: break-word; white-space: break-spaces; } */
 
 .dvfinal:not(.hidenb) {
   max-height: 300px; height: auto; visibility: visible;

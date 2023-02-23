@@ -32,6 +32,39 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#endregion ---------
 
   //#region =========================== HTML RENDER functions ======
+  const getTagSpan = (txt, spclas) => !spclas ? (<span>{txt}</span>) : (<span className={spclas ?? 'nobrk'}>{txt}</span>);
+  const tagsSpans = ['#nbsp', '#sp', '#esp', '#enbsp'];
+  const isEndTag = (tag) => ['#esp', '#enbsp'].includes(tag);
+
+  const renderTags = (txt) => {
+/*
+    let firstIdx = txt.indexOf('#');
+    if(firstIdx < 0){ return txt; }
+    txt = txt.slice(txt.indexOf('sp', firstIdx)+2, txt.lastIndexOf('#'));
+    let stxt = <span>{txt}</span>;
+    const txtcont = stxt.props.children;
+    console.log('txtcont = ', txtcont );
+    return stxt;
+ */
+    const artxt = txt.split('#esp').map((v) => {
+      if(v.trim() === ''){ return; }
+      const nbidx = v.lastIndexOf(tagsSpans[0]);
+      const spidx = v.lastIndexOf(tagsSpans[1]);
+      if(nbidx < 0 && spidx < 0){ return v; }
+      const cl = ( nbidx > spidx) ? 'nobrk' : null;
+      const idxend = !cl ? spidx + 3 : nbidx + 5;
+      // const txtsp =
+      const vsp = v.substring((!cl ? spidx + 3 : nbidx + 5));
+      // v = v.substring((!cl ? spidx + 3 : nbidx + 5));
+      return getTagSpan(vsp, cl);
+      // return (<>{getTagSpan(v, cl)}</>);
+    })
+
+    return (<span>{ ...artxt}</span>)
+    // return (<>{artxt.join(' ')}</>)
+  }
+
+
 
   const scrolto = (elm) => {
     const xxx = 'xxx';
@@ -69,7 +102,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       return;
     }
     goFld(fldact.current.previousElementSibling);
-    // console.log('backfld', fldact.current.name );
   }
 
   const viewElm = (cls, toHide) => {
@@ -367,6 +399,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       {isShowRes() && console.log('render' )}
       {isShowRes() && dados?.result?.map((r, i) => (
         <p key={i}>{r}</p>
+        // <p key={i}>{renderTags(r)}</p>
       ))}
     </div>
 

@@ -1,0 +1,31 @@
+/*#region ------------------------- DV RESULTS ----- */
+.dvfinal.hidenb{
+  transition: max-height .3s, visibility .2s;
+  opacity: 1; display: block;
+}
+.dvfinal{
+  margin: 20px auto; padding: 25px 7px;
+  overflow-y: scroll; scroll-behavior: smooth;
+  scroll-snap-type: y; scroll-snap-stop: normal; color: white;
+  background: var(--dgrda);
+  -webkit-mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
+  mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
+}
+/* .dvfinal{ overflow-wrap: break-word; word-wrap: break-word; white-space: break-spaces; } */
+
+.dvfinal:not(.hidenb) {
+  max-height: 300px; height: auto; visibility: visible;
+  background-clip: padding-box;
+  transition: max-height .3s, visibility .3s .1s;
+}
+/* .dvfinal.hidenb { transition: max-height .1s, visibility .1s; } */
+.dvfinal p {
+  font-size: 1.2em; font-weight: 400; font-style: italic; line-height: 1.5em;
+  margin: 18px auto;
+  transition: font-weight .1s;
+}
+
+.dvfinal:not(.hidenb) .scrolviw{
+  font-weight: 500; transition: font-weight .3s; scroll-snap-align: center;
+}
+/*#endregion ------------------------------ */

@@ -47,29 +47,42 @@ export default function useTimeMoney(hoje) {
   }
   // --------------------------------------
   const buildResult = () => {
+    const {Anual: gastoAno, Mensal: gastoMes, Diário: gastoDia} = dados.totalGasto;
+    const {Anual: lucroAno, Mensal: lucroMes, Diário: lucroDia} = dados.totalLucro;
+    const {Anual: saldoAno, Mensal: saldoMes, Diário: saldoDia} = dados.totalSaldos;
+
+    const geTxtSaldos = (tipoSaldo, sldAno, sldMes, sldDia) => {
+      let txtIni = (tipoSaldo === 'SALDOS') ? '#spOs SALDOS resultantes são de ' : '#spSeus '+tipoSaldo+' totalizam ';
+      txtIni += '#nbsp R$ ' + getBrPrc(sldAno) + '#esp Anuais,#esp #sp #nbsp R$ ' + getBrPrc(sldMes);
+      txtIni += '#esp Mensais, e #nbsp R$ '+ getBrPrc(sldDia) + '#esp Diários!#esp';
+      return txtIni;
+    }
+
     const arIdade = [
       `Você nasceu em ${dados.diaNasc},  tem ${dados.idade} anos de idade, totalizando ${dados.diasVida.toLocaleString()} dias de vida até hoje!!`,
       `Se passaram ${dados.diasPosNiver} dias do seu último aniversário, restando ${dados.diasRestPniver} dias para o próximo!!`,
     ];
+
+    const arSaldos = [
+      geTxtSaldos('GASTOS', gastoAno, gastoMes, gastoDia),
+      geTxtSaldos('LUCROS', lucroAno, lucroMes, lucroDia),
+      geTxtSaldos('SALDOS', saldoAno, saldoMes, saldoDia),
+    ]
+
     const saldos = [
-      `Seus GASTOS totalizam R$ ${getBrPrc(dados.totalGasto.Anual)} Anuais, R$ ${getBrPrc(dados.totalGasto.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalGasto.Diário)} Diários`,
-      // 'Seus GASTOS totalizam ' + getSaldos('totalGasto'),
-      `Seus LUCROS totalizam R$ ${getBrPrc(dados.totalLucro.Anual)} Anuais, R$ ${getBrPrc(dados.totalLucro.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalLucro.Diário)} Diários`,
-      `Os SALDOS resultantes são de R$ ${getBrPrc(dados.totalSaldos.Anual)} Anuais, R$ ${getBrPrc(dados.totalSaldos.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalSaldos.Diário)} Diários`,
-      (<><span>
-        Seus <b>GASTOS</b> totalizam R$ {getBrPrc(dados.totalGasto.Anual)} Anuais,</span>
-        <span>
-          R$ {getBrPrc(dados.totalGasto.Mensal)} Mensais, e R$ {getBrPrc(dados.totalGasto.Diário)} Diários
-      </span></>)
+      // `#spSeus GASTOS totalizam R$ ${getBrPrc(gastoAno)} Anuais,#esp #spR$ ${getBrPrc(gastoMes)} Mensais, e R$ ${getBrPrc(gastoDia)} Diários!#esp`,
+      // `#spSeus LUCROS totalizam R$ ${getBrPrc(lucroAno)} Anuais,#esp #spR$ ${getBrPrc(lucroMes)} Mensais, e R$ ${getBrPrc(lucroDia)} Diários!#esp`,
+      // `#spOs SALDOS resultantes são de R$ ${getBrPrc(saldoAno)} Anuais,#esp #spR$ ${getBrPrc(saldoMes)} Mensais, e R$ ${getBrPrc(saldoDia)} Diários!#esp`,
     ];
 
     const bsaldos = [
-      getSpanSaldo('GASTOS', 'totalGasto'),
-      getSpanSaldo('LUCROS', 'totalLucro'),
-      getSpanSaldo('SALDOS', 'totalSaldos'),
+      // getSpanSaldo('GASTOS', 'totalGasto'),
+      // getSpanSaldo('LUCROS', 'totalLucro'),
+      // getSpanSaldo('SALDOS', 'totalSaldos'),
     ]
     resultados.idade.push(...arIdade);
-    resultados.saldos.push(...bsaldos);
+    resultados.saldos.push(...arSaldos);
+    // resultados.saldos.push(...saldos);
   }
 
   // --------------------------------------
