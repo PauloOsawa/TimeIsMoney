@@ -1,10 +1,14 @@
+import { useEffect, useRef } from "react";
 import css from "@/styles/CpResults.module.css";
 
-export default function CpResults({ dados, stopAnim }){
+export default function CpResults({ dados, stopAnim, animEnd }){
+  console.log('CpResults --------- stopAnim =', stopAnim);
 
   const {Anual: gastoAno, Mensal: gastoMes, Diário: gastoDia} = dados.totalGasto;
   const {Anual: lucroAno, Mensal: lucroMes, Diário: lucroDia} = dados.totalLucro;
   const {Anual: saldoAno, Mensal: saldoMes, Diário: saldoDia} = dados.totalSaldos;
+
+  const cancelAnim = useRef(false);
 
   // --------------------------------------------
   const fxPrc = (p) => parseFloat(p.toFixed(2));

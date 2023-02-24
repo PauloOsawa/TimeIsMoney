@@ -10,14 +10,14 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   const {
     dados, setbirth, addMoney, setgastos, setlucros, setSaldos,
-    setPoupData, calcAll, showresult, setShowresult } = useTimeMoney(hoje);
+    setPoupData, calcAll, showresult, setShowresult, animStop, setAnimStop } = useTimeMoney(hoje);
 
   const stDtTomorow = new Date(dados.dtHoje.getFullYear(), dados.dtHoje.getMonth(), dados.dtHoje.getDate() + 1).toISOString().slice(0, 10);
 
   const forma = useRef();
   const fldact = useRef();
   const dvresults = useRef();
-  const stopAnim = useRef(false);
+  // const stopAnim = useRef(false);
 
   //#region ============================== DATA OBJ functions ======
   const checkExistKname = (tipo, nome) => {
@@ -26,11 +26,9 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
 
   const isSameResult = (val) => {
-    if(!dados?.lastCalc){ console.log('sem DADOS',  ); return false; }
+    if(!dados?.lastCalc){ console.log('sem DADOS'); return false; }
     const same = ((val - dados.lastCalc) === 0);
-    const reslength = dados.result?.length;
-    return (same && reslength);
-
+    return (same && dados.result?.length);
   }
   //#endregion ---------
 
@@ -41,13 +39,22 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   }
   //#region ---------------------- form and global -------
+  const blockForm = (toBlock) => {
+    if(toBlock){
+      fldact.current?.setAttribute('disabled','true');
+      return;
+    }
+    fldact.current?.removeAttribute('disabled');
+  }
+
   const isShowRes = () => !!dvresults.current && !dvresults.current?.classList.contains(css.hidenb);
 
   const submit = (e) => { e.preventDefault(); console.log('submit = ' ); }
   const reseta = (e) => {
     if(fldact.current.getAttribute('disabled')){
-      stopAnim.current = true;
       console.log('Showing Results');
+      if(animStop === false){ setAnimStop(true); }
+      blockForm();
       return e.preventDefault();
     }
     console.log('reset');
@@ -67,8 +74,9 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const backfld = (e) => {
     e.preventDefault();
     if(isShowRes()){
-      console.log('Showing Results');
-      stopAnim.current = true;
+      blockForm();
+      if(animStop === false){ setAnimStop(true); }
+      console.log('Showing Results stopAnim=', animStop);
       return;
     }
     goFld(fldact.current.previousElementSibling);
@@ -81,60 +89,68 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
   //#endregion ---------
 
-  const blockForm = (toBlock) => {
-    if(toBlock){
-      fldact.current?.setAttribute('disabled','true');
-      return;
-    }
-    fldact.current?.removeAttribute('disabled');
-  }
-
-  const showDvResults = (toHide) => {
-    const dvr = document.querySelector('.'+css.dvfinal);
-
-    if(toHide){
-      if(dvr){ dvr.classList.add(css.hidenb); }
-      blockForm();
-      if(showresult === true){
-        const timehide = setTimeout(() =>{
-          setShowresult(false);
-          clearTimeout(timehide);
-        }, 300)
+  const showDvResults = () => {
+    if(animStop !== false){ setAnimStop(false); }
+    if(showresult !== true){ setShowresult(true); }
+    blockForm(true);
+    const timeshow = setTimeout(() =>{
+      const dvrs = document.querySelector('.'+css.dvfinal);
+      if(dvrs){
+        dvrs.classList.remove(css.hidenb);
+        dvrs.scrollIntoView({ block:'start', behavior: 'smooth'});
+        dvrs.scrollTo({ top:0, behavior: 'smooth'});
       }
-    } else {
-      if(showresult !== true){ setShowresult(true); }
-      const timeshow = setTimeout(() =>{
-        const dvrs = document.querySelector('.'+css.dvfinal);
-        if(dvrs){
-          dvrs.classList.remove(css.hidenb);
-          dvrs.scrollIntoView({ block:'start', behavior: 'smooth'});
-          dvrs.scrollTo({ top:0, behavior: 'smooth'});
-        }
-        clearTimeout(timeshow);
-      }, 100);
+      clearTimeout(timeshow);
+    }, 100);
+  }
+
+  const hideDvResults = () => {
+    const dvr = document.querySelector('.'+css.dvfinal);
+    if(dvr){ dvr.classList.add(css.hidenb); }
+    blockForm();
+    if(showresult === true){
+      const timehide = setTimeout(() =>{
+        setShowresult(false);
+        clearTimeout(timehide);
+      }, 300)
     }
+  }
+  //#region ----------------- CP RESULTS functions ---------
+  const animEnd = () => {
+    blockForm();
 
   }
 
-  //#region ---------------------- FLDSET fldcalc --------
+  //#endregion ---------
+
+  //#region --------------------- FLDSET fldcalc ----------
   const showDvCalc = (e) => {
-    const idx = e.target.value === 'data' ? 0 : 1;
+    const isDvDtShow = e.target.value === 'data';
+    const idx = isDvDtShow ? 0 : 1;
+    const cldiv = !isDvDtShow ? css.dvDt : css.dvsaldo;
+    const btnfldcur = fldact.current?.querySelector('.' +cldiv+ ' .btncor');
+    btnfldcur.classList.remove('disable');
+
     [css.dvDt, css.dvsaldo].forEach((cl, i) => {
       const toHide = (idx !== i);
       viewElm(cl, toHide);
     })
-    showDvResults(true);
+    hideDvResults();
   }
 
   const endCalc = (e) => {
-    let ob;
+    let ob, btncalc;
     if (typeof e === 'number') {
+      btncalc = fldact.current?.querySelector('.'+css.dvsaldo+' .btncor');
+      btncalc.classList.add('disable');
       if(isSameResult(e)){ console.log('isSameResult'); return showDvResults(); }
       console.log('calcular A DATA val=',e);
       ob = {saldoCalc: e}
     } else {
-      const inpdt = e.target.previousElementSibling;
-      if(inpdt.nodeName !== 'INPUT' || !inpdt?.validity?.valid){ console.log('invalido'); }
+      btncalc = e.target;
+      const inpdt = btncalc.previousElementSibling;
+      if(inpdt.nodeName !== 'INPUT' || !inpdt?.validity?.valid){ console.log('invalido'); return; }
+      btncalc.classList.add('disable');
       const strdt = inpdt.value  + ' 00:00';
       const niuDt = new Date(strdt)
       if(isSameResult(niuDt)){ console.log('isSameResult'); return showDvResults(); }
@@ -147,7 +163,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   //#endregion --------
 
-  //#region ---------------------- FLDSET fldpoupanca --------
+  //#region --------------------- FLDSET fldpoupanca ------
   const validaPoupanca = (montante) => {
     // const objPoupanca = { montante:0, capital:0, juros:0, tempo:0, periodo:false, isAm:false }
     const inputjuros = document.querySelector('.'+css.inptjuros);
@@ -190,7 +206,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
   //#endregion --------
 
-  //#region ------------------------- FLDSET fldlucros ----
+  //#region --------------------- FLDSET fldlucros -------
   const setaSaldos = (e) => {
     e.preventDefault();
     console.log('setaSaldos', );
@@ -199,7 +215,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
   //#endregion
 
-  //#region --------------------------- FLDSET fldcar ----
+  //#region --------------------- FLDSET fldcar ----------
   const setIpva = (ipva, compPrice) => {
     if (!checkExistKname('gastos', 'IPVA')) {
       addMoney('gastos', ['IPVA','Anual', ipva ]);
@@ -222,7 +238,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
   //#endregion ---------
 
-  //#region ------------------------- FLDSET fldNasc ----
+  //#region --------------------- FLDSET fldNasc ---------
   const setDtbirth = (d) => {
     if (!d || !d.length || d.length != 3) { return; }
     const idade = setbirth(d);
@@ -233,7 +249,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   //#endregion ---------
 
-  //#region ------------------------------------- DEBUG ---------
+  //#region ---------------------------------- DEBUG ---------
   function showDados(e, showdiv){
     console.log('dados:', dados );
     if(showdiv){
@@ -356,8 +372,8 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     </form>
 
     {!!showresult && (
-      <div className={`${css.dvfinal} ${css.hidenb}`}>
-        <CpResults dados={dados} stopAnim={showresult} />
+      <div className={`${css.dvfinal} ${css.hidenb}`} ref={dvresults}>
+        <CpResults dados={dados} stopAnim={animStop} animEnd={animEnd} />
       </div>
     )}
 

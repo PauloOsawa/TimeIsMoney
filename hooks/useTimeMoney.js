@@ -17,6 +17,7 @@ export default function useTimeMoney(hoje) {
 
   const [dados, setDados] = useState({ ...userdata});
   const [showresult, setShowresult] = useState(false);
+  const [animStop, setAnimStop] = useState(true);
   // --------------------------------------
   // const setvals = (k, vals) => { setDados({...dados, [k]: vals}); }
   const setgastos = (gastos) => { setDados({...dados, gastos: gastos}); }
@@ -475,6 +476,6 @@ export default function useTimeMoney(hoje) {
 
   return {
     dados, setbirth, addMoney, setgastos, setlucros, setSaldos, setPoupData,
-    calcAll, showresult, setShowresult
+    calcAll, showresult, setShowresult, animStop, setAnimStop
   }
 }
