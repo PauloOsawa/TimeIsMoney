@@ -1,6 +1,6 @@
 .frma {
-  width: 96%; max-width: 1024px; max-height: 99vh; height: auto;
-  margin: 10px auto; padding: 0 1.4vw; border-radius: 6px;
+  width: 96%; max-width: 1024px; height: auto; max-height: 99vh;
+  padding: 0 1.4vw; margin: 10px auto; border-radius: 6px;
   border: 1px solid rgb(197, 197, 197); box-shadow: 2px 2px 4px rgb(100, 100, 100);
   box-sizing: border-box;
   /* transition: max-height .2s .2s; */
@@ -53,43 +53,24 @@
 /*#endregion ------------------------------ */
 
 /*#region ------------------------- DV RESULTS ----- */
+.dvfinal{ margin: 20px auto; padding: 0; background-color: red; }
 .dvfinal.hidenb{
-  transition: max-height .3s, visibility .2s;
-  opacity: 1; display: block;
+  margin: 0; max-height: 0; visibility: hidden; opacity: 0;
+  transition: max-height .3s, visibility .2s, opacity .2s;
+  display: block;
 }
-.dvfinal{
-  margin: 20px auto; padding: 25px 7px;
-  overflow-y: scroll; scroll-behavior: smooth;
-  scroll-snap-type: y; scroll-snap-stop: normal; color: white;
-  background: var(--dgrda);
-  -webkit-mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
-  mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
-}
-
-/* .dvfinal{ overflow-wrap: break-word; word-wrap: break-word; white-space: break-spaces; } */
-
+.dvfinal.hidenb > *{ max-height: 0; margin: 0; transition: max-height .2s; }
 .dvfinal:not(.hidenb) {
-  max-height: 300px; height: auto; visibility: visible;
-  background-clip: padding-box;
-  transition: max-height .3s, visibility .3s .1s;
-}
-/* .dvfinal.hidenb { transition: max-height .1s, visibility .1s; } */
-.dvfinal p {
-  font-size: 1.2em; font-weight: 400; font-style: italic; line-height: 1.5em;
-  margin: 18px auto;
-  /* white-space: break-spaces; */
-  /* -webkit-break-after: right; break-after: right; */
-  /* line-break: loose; */
-  /* break-after: auto; word-wrap: break-word; white-space: break-spaces; */
-  /* text-decoration:  underline 1px; text-underline-offset: 6px; */
-  /* text-align: justify; */
-
-  transition: font-weight .1s;
+  max-height: 350px; height: auto; visibility: visible; opacity: 1;
+  transition: max-height .3s, visibility .2s, opacity .2s;
 }
 
-.dvfinal:not(.hidenb) .scrolviw{
-  font-weight: 500; transition: font-weight .3s; scroll-snap-align: center;
+.dvfinal h3 {
+  font-size: 1.6em; font-weight: bold; font-style: italic;
+  text-decoration: underline solid 2px; text-underline-offset: 7px;
+  /* border: 1px solid red; */
 }
+
 /*#endregion ------------------------------ */
 
 /*#region ---------------------- CORES -------- */

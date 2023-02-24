@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { fxPrc, getBrPrc, getSpanPrc } from "@/libs/mathHelper";
+import { fxPrc, getBrPrc } from "@/libs/mathHelper";
 import { mesesMinDays, diasSemana, ehBisexto, isFevBi, getQtdAnosBis, getDiasNoMes, getNumDays, setaIdade } from "@/libs/dateHelper";
-import { objMsg, adMsg, consLog, cLg, showLogs } from "@/libs/logsHelper";
+import { consLog, cLg, showLogs } from "@/libs/logsHelper";
 
 export default function useTimeMoney(hoje) {
-  console.log('TIME-------------------------',  );
+  console.log('useTimeMoney -------------------------' );
   const dthj = new Date(hoje);
   const arDtHj = [dthj.getFullYear(), dthj.getMonth(), dthj.getDate()]
 
@@ -16,75 +16,7 @@ export default function useTimeMoney(hoje) {
   }
 
   const [dados, setDados] = useState({ ...userdata});
-
-  const resultados = {
-    idade: [
-      // `Você nasceu em ${dados.diaNasc}, tem ${dados.idade} anos de idade, totalizando ${dados.diasVida.toLocaleString()} dias de vida até hoje!!`,
-      // `Se passaram ${dados.diasPosNiver} dias do seu último aniversário, restando ${dados.diasRestPniver} dias para o próximo!!`,
-    ],
-    saldos: [
-      // `Seus GASTOS totalizam R$ ${getBrPrc(dados.totalGasto.Anual)} Anuais, R$ ${getBrPrc(dados.totalGasto.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalGasto.Diário)} Diários`,
-      // 'Seus GASTOS totalizam ' + getSaldos('totalGasto'),
-      // `Seus LUCROS totalizam R$ ${getBrPrc(dados.totalLucro.Anual)} Anuais, R$ ${getBrPrc(dados.totalLucro.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalLucro.Diário)} Diários`,
-      // `Os SALDOS resultantes são de R$ ${getBrPrc(dados.totalSaldos.Anual)} Anuais, R$ ${getBrPrc(dados.totalSaldos.Mensal)} Mensais, e R$ ${getBrPrc(dados.totalSaldos.Diário)} Diários`,
-
-    ],
-    ttests: [
-      'qtd de erros = 0'
-    ]
-  }
-  // --------------------------------------
-  const getBld = (txtini,txtb,txtend) => (<>{txtini} <b>{txtb}</b> {txtend}</>);
-  // --------------------------------------
-  const getSpanSaldo = (saldo, k) => {
-    const txtini = (saldo === 'SALDOS') ? getBld('O', 'SALDO RESULTANTE', 'é de') : getBld('Seus', saldo, 'totalizam');
-
-    return (<>
-      <span>{txtini} {getSpanPrc(dados[k].Anual)} Anuais, </span>
-      <span>{getSpanPrc(dados[k].Mensal)} Mensais, e {getSpanPrc(dados[k].Diário)} Diários!!</span>
-      </>
-    );
-  }
-  // --------------------------------------
-  const buildResult = () => {
-    const {Anual: gastoAno, Mensal: gastoMes, Diário: gastoDia} = dados.totalGasto;
-    const {Anual: lucroAno, Mensal: lucroMes, Diário: lucroDia} = dados.totalLucro;
-    const {Anual: saldoAno, Mensal: saldoMes, Diário: saldoDia} = dados.totalSaldos;
-
-    const geTxtSaldos = (tipoSaldo, sldAno, sldMes, sldDia) => {
-      let txtIni = (tipoSaldo === 'SALDOS') ? '#spOs SALDOS resultantes são de ' : '#spSeus '+tipoSaldo+' totalizam ';
-      txtIni += '#nbsp R$ ' + getBrPrc(sldAno) + '#esp Anuais,#esp #sp #nbsp R$ ' + getBrPrc(sldMes);
-      txtIni += '#esp Mensais, e #nbsp R$ '+ getBrPrc(sldDia) + '#esp Diários!#esp';
-      return txtIni;
-    }
-
-    const arIdade = [
-      `Você nasceu em ${dados.diaNasc},  tem ${dados.idade} anos de idade, totalizando ${dados.diasVida.toLocaleString()} dias de vida até hoje!!`,
-      `Se passaram ${dados.diasPosNiver} dias do seu último aniversário, restando ${dados.diasRestPniver} dias para o próximo!!`,
-    ];
-
-    const arSaldos = [
-      geTxtSaldos('GASTOS', gastoAno, gastoMes, gastoDia),
-      geTxtSaldos('LUCROS', lucroAno, lucroMes, lucroDia),
-      geTxtSaldos('SALDOS', saldoAno, saldoMes, saldoDia),
-    ]
-
-    const saldos = [
-      // `#spSeus GASTOS totalizam R$ ${getBrPrc(gastoAno)} Anuais,#esp #spR$ ${getBrPrc(gastoMes)} Mensais, e R$ ${getBrPrc(gastoDia)} Diários!#esp`,
-      // `#spSeus LUCROS totalizam R$ ${getBrPrc(lucroAno)} Anuais,#esp #spR$ ${getBrPrc(lucroMes)} Mensais, e R$ ${getBrPrc(lucroDia)} Diários!#esp`,
-      // `#spOs SALDOS resultantes são de R$ ${getBrPrc(saldoAno)} Anuais,#esp #spR$ ${getBrPrc(saldoMes)} Mensais, e R$ ${getBrPrc(saldoDia)} Diários!#esp`,
-    ];
-
-    const bsaldos = [
-      // getSpanSaldo('GASTOS', 'totalGasto'),
-      // getSpanSaldo('LUCROS', 'totalLucro'),
-      // getSpanSaldo('SALDOS', 'totalSaldos'),
-    ]
-    resultados.idade.push(...arIdade);
-    resultados.saldos.push(...arSaldos);
-    // resultados.saldos.push(...saldos);
-  }
-
+  const [showresult, setShowresult] = useState(false);
   // --------------------------------------
   // const setvals = (k, vals) => { setDados({...dados, [k]: vals}); }
   const setgastos = (gastos) => { setDados({...dados, gastos: gastos}); }
@@ -111,10 +43,10 @@ export default function useTimeMoney(hoje) {
   //#endregion ----
 
   //#region ================================= FINAL FUNCTIONS
-  const setFinalResults = (arTxts, lastCalc) => {
+  const setFinalResults = (arTxts, lastCalc, lastResults) => {
     console.log('setFinalResults');
-    buildResult();
-    setDados({...dados, lastCalc: lastCalc, result:[...arTxts, ...resultados.saldos, ...resultados.idade]})
+    lastResults = !lastResults ? { tipo:'nul', valor:0, resultado:0 } : lastResults;
+    setDados({...dados, lastCalc: lastCalc, result:[...arTxts], lastResults:{...lastResults} })
   }
   //#region ========================== CALC FUNCTIONS
 
@@ -180,9 +112,7 @@ export default function useTimeMoney(hoje) {
   // #endregion
 
   //#region ================= FN setDtsByVal ======
-
-  //#region ==== setDtsByVal helper functions
-  const setFinalDts = (arDts, val) => {
+  const setFinalDts = (arDts, val, lastResults) => {
     const [anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, anoIni, mesIni, diaIni] = arDts;
     const qdts = { qtDias: qtDias, qtMeses:qtMeses, qtAnos:qtAnos, anosBi:anosBisextos }
     // const qdts = { qtAnos:qtAnos, qtMeses:qtMeses, qtDias: qtDias, anosBi:anosBisextos }
@@ -207,9 +137,11 @@ export default function useTimeMoney(hoje) {
       const txtpoup = showPoup();
       arTxts.push(txtpoup);
     }
-    setFinalResults(arTxts, val);
+    setFinalResults(arTxts, val, lastResults);
     // consLog( qdts, dt, (dtBini + '  --  ' + dbt));
   }
+
+  //#region ==== setDtsByVal helper functions
 
   const getValsPeriodo = (Anual, Mensal, Diário, ano, mes) => {
     const somaPAno = (Diário*365) + (Mensal*12);
@@ -278,8 +210,7 @@ export default function useTimeMoney(hoje) {
   }
   //#endregion
 
-  // ------------------------ retorna data, qtds, val e valresto  ----
-
+  // ------- retorna data, qtds, val e valresto  ---
   const setDtsByVal = (val, obval, poupanca, arDtIni) => {
     if(!!dados.lastCalc){
       const difzero = val - dados.lastCalc;
@@ -290,7 +221,8 @@ export default function useTimeMoney(hoje) {
     if (val === 0) { return setFinalDts([0, 0, 0, 0, ...arDtIni]); }
     const temPoupanca = !!poupanca && !(Array.isArray(poupanca));
     if (temPoupanca) { setPoupanca(poupanca) }
-    console.log('setDtsByVal temPoupanca ', temPoupanca, poupanca );
+    console.log(' ====================== function ------ setDtsByVal ---');
+    console.log('temPoupanca =', temPoupanca, poupanca );
     const [hasPoupMes, hasPoupAno] = temPoupanca ? [objPoupanca.isAm, !objPoupanca.isAm] : [false,false];
     const vmontUm = temPoupanca ? getMontantePoupanca(1) : 0;
     let [vmontMes, vmontAno] = hasPoupMes ? [vmontUm, getMontantePoupanca(12)] : [0, vmontUm]
@@ -306,21 +238,24 @@ export default function useTimeMoney(hoje) {
     arValMeses.forEach((dias, i) => { arValMeses[i] = Mensal + Diário * dias; })
     const last = arVals[arVals.length - 1];
     const zerouVal = (vtemp) => valPos ? (vtemp ?? subval) <= 0 : (vtemp ?? subval) >= 0;
+
     const endSetDts = (msge) => {
-      cLg('\n',' --------------------------------- endSetDts----ZEROUVAL =',zerouVal() );
+      const lastResults = { tipo: 'byVal', valor: val, resultado: msge ?? new Date(ano, mes, dia).toLocaleDateString()}
+      cLg('\n',' --------------------- endSetDts----ZEROUVAL =',zerouVal() );
       showLogs(val, subval, obval, somaTAno, somaMes, somaDias);
       if(!!msge && msge === 'NUNCA'){
-        setFinalResults(['Infelizmente você NUNCA irá conseguir este valor!!!'], val);
+        setFinalResults(['Infelizmente você NUNCA irá conseguir este valor!!!'], val, lastResults);
         return;
       }
-      setFinalDts([anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, ...arDtIni], val);
+      setFinalDts([anosBisextos, qtAnos, qtMeses, qtDias, ano, mes, dia, ...arDtIni], val, lastResults);
     }
+
     const getNextMaxVal = (vals) => (vals ?? arVals).find(v => valEhMaior(v, subval, true));
     let nextMaxVal = getNextMaxVal();
-    cLg('val =',val, obval );
-    cLg('arvals=',...arVals);
+    cLg('val =',val, 'obval =', obval );
+    // cLg('arvals=',...arVals);
     // ------------------------------------------
-    console.log('nextMaxVal = ', nextMaxVal );
+    // console.log('nextMaxVal = ', nextMaxVal );
     if (!nextMaxVal) {
       const sameSign = valEhMaior(last, valNeg, true)
       const notPossible = (!valPos && last > 0) || (!sameSign && !temPoupanca)
@@ -454,7 +389,7 @@ export default function useTimeMoney(hoje) {
 
   //#region ================ FN calcByDt =========
   const calcByDt = (dtCalc) => {
-    console.log('calcByDt',  );
+    console.log(' ====================== function ------ calcByDt ---');
 
     let total = 0;
     const arDtCalc = [dtCalc.getFullYear(), dtCalc.getMonth(), dtCalc.getDate()]
@@ -476,14 +411,16 @@ export default function useTimeMoney(hoje) {
     const valAno = Anual*difAnos;
     console.log('difAnos = ', difAnos, 'valAno =', valAno );
     total += valAno;
+    // ------------------ END CALC -----------
+    const lastResults = { tipo: 'byDate', valor: dtCalc, resultado: total }
 
     const diaWeek = dtCalc.getDay();
-    const txtDia = ([0, 6].includes(diaWeek) ? 'Um ': 'Uma ') + diasSemana[diaWeek];
+    const txtDia = ([0, 6].includes(diaWeek) ? 'um ': 'uma ') + diasSemana[diaWeek];
     let txtTotal = "Até "+ dtCalc.toLocaleDateString() +", "+ txtDia +", você terá um saldo TOTAL de R$ ";
 
     if(!dados.temPoupanca){
       txtTotal += getBrPrc(total) + (total < 0 ? ' (devedor)!!' : '!!');
-      return setFinalResults([txtTotal], dtCalc);
+      return setFinalResults([txtTotal], dtCalc, lastResults);
     }
     // ---------------------- RESULTADOS COM POUPANCA
     const arTxt = [];
@@ -497,13 +434,15 @@ export default function useTimeMoney(hoje) {
     const difMont = montante - dados.poupanca.montante;
     const totalPoup = difMont+total;
 
+    lastResults.resultado += difMont;
+
     txtTotal += getBrPrc(totalPoup) + (totalPoup < 0 ? ' DEVEDOR!!' : '!!');
     arTxt.push(txtTotal);
     arTxt.push("Com saldo de lucros/gastos de R$ " + getBrPrc(total) + ", somado a renda de sua poupança de R$ " + getBrPrc(difMont) + "!!");
 
     arTxt.push("Além disso, o montante da poupança será de R$ " + getBrPrc(montante) + ", com tempo decorrido de " + txtTempo + "!!");
 
-    setFinalResults(arTxt, dtCalc);
+    setFinalResults(arTxt, dtCalc, lastResults);
   }
   //#endregion ==========================
 
@@ -524,23 +463,18 @@ export default function useTimeMoney(hoje) {
   }
 
   const calcAll = (obj) => {
-    // const vv = Object.values(obj)
     if(!!obj?.dtCalc){
       calcByDt(obj.dtCalc);
     } else {
-      // obval = {Anual: -1000, Mensal: 650, Diário: -10}
-      const val = obj.saldoCalc;
       const obval = {...dados.totalSaldos}
-      // let pp = {capital:100, juros:2, periodo:'mensal'}
       const pp = dados.temPoupanca ? {...dados?.poupanca} : null;
-      setDtsByVal(val, obval, pp);
+      setDtsByVal(obj.saldoCalc, obval, pp);
     }
-    // setFinalResults();
-
   }
   //#endregion =======================================
 
   return {
-    dados, setbirth, addMoney, setgastos, setlucros, setSaldos, setPoupData, calcAll, resultados
+    dados, setbirth, addMoney, setgastos, setlucros, setSaldos, setPoupData,
+    calcAll, showresult, setShowresult
   }
 }

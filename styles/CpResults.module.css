@@ -1,9 +1,6 @@
 /*#region ------------------------- DV RESULTS ----- */
-.dvfinal.hidenb{
-  transition: max-height .3s, visibility .2s;
-  opacity: 1; display: block;
-}
 .dvfinal{
+  max-height: 300px; height: auto; visibility: visible;
   margin: 20px auto; padding: 25px 7px;
   overflow-y: scroll; scroll-behavior: smooth;
   scroll-snap-type: y; scroll-snap-stop: normal; color: white;
@@ -13,13 +10,13 @@
 }
 /* .dvfinal{ overflow-wrap: break-word; word-wrap: break-word; white-space: break-spaces; } */
 
-.dvfinal:not(.hidenb) {
-  max-height: 300px; height: auto; visibility: visible;
-  background-clip: padding-box;
-  transition: max-height .3s, visibility .3s .1s;
-}
-/* .dvfinal.hidenb { transition: max-height .1s, visibility .1s; } */
 .dvfinal p {
+    /* white-space: break-spaces; */
+  /* -webkit-break-after: right; break-after: right; */
+  /* line-break: loose; */
+  /* break-after: auto; word-wrap: break-word; white-space: break-spaces; */
+  /* text-decoration:  underline 1px; text-underline-offset: 6px; */
+  /* text-align: justify; */
   font-size: 1.2em; font-weight: 400; font-style: italic; line-height: 1.5em;
   margin: 18px auto;
   transition: font-weight .1s;
@@ -29,3 +26,5 @@
   font-weight: 500; transition: font-weight .3s; scroll-snap-align: center;
 }
 /*#endregion ------------------------------ */
+
+/* .dvfinal > *:not(hr) { border: 1px solid red; } */

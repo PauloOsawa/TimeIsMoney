@@ -4,10 +4,13 @@ import css from "@/styles/CpFrmTimeMoney.module.css";
 import CpSelsDate from "./CpFrmSelsDate";
 import CpTbMoney from "./CpTbMoney";
 import CpFrmInptPrice from "./CpFrmInptPrice";
+import CpResults from "./CpResults";
 
 export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
-  const { dados, setbirth, addMoney, setgastos, setlucros, setSaldos, setPoupData, calcAll, resultados } = useTimeMoney(hoje);
+  const {
+    dados, setbirth, addMoney, setgastos, setlucros, setSaldos,
+    setPoupData, calcAll, showresult, setShowresult } = useTimeMoney(hoje);
 
   const stDtTomorow = new Date(dados.dtHoje.getFullYear(), dados.dtHoje.getMonth(), dados.dtHoje.getDate() + 1).toISOString().slice(0, 10);
 
@@ -32,39 +35,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#endregion ---------
 
   //#region =========================== HTML RENDER functions ======
-  const getTagSpan = (txt, spclas) => !spclas ? (<span>{txt}</span>) : (<span className={spclas ?? 'nobrk'}>{txt}</span>);
-  const tagsSpans = ['#nbsp', '#sp', '#esp', '#enbsp'];
-  const isEndTag = (tag) => ['#esp', '#enbsp'].includes(tag);
-
-  const renderTags = (txt) => {
-/*
-    let firstIdx = txt.indexOf('#');
-    if(firstIdx < 0){ return txt; }
-    txt = txt.slice(txt.indexOf('sp', firstIdx)+2, txt.lastIndexOf('#'));
-    let stxt = <span>{txt}</span>;
-    const txtcont = stxt.props.children;
-    console.log('txtcont = ', txtcont );
-    return stxt;
- */
-    const artxt = txt.split('#esp').map((v) => {
-      if(v.trim() === ''){ return; }
-      const nbidx = v.lastIndexOf(tagsSpans[0]);
-      const spidx = v.lastIndexOf(tagsSpans[1]);
-      if(nbidx < 0 && spidx < 0){ return v; }
-      const cl = ( nbidx > spidx) ? 'nobrk' : null;
-      const idxend = !cl ? spidx + 3 : nbidx + 5;
-      // const txtsp =
-      const vsp = v.substring((!cl ? spidx + 3 : nbidx + 5));
-      // v = v.substring((!cl ? spidx + 3 : nbidx + 5));
-      return getTagSpan(vsp, cl);
-      // return (<>{getTagSpan(v, cl)}</>);
-    })
-
-    return (<span>{ ...artxt}</span>)
-    // return (<>{artxt.join(' ')}</>)
-  }
-
-
 
   const scrolto = (elm) => {
     const xxx = 'xxx';
@@ -120,36 +90,32 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
 
   const showDvResults = (toHide) => {
-    viewElm(css.dvfinal, !!toHide);
-    if(!toHide){
-      blockForm(true);
-      stopAnim.current = false;
-      dvresults.current.scrollIntoView({ block:'start', behavior: 'smooth'});
-      dvresults.current?.scrollTo({ top:0, behavior: 'smooth'});
-      let pnext = dvresults.current?.querySelector('h3');
-      if(pnext){ pnext.classList.add(css.scrolviw); }
+    const dvr = document.querySelector('.'+css.dvfinal);
 
-      const intervalo = setInterval(() => {
-        console.log('interv' );
-        const lostForm = (!forma?.current)
-        const isToStop = (stopAnim.current === true);
-        pnext = dvresults.current?.querySelector('.'+css.scrolviw);
-        if(lostForm || isToStop || !pnext){
-          stopAnim.current = false;
-          if(!lostForm){
-            blockForm();
-            if(pnext){ pnext.classList.remove(css.scrolviw); }
-          }
-          return clearInterval(intervalo);
+    if(toHide){
+      if(dvr){ dvr.classList.add(css.hidenb); }
+      blockForm();
+      if(showresult === true){
+        const timehide = setTimeout(() =>{
+          setShowresult(false);
+          clearTimeout(timehide);
+        }, 300)
+      }
+    } else {
+      if(showresult !== true){ setShowresult(true); }
+      const timeshow = setTimeout(() =>{
+        const dvrs = document.querySelector('.'+css.dvfinal);
+        if(dvrs){
+          dvrs.classList.remove(css.hidenb);
+          dvrs.scrollIntoView({ block:'start', behavior: 'smooth'});
+          dvrs.scrollTo({ top:0, behavior: 'smooth'});
         }
-        console.log('pnext',  );
-        pnext.classList.remove(css.scrolviw);
-        const nexp = pnext.nextElementSibling;
-        if(nexp){ nexp.classList.add(css.scrolviw); }
-      }, 4000);
-
+        clearTimeout(timeshow);
+      }, 100);
     }
+
   }
+
   //#region ---------------------- FLDSET fldcalc --------
   const showDvCalc = (e) => {
     const idx = e.target.value === 'data' ? 0 : 1;
@@ -284,21 +250,16 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     return (
       <div>
         <div className={css.ldvtst}>
-          {/* <button onClick={ e => showUserData(e)}>userData</button> */}
           <button onClick={showDados}>DADOS</button>
           <button onClick={hideFrm}>RESET</button>
         </div>
         <div> dtHoje: {dados.dtHoje?.toLocaleString()} </div>
         <div onClick={e => showDados(e,'e')}> dtNasc: {dados.dtNasc?.toLocaleString()} </div>
+
         <div className={`${css.dvdads} ${css.hidenb}`}>
           <h3>dados</h3>
           {Object.keys(dados).map((k,i) => (
             <p key={i}>{k} : {strFy(dados[k])}</p>
-          ))}
-
-          <h3>resultados</h3>
-          {Object.keys(resultados).map((rk,ri) => (
-            <p key={ri}>{rk} : {strFy(resultados[rk])} </p>
           ))}
         </div>
       </div>
@@ -394,14 +355,11 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
     </form>
 
-    <div className={`${css.dvfinal} ${css.hidenb}`} ref={dvresults}>
-      <h3>RESULTADOS</h3>
-      {isShowRes() && console.log('render' )}
-      {isShowRes() && dados?.result?.map((r, i) => (
-        <p key={i}>{r}</p>
-        // <p key={i}>{renderTags(r)}</p>
-      ))}
-    </div>
+    {!!showresult && (
+      <div className={`${css.dvfinal} ${css.hidenb}`}>
+        <CpResults dados={dados} stopAnim={showresult} />
+      </div>
+    )}
 
     {degubTags()}
     </>
