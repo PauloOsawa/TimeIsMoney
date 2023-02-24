@@ -1,14 +1,13 @@
-import { useEffect, useRef } from "react";
 import css from "@/styles/CpResults.module.css";
 
-export default function CpResults({ dados, stopAnim, animEnd }){
-  console.log('CpResults --------- stopAnim =', stopAnim);
+export default function CpResults({ dados, animStop, animEnd }){
+  console.log('CpResults --------- animStop =', animStop);
 
   const {Anual: gastoAno, Mensal: gastoMes, Diário: gastoDia} = dados.totalGasto;
   const {Anual: lucroAno, Mensal: lucroMes, Diário: lucroDia} = dados.totalLucro;
   const {Anual: saldoAno, Mensal: saldoMes, Diário: saldoDia} = dados.totalSaldos;
 
-  const cancelAnim = useRef(false);
+  const clfx = !animStop ? `${css.dvfinal} ${css.fx}` : css.dvfinal;
 
   // --------------------------------------------
   const fxPrc = (p) => parseFloat(p.toFixed(2));
@@ -22,7 +21,7 @@ export default function CpResults({ dados, stopAnim, animEnd }){
   // --------------------------------------------
 
   return (
-    <div className={`${css.dvfinal}`}>
+    <div className={clfx}>
       <h3>RESULTADOS</h3>
 
       {dados?.result?.map((r, i) => ( <p key={i}> <b>{r}</b> </p> ))}

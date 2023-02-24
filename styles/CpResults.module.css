@@ -8,23 +8,24 @@
   -webkit-mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
   mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
 }
-/* .dvfinal{ overflow-wrap: break-word; word-wrap: break-word; white-space: break-spaces; } */
+.dvfinal h3 {
+  font-size: 1.6em; font-weight: bold; font-style: italic;
+  text-decoration: underline solid 2px; text-underline-offset: 7px;
+}
+.dvfinal.fx h3{ color: red; }
 
 .dvfinal p {
-    /* white-space: break-spaces; */
-  /* -webkit-break-after: right; break-after: right; */
-  /* line-break: loose; */
-  /* break-after: auto; word-wrap: break-word; white-space: break-spaces; */
-  /* text-decoration:  underline 1px; text-underline-offset: 6px; */
-  /* text-align: justify; */
   font-size: 1.2em; font-weight: 400; font-style: italic; line-height: 1.5em;
-  margin: 18px auto;
-  transition: font-weight .1s;
+  margin: 18px auto; animation: animp 3s 1 both;
 }
 
-.dvfinal:not(.hidenb) .scrolviw{
-  font-weight: 500; transition: font-weight .3s; scroll-snap-align: center;
+.dvfinal.fx p:nth-of-type(1){ animation-delay: 1s; }
+.dvfinal.fx p:nth-of-type(2){ animation-delay: 4s; }
+.dvfinal.fx p:nth-of-type(3){ animation-delay: 7s; }
+.dvfinal.fx p:nth-of-type(4){ animation-delay: 10s; }
+
+@keyframes animp {
+  0%, 100% { font-weight: 400; scroll-snap-align: none; }
+  20%, 80% { scroll-snap-align: center; font-weight: 500; }
 }
 /*#endregion ------------------------------ */
-
-/* .dvfinal > *:not(hr) { border: 1px solid red; } */

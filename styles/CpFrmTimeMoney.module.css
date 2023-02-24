@@ -25,8 +25,6 @@
 }
 .hiden > *, .hidenb > *, .fld:not(.actv) > * { visibility: hidden; }
 
-/* .hidenb { display: none; } */
-
 .fld legend { font-style: italic; padding: 0 7px; vertical-align: text-top; }
 .fld h3 { font-style: italic; }
 .fld > h3 { padding: 0; }
@@ -48,8 +46,11 @@
   justify-content: center; gap: 15px;
 }
 .dvinptspoup :is(input[type=number]){ margin-bottom: 15px; }
-
 .inptjuros{ width: 50px; }
+/*#endregion ------------------------------ */
+
+/*#region --------------------------- FLD CALC -------- */
+.fld[name='fldcalc'] > div:first-of-type > label:not(:first-child) { cursor: pointer; }
 /*#endregion ------------------------------ */
 
 /*#region ------------------------- DV RESULTS ----- */
@@ -63,12 +64,6 @@
   max-height: 350px; height: auto; visibility: visible; opacity: 1;
   transition: max-height .3s, visibility .2s, opacity .2s;
 }
-.dvfinal h3 {
-  font-size: 1.6em; font-weight: bold; font-style: italic;
-  text-decoration: underline solid 2px; text-underline-offset: 7px;
-  /* border: 1px solid red; */
-}
-
 /*#endregion ------------------------------ */
 
 /*#region ---------------------- CORES -------- */

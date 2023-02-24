@@ -76,7 +76,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     if(isShowRes()){
       blockForm();
       if(animStop === false){ setAnimStop(true); }
-      console.log('Showing Results stopAnim=', animStop);
+      console.log('NO backfld --- Showing Results stopAnim=', animStop);
       return;
     }
     goFld(fldact.current.previousElementSibling);
@@ -116,8 +116,11 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     }
   }
   //#region ----------------- CP RESULTS functions ---------
-  const animEnd = () => {
+  const animEnd = (clearAnim) => {
     blockForm();
+    console.log('animEnd',  animStop,  clearAnim);
+    // clearAnim();
+    // if(animStop){ clearAnim(); }
 
   }
 
@@ -349,8 +352,8 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
         <h3>Escolha uma Data para saber um Saldo, ou Vice-Versa!</h3>
         <div>
           <label>Calcular POR:</label>
-          <input type="radio" name='radCalc' value={'data'} onChange={showDvCalc} />DATA
-          <input type="radio" name='radCalc' value={'saldo'} onChange={showDvCalc} />SALDO
+          <label><input type="radio" name='radCalc' value={'data'} onChange={showDvCalc} />DATA</label>
+          <label><input type="radio" name='radCalc' value={'saldo'} onChange={showDvCalc} />SALDO</label>
         </div>
 
         <div className={`${css.dvDt} ${css.hidenb}`}>
@@ -373,7 +376,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
     {!!showresult && (
       <div className={`${css.dvfinal} ${css.hidenb}`} ref={dvresults}>
-        <CpResults dados={dados} stopAnim={animStop} animEnd={animEnd} />
+        <CpResults dados={dados} animStop={animStop} animEnd={animEnd} />
       </div>
     )}
 

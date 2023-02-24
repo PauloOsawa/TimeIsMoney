@@ -1,5 +1,4 @@
 
-
 //#region ======================================== DATE AND PRICE HELPERS
 const mesesMinDays = [ 1, 3, 5, 8, 10 ];
 const diasSemana = [ 'Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado' ];
