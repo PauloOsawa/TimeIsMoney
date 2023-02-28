@@ -42,8 +42,10 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const blockForm = (toBlock) => {
     if(toBlock){
       fldact.current?.setAttribute('disabled','true');
+      console.log('block form');
       return;
     }
+    console.log('UNBLOCK form');
     fldact.current?.removeAttribute('disabled');
   }
 
@@ -127,12 +129,17 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#endregion ---------
 
   //#region --------------------- FLDSET fldcalc ----------
+  const enabBtnCalc = (btn, toEnable) => {
+    if(!btn){ return; }
+    const isDisab = btn.classList.contains('disable');
+    if(!toEnable && !isDisab){ btn.classList.add('disable'); return; }
+    if(!!toEnable && !!isDisab){ btn.classList.remove('disable'); return; }
+  }
+
   const showDvCalc = (e) => {
+    console.log('showDvCalc',  );
     const isDvDtShow = e.target.value === 'data';
     const idx = isDvDtShow ? 0 : 1;
-    const cldiv = !isDvDtShow ? css.dvDt : css.dvsaldo;
-    const btnfldcur = fldact.current?.querySelector('.' +cldiv+ ' .btncor');
-    btnfldcur.classList.remove('disable');
 
     [css.dvDt, css.dvsaldo].forEach((cl, i) => {
       const toHide = (idx !== i);
@@ -164,6 +171,15 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     showDvResults();
   }
 
+  const handleChangeDtCalc = (e) => {
+    const targ = e.target;
+    const isValid = targ?.validity?.valid;
+    const btnCalc = targ.nextElementSibling;
+    enabBtnCalc(btnCalc, isValid);
+    if(isShowRes() && isValid){ hideDvResults(); return; }
+    // const strDt = targ.value + ' 0:0'; const isDisab = btnCalc.classList.contains('disable');
+    // const dat = new Date(strDt);  console.log('niudt =', strDt, isDisab, dat.toLocaleString(), isShowRes() );
+  }
   //#endregion --------
 
   //#region --------------------- FLDSET fldpoupanca ------
@@ -357,7 +373,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
         </div>
 
         <div className={`${css.dvDt} ${css.hidenb}`}>
-          <input type="date" defaultValue={stDtTomorow} min={stDtTomorow} max={"2060-11-30"} required />
+          <input type="date" defaultValue={stDtTomorow} min={stDtTomorow} max={"2060-11-30"} onChange={handleChangeDtCalc} required />
           <button className="btncor" onClick={endCalc}>CALCULAR</button>
         </div>
 

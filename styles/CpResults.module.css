@@ -1,10 +1,10 @@
 /*#region ------------------------- DV RESULTS ----- */
 .dvfinal{
   max-height: 300px; height: auto; visibility: visible;
-  margin: 20px auto; padding: 25px 7px;
-  overflow-y: scroll; scroll-behavior: smooth;
-  scroll-snap-type: y; scroll-snap-stop: normal; color: white;
-  background: var(--dgrda);
+  margin: 20px auto; padding: 25px 7px; overflow-y: scroll;
+  scroll-behavior: smooth; scroll-snap-type: block mandatory;
+  scroll-snap-stop: always; overscroll-behavior: contain;
+  color: white; background: var(--dgrda);
   -webkit-mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
   mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
 }
@@ -12,20 +12,40 @@
   font-size: 1.6em; font-weight: bold; font-style: italic;
   text-decoration: underline solid 2px; text-underline-offset: 7px;
 }
-.dvfinal.fx h3{ color: red; }
-
 .dvfinal p {
-  font-size: 1.2em; font-weight: 400; font-style: italic; line-height: 1.5em;
-  margin: 18px auto; animation: animp 3s 1 both;
+  font-size: 1.2em; font-weight: 400; font-style: italic;
+  line-height: 1.5em; margin: 18px auto;
+}
+.dvfinal :is(h3, p:nth-of-type(1)){ text-shadow: 1px 1px 1px red; }
+
+.dvfinal p span { display: inline-block; white-space: pre-wrap; }
+.dvfinal p .nobrk { white-space: nowrap; }
+/* .dvfinal p:is(:nth-last-of-type(1), :nth-last-of-type(2)){ font-weight: 500;  } */
+.dvfinal:not(.fx) h3{ animation: animscrol 1s both; }
+/* ------------------------- DV FINAL FX -------------------- */
+.dvfinal.fx p{ animation: animp 5s ease both; }
+
+.dvfinal.fx p:nth-of-type(1){ animation-duration: 6s; }
+.dvfinal.fx p:nth-of-type(2){ animation-delay: 6s; }
+.dvfinal.fx p:nth-of-type(3){ animation-delay: 11s; }
+.dvfinal.fx p:nth-of-type(4){ animation-delay: 16s; }
+.dvfinal.fx p:nth-of-type(5){ animation-delay: 21s; }
+.dvfinal.fx p:nth-of-type(6){ animation-delay: 26s; }
+.dvfinal.fx p:nth-of-type(7){ animation-delay: 31s; }
+.dvfinal.fx p:nth-of-type(8){ animation-delay: 36s; }
+.dvfinal.fx p:nth-of-type(9){ animation-delay: 41s; }
+.dvfinal.fx p:nth-of-type(10){ animation-delay: 46s; }
+
+@keyframes animscrol {
+  0%, 100% { scroll-snap-align: none; }
+  5%, 95% { scroll-snap-align: center; }
 }
 
-.dvfinal.fx p:nth-of-type(1){ animation-delay: 1s; }
-.dvfinal.fx p:nth-of-type(2){ animation-delay: 4s; }
-.dvfinal.fx p:nth-of-type(3){ animation-delay: 7s; }
-.dvfinal.fx p:nth-of-type(4){ animation-delay: 10s; }
-
 @keyframes animp {
-  0%, 100% { font-weight: 400; scroll-snap-align: none; }
-  20%, 80% { scroll-snap-align: center; font-weight: 500; }
+  0% { font-weight: 400; text-shadow: none; }
+  4% { scroll-snap-align: center; text-shadow: 1px 1px 1px red; }
+  25%, 90% { font-weight: 500; }
+  98% { text-shadow: 1px 1px 1px red; }
+  100% { font-weight: 400; scroll-snap-align: none; text-shadow: none; }
 }
 /*#endregion ------------------------------ */

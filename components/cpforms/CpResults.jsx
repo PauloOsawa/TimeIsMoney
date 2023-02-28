@@ -18,6 +18,7 @@ export default function CpResults({ dados, animStop, animEnd }){
     return parseFloat(p.toFixed(2)).toLocaleString().replace(/([,][0-9])$/, '$10').replace(/([^,][0-9]{2})$/, "$1,00");
   }
 
+  const getSpanTag = (p) => <span className={css.nobrk}>R$ {getBrPrc(p)}</span>;
   // --------------------------------------------
 
   return (
@@ -25,7 +26,6 @@ export default function CpResults({ dados, animStop, animEnd }){
       <h3>RESULTADOS</h3>
 
       {dados?.result?.map((r, i) => ( <p key={i}> <b>{r}</b> </p> ))}
-      {/* <p><b> {dados.result[0]} </b></p> */}
       <hr />
 
       <p>
@@ -39,16 +39,19 @@ export default function CpResults({ dados, animStop, animEnd }){
       <hr />
 
       <p>
-        <span>Seus <b>LUCROS</b> totalizam <span className={'nobrk'}>R$ {getBrPrc(lucroAno)}</span> Anuais, </span>
-        <span>R$ {getBrPrc(lucroMes)} Mensais, e R$ {getBrPrc(lucroDia)} Diários!!</span>
+        Seus <b>LUCROS</b> totalizam {getSpanTag(lucroAno)} Anuais,
+        <span> {getSpanTag(lucroMes)} Mensais,</span>
+        <span> e {getSpanTag(lucroDia)} Diários!!</span>
       </p>
       <p>
-        <span>Seus <b>GASTOS</b> totalizam <span className={'nobrk'}>R$ {getBrPrc(gastoAno)}</span> Anuais, </span>
-        <span>R$ {getBrPrc(gastoMes)} Mensais, e R$ {getBrPrc(gastoDia)} Diários!!</span>
+        Seus <b>GASTOS</b> totalizam {getSpanTag(gastoAno)} Anuais,
+        <span> {getSpanTag(gastoMes)} Mensais,</span>
+        <span> e {getSpanTag(gastoDia)} Diários!!</span>
       </p>
       <p>
-        <span>Os <b>SALDOS</b> resultantes são de <span className={'nobrk'}>R$ {getBrPrc(saldoAno)}</span> Anuais, </span>
-        <span>R$ {getBrPrc(saldoMes)} Mensais, e R$ {getBrPrc(saldoDia)} Diários!!</span>
+        <span>Os <b>SALDOS</b> resultantes são de </span>
+        <span>{getSpanTag(saldoAno)} Anuais, {getSpanTag(saldoMes)} Mensais,</span>
+        <span> e {getSpanTag(saldoDia)} Diários!!</span>
       </p>
     </div>
   )
