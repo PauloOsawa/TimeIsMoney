@@ -99,7 +99,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       const dvrs = document.querySelector('.'+css.dvfinal);
       if(dvrs){
         dvrs.classList.remove(css.hidenb);
-        dvrs.scrollIntoView({ block:'start', behavior: 'smooth'});
+        dvrs.scrollIntoView({ block:'center', behavior: 'smooth'});
         dvrs.scrollTo({ top:0, behavior: 'smooth'});
       }
       clearTimeout(timeshow);
@@ -177,8 +177,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     const btnCalc = targ.nextElementSibling;
     enabBtnCalc(btnCalc, isValid);
     if(isShowRes() && isValid){ hideDvResults(); return; }
-    // const strDt = targ.value + ' 0:0'; const isDisab = btnCalc.classList.contains('disable');
-    // const dat = new Date(strDt);  console.log('niudt =', strDt, isDisab, dat.toLocaleString(), isShowRes() );
   }
   //#endregion --------
 

@@ -30,6 +30,12 @@ const getNumDays = (ms) => {
   const totDays = ms / (1000 * 60 * 60 * 24);
   return (totDays);
 }
+
+const getDiaWeek = (dt) => {
+  const diaWeek = dt.getDay();
+  const txtDia = ([0, 6].includes(diaWeek) ? 'um ': 'uma ') + diasSemana[diaWeek];
+  return txtDia;
+}
 //#endregion =======================================
 
 //#region ----------------------------- FIELD NIVER
@@ -54,6 +60,6 @@ const setaIdade = (arNasc, dthj) => {
 /* ------------------------------- */
 
 export {
-  mesesMinDays, diasSemana, meses, ehBisexto, isFevBi, getQtdAnosBis, getDiasNoMes, getNumDays,
+  mesesMinDays, diasSemana, getDiaWeek, meses, ehBisexto, isFevBi, getQtdAnosBis, getDiasNoMes, getNumDays,
   setaIdade
 }
