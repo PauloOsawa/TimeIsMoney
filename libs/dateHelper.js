@@ -36,6 +36,40 @@ const getDiaWeek = (dt) => {
   const txtDia = ([0, 6].includes(diaWeek) ? 'um ': 'uma ') + diasSemana[diaWeek];
   return txtDia;
 }
+
+const getDtsRestante = (dta, dtb) => {
+  let totanos, totMeses, totDias;
+  const dtGt = dta > dtb ? dta : dtb;
+  const dtMin = dtb > dta ? dta : dtb;
+  const arDtGt = getArDt(dtGt);
+  const arDtMin = getArDt(dtMin);
+  const [ anoGt, mesGt, diaGt ] = arDtGt;
+  const [ anoMin, mesMin, diaMin ] = arDtMin;
+
+  const retEnd = () => {
+    return { totAnos: totanos, totMeses: totMeses, totDias: totDias };
+  }
+
+  totanos = anoGt - anoMin;
+  let testDt = new Date(anoGt, mesMin, diaMin);
+
+  if(dtGt >= testDt){
+    totMeses = mesGt - mesMin;
+    if(diaGt < diaMin){ totMeses--; }
+    totDias = diaGt - diaMin;
+    return retEnd();
+  }
+
+  if(testDt > dtGt){ totanos--; testDt = new Date((anoGt - 1), mesMin, diaMin); }
+  let [ anoTest, mesTest, diaTest ] = getArDt(testDt);
+  totMeses = mesGt >= mesTest ? mesGt - mesTest : 12 - (mesTest - mesGt);
+  testDt = new Date(anoGt, mesGt, diaMin);
+
+  if(testDt > dtGt){ totMeses--; testDt.setMonth(mesGt - 1); }
+  totDias = parseInt(getNumDays(dtGt - testDt));
+  return retEnd();
+}
+
 //#endregion =======================================
 
 //#region ----------------------------- FIELD NIVER
@@ -61,5 +95,5 @@ const setaIdade = (arNasc, dthj) => {
 
 export {
   mesesMinDays, diasSemana, getDiaWeek, meses, ehBisexto, isFevBi, getQtdAnosBis, getDiasNoMes, getNumDays,
-  setaIdade
+  getDtsRestante, setaIdade
 }

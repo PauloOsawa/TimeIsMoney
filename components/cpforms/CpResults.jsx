@@ -19,15 +19,20 @@ export default function CpResults({ dados, animStop, animEnd }){
     return parseFloat(p.toFixed(2)).toLocaleString().replace(/([,][0-9])$/, '$10').replace(/([^,][0-9]{2})$/, "$1,00");
   }
 
-  const getSpanTag = (p) => <span className={css.nobrk}>R$ {getBrPrc(p)}</span>;
+  const getSpanPrcTag = (p) => <span className={css.nobrk}>R$ {getBrPrc(p)}</span>;
+
+  const getArSpns = (txt) => txt.split('#').map((spn, i) => {
+    const isnb = (spn[0] === '@');
+    return (spn[0] === '@') ? (<span key={i} className={css.nobrk}>{spn.slice(1)}</span>) : (<span key={i}>{spn}</span>);
+  });
   // --------------------------------------------
   const getFrasesCar = () => {
     if(!dados?.hasCar){ return; }
     return (<>
       <hr />
       <p>
-        <span>Por ano, você gasta { getSpanTag(dados.gastoCar) } apenas de Ipva e combustível! </span>
-        <span>Se contar manutenção, multas, etc, poderia fazer aquela Viagem dos sonhos!</span>
+        <span>Por ano, você gasta { getSpanPrcTag(dados.gastoCar) } com seu veículo! </span>
+        <span>Se somar manutenção, multas, etc, poderia fazer aquela Viagem dos sonhos!</span>
       </p>
     </>);
   }
@@ -45,43 +50,37 @@ export default function CpResults({ dados, animStop, animEnd }){
     const isNever = (lastres === 'NUNCA');
     const valsearch = dados.lastResults.valor;
     const hasPoup = dados.temPoupanca && dados.result.length > 2;
+
     return !isNever ? (<>
-      <p className={css.pbold}>
-        A data que irá conseguir {getSpanTag(valsearch)} é {lastres}!!
-      </p>
+      <p className={css.pbold}>{getArSpns(dados.result[0])}</p>
       <p>{dados.result[1]}</p>
-      {!!hasPoup && (
-        <p>
-          <span>{dados.result[2]}</span>
-          <span>{dados.result[3]}</span>
-        </p>)
-      }
+      {!!hasPoup && (<p> { getArSpns(dados.result[2]) }</p>) }
       </>) : (
       <p className={css.pbold}>Infelizmente você NUNCA irá conseguir este valor!!</p>
     );
-
   }
   // --------------------------------------------
   const getFrasesByDt = () => {
     const lastres = hasResult('byDate');
     if(lastres === false){ return; }
     const dtsearch = dados.lastResults.valor;
-    const hasPoup = dados.temPoupanca && dados.result.length > 2;
+    const hasPoup = dados.temPoupanca && dados.result.length > 3;
     return (<>
       <p className={css.pbold}>
         <span>{dados.result[0]}</span>
-        <span>terá um saldo TOTAL de {getSpanTag(lastres)} !!</span>
+        <span>{dados.result[1][0] !=='t' && <>você </>}terá um saldo TOTAL de {getSpanPrcTag(lastres)} !!</span>
       </p>
+      <p>{getArSpns(dados.result[2])}</p>
       {!!hasPoup && (<>
-        <p>
-          <span>{dados.result[2]}</span>
-          <span>{dados.result[3]}</span>
-          <span>{dados.result[4]}</span>
-        </p>
-        <p>
-          <span>{dados.result[5]}</span>
-          <span>{dados.result[6]}</span>
-        </p>
+      <p>
+        <span>{dados.result[3]}</span>
+        <span>{dados.result[4]}</span>
+        <span>{dados.result[5]}</span>
+      </p>
+      <p>
+        <span>{dados.result[6]}</span>
+        <span>{dados.result[7]}</span>
+      </p>
       </>)}
     </>);
   }
@@ -96,24 +95,23 @@ export default function CpResults({ dados, animStop, animEnd }){
   return (
     <div className={clfx}>
       <h3>RESULTADOS</h3>
-      {/* {dados?.result?.map((r, i) => ( <p key={i}> <b>{r}</b> </p> ))} */}
       {getFirstP()}
       <hr />
 
       <p>
-        Seus <b>LUCROS</b> totalizam {getSpanTag(lucroAno)} Anuais,
-        <span> {getSpanTag(lucroMes)} Mensais,</span>
-        <span> e {getSpanTag(lucroDia)} Diários!!</span>
+        Seus <b>LUCROS</b> totalizam {getSpanPrcTag(lucroAno)} Anuais,
+        <span> {getSpanPrcTag(lucroMes)} Mensais,</span>
+        <span> e {getSpanPrcTag(lucroDia)} Diários!!</span>
       </p>
       <p>
-        Seus <b>GASTOS</b> totalizam {getSpanTag(gastoAno)} Anuais,
-        <span> {getSpanTag(gastoMes)} Mensais,</span>
-        <span> e {getSpanTag(gastoDia)} Diários!!</span>
+        Seus <b>GASTOS</b> totalizam {getSpanPrcTag(gastoAno)} Anuais,
+        <span> {getSpanPrcTag(gastoMes)} Mensais,</span>
+        <span> e {getSpanPrcTag(gastoDia)} Diários!!</span>
       </p>
       <p>
         <span>Os <b>SALDOS</b> resultantes são de </span>
-        <span>{getSpanTag(saldoAno)} Anuais, {getSpanTag(saldoMes)} Mensais,</span>
-        <span> e {getSpanTag(saldoDia)} Diários!!</span>
+        <span>{getSpanPrcTag(saldoAno)} Anuais, {getSpanPrcTag(saldoMes)} Mensais,</span>
+        <span> e {getSpanPrcTag(saldoDia)} Diários!!</span>
       </p>
       <hr />
 

@@ -42,10 +42,10 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const blockForm = (toBlock) => {
     if(toBlock){
       fldact.current?.setAttribute('disabled','true');
-      console.log('block form');
+      // console.log('block form');
       return;
     }
-    console.log('UNBLOCK form');
+    // console.log('UNBLOCK form');
     fldact.current?.removeAttribute('disabled');
   }
 
@@ -100,7 +100,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       if(dvrs){
         dvrs.classList.remove(css.hidenb);
         dvrs.scrollIntoView({ block:'center', behavior: 'smooth'});
-        dvrs.scrollTo({ top:0, behavior: 'smooth'});
+        // dvrs.scrollTo({ top:0, behavior: 'smooth'});
       }
       clearTimeout(timeshow);
     }, 100);

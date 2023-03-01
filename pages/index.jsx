@@ -12,7 +12,7 @@ export default function Home({ hoje }) {
   // ---------------------------------------------------
   const scrola = (cl) => {
     setCldvTxt(cl);
-    document.querySelector('.'+css.dvtitle).scrollIntoView({ block:'start', behavior: 'smooth'});
+    document.querySelector('.'+css.dvtitle).scrollIntoView({ block:'start', behavior: 'auto'});
   }
   const iniciar = () => scrola(`${css.dvtxt} ${css.hiden}`);
   function hideFrm(){ if (cldvTxt !== css.dvtxt) { scrola(css.dvtxt); } }
