@@ -4,47 +4,70 @@ Um Projeto <b>EM FASE DE DESENVOLVIMENTO</b> com <b>ênfase em cálculos de data
 
 Basicamente, recebe valores de input de datas e finanças sazonais de gastos e lucros.
 
-Efetuará todos os cálculos de abatimento financeiro e temporal para uma data ou valor desejado.
+Efetua todos os cálculos de abatimento financeiro e temporal para uma data ou valor desejado.
 
-Aproveitará para exibir valores obtidos em paralelo como curiosidades, tais como dias de vida, etc...
-<br /><br />
+Aproveita para exibir valores obtidos em paralelo como curiosidades, tais como dias de vida, etc...
+<br />
 
 ## Aplicação e Conteúdo
 
-Utiliza o framework NEXT.js, buscando se diferenciar de projetos anteriores, com implementações
-básicas e uma evolução gradual e progressiva, porém, maior que a desejada por ser o 1o projeto NEXT.
+Utiliza o framework NEXT.js para se diferenciar de projetos anteriores, não sendo requisito necessário.
 
-Com uma única página, realiza renderização primária e condicional entre texto de apresentação, e o formulário.
-<br /><br />
+Realiza renderização primária entre texto de apresentação, e o formulário, com uma única página.
+<br />
 
-O formulário CpFrmTimeMoney é o controlador principal, responsável pelas renderizações de seus fieldsets,
-importação tanto de componentes respectivos, como de um hook personalizado e a passagem e obtenção de valores e métodos.
+O formulário CpFrmTimeMoney é o controlador principal sendo responsável pela importação, renderização,
 
-Este hook é responsável pela lógica de cálculo, métodos e persistência de valores, independente das renderizações.
+e comunicação de/entre demais componentes e hook customizado, com passagem/obtenção de métodos e valores.
+
+Suas funções tratam erros e lógica de renderização, utilizando apenas o hook useRef para isso.
+<br />
+
+O hook customizado 'useTimeMoney' é responsável pelas lógicas de cálculo, além da persistência de
+
+seus valores, utilizando apenas o hook useState para isso(experimental).
+
+Suas funções contemplam cálculos específicos, enquanto as funções mais genéricas são desmembradas em mais
+
+arquivos e importadas, visando tanto a utilidade de reuso, como redução de código neste arquivo(+500 linhas).
+
 
 Os componentes de input possuem sua própria lógica quanto a validação e submissão de dados.
-<br /><br />
+<br />
 
-## Aviso:
+## Desenvolvimento e Aviso
 
-As implementações e commits não são de caráter final, funcional, e nem visam build para produção no momento.
+O <b>planejamento prévio se restringiu a sua proposta de cálculos</b>, com funções massivamente testadas.
 
-Muitos testes estão sendo realizados, e a versão limpa e funcional do código será indicada em tag.
-<br /><br />
+Todo o resto, principalmente renderizações, possuem caráter experimental, de testes e estudo, apenas com a
 
-## Observações Adicionais aos Iniciantes
+premissa incondicional ao uso de somente 2 hooks, buscando 'simplicidade' e evolução progressiva de projetos.
 
-O uso do hook useRef é opcionalmente exacerbado e de caráter experimental quanto aos Re-renders (inicialmente satisfatório).
 
-A alteração do arquivo app.js, e implementação de componentes de layout persistidos são apenas um padrão de uso.
+O <b>experimento</b> se dá por testar e manter uma <b>lógica inversa de renderização</b>, onde o useRef se
 
-Não são necessários em projetos single page, e serão modificados em breve devido a novos recursos (Server Components).
-<br /><br />
+destina às renderizações, e o useState à persistência de dados. Isso em prol do capricho de animações e da
 
-Vale ressaltar que o uso do NEXT serve ao propósito de diversificação e evolução dos projetos, mas no mundo real
-seria totalmente desnecessário, pesado, e incompatível com a simples proposta deste projeto.
+mágica em renderizar telas sem alterações de estado, ou disparo de Re-renders.
 
-Um projeto mais simples e enxuto será criado como antecessor deste, por exemplo uma versão React/Next do projeto
-Light Game, mais alinhado a um 1o projeto React, idêntico quanto a funcionalidade e visual, servindo como comparativo.
 
-Destinado e indicado a possíveis estudantes como eu no passado, com implementações mais básicas e compreensíveis.
+### Conclusão do experimento
+
+Com resultados satisfatórios de início, mas inversamente proporcionais ao aumento de renders/efeitos, cabe
+
+dizer que isso SEMPRE aumentará a verbosidade do código, por manipular diretamente o DOM com JS puro.
+
+
+Mesmo que ciente disto, da indicação para fins contrários ao uso, e de fugir um pouco aos princípios do React,
+
+é um experimento possível, com algumas vantagens, em certos cenários, mas com desvantagens não tão previsíveis.
+
+
+A conclusão mais sensata, é de que não se deve utilizar esta técnica de forma repetida, suscetiva, persistida,
+
+e/ou principalmente conjunta com useState, pela previsível verbosidade e dependência de renderização ao State.
+
+
+Renderizações condicionais, sem animação/temporização (por vezes inevitáveis), além de compor os princípios de
+
+componentização, possivelmente reduziriam o código, tempo e prevenções de erro em mais da metade.
