@@ -17,7 +17,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const forma = useRef();
   const fldact = useRef();
   const dvresults = useRef();
-  // const stopAnim = useRef(false);
 
   //#region ============================== DATA OBJ functions ======
   const checkExistKname = (tipo, nome) => {
@@ -34,24 +33,13 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   //#region =========================== HTML RENDER functions ======
 
-  const scrolto = (elm) => {
-    const xxx = 'xxx';
-
-  }
   //#region ---------------------- form and global -------
   const blockForm = (toBlock) => {
-    if(toBlock){
-      fldact.current?.setAttribute('disabled','true');
-      // console.log('block form');
-      return;
-    }
-    // console.log('UNBLOCK form');
+    if(toBlock){ fldact.current?.setAttribute('disabled','true'); return; }
     fldact.current?.removeAttribute('disabled');
   }
-
   const isShowRes = () => !!dvresults.current && !dvresults.current?.classList.contains(css.hidenb);
-
-  const submit = (e) => { e.preventDefault(); console.log('submit = ' ); }
+  const submit = (e) => { e.preventDefault(); }
   const reseta = (e) => {
     if(fldact.current.getAttribute('disabled')){
       console.log('Showing Results');
@@ -59,11 +47,10 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       blockForm();
       return e.preventDefault();
     }
-    console.log('reset');
     return hideFrm(e);
   }
   const goFld = (fld) => {
-    if ( !fld || fld.nodeName !== 'FIELDSET') { console.log('noField',  ); return; }
+    if ( !fld || fld.nodeName !== 'FIELDSET') { return; }
     fldact.current.classList.remove(css.actv);
     fld.classList.add(css.actv);
     fldact.current = fld;
@@ -72,7 +59,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     if (e?.target) { e.preventDefault() }
     goFld(fldact.current.nextElementSibling);
   }
-
   const backfld = (e) => {
     e.preventDefault();
     if(isShowRes()){
@@ -83,7 +69,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     }
     goFld(fldact.current.previousElementSibling);
   }
-
   const viewElm = (cls, toHide) => {
     const el = document.querySelector('.'+cls);
     if (toHide) { el.classList.add(css.hidenb); return; }
@@ -137,7 +122,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
 
   const showDvCalc = (e) => {
-    console.log('showDvCalc',  );
     const isDvDtShow = e.target.value === 'data';
     const idx = isDvDtShow ? 0 : 1;
 
@@ -153,8 +137,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     if (typeof e === 'number') {
       btncalc = fldact.current?.querySelector('.'+css.dvsaldo+' .btncor');
       btncalc.classList.add('disable');
-      if(isSameResult(e)){ console.log('isSameResult'); return showDvResults(); }
-      console.log('calcular A DATA val=',e);
+      if(isSameResult(e)){ return showDvResults(); }
       ob = {saldoCalc: e}
     } else {
       btncalc = e.target;
@@ -163,7 +146,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       btncalc.classList.add('disable');
       const strdt = inpdt.value  + ' 00:00';
       const niuDt = new Date(strdt)
-      if(isSameResult(niuDt)){ console.log('isSameResult'); return showDvResults(); }
+      if(isSameResult(niuDt)){ return showDvResults(); }
       ob = {dtCalc: niuDt}
       e.preventDefault();
     }
@@ -182,7 +165,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   //#region --------------------- FLDSET fldpoupanca ------
   const validaPoupanca = (montante) => {
-    // const objPoupanca = { montante:0, capital:0, juros:0, tempo:0, periodo:false, isAm:false }
     const inputjuros = document.querySelector('.'+css.inptjuros);
     if(!inputjuros.validity.valid){ return false; }
     const juros = parseFloat(inputjuros.value.replace(',', '.'));
@@ -200,11 +182,9 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     if(!montante){ setPoupData(); return; }
     const objPoup = validaPoupanca(montante);
     if(objPoup){ setPoupData(objPoup); showNextFld(); return; }
-    console.log('sem objPoup',  );
   }
 
   const resetPoup = (e) => {
-    console.log('resetPoup',  );
     const inputjuros = document.querySelector('.'+css.inptjuros);
     if(inputjuros){ inputjuros.value = 1; }
     const dvhidepoup = document.querySelector('.'+css.dvpoup);
@@ -226,7 +206,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#region --------------------- FLDSET fldlucros -------
   const setaSaldos = (e) => {
     e.preventDefault();
-    console.log('setaSaldos', );
     setSaldos();
     showNextFld();
   }
@@ -283,8 +262,6 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     return (
       <div>
         <div className={css.ldvtst}>
-          <button onClick={showDados}>DADOS</button>
-          <button onClick={hideFrm}>RESET</button>
         </div>
         <div> dtHoje: {dados.dtHoje?.toLocaleString()} </div>
         <div onClick={e => showDados(e,'e')}> dtNasc: {dados.dtNasc?.toLocaleString()} </div>

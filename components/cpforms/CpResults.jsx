@@ -1,8 +1,7 @@
-import { getDiaWeek } from "@/libs/dateHelper"
 import css from "@/styles/CpResults.module.css";
 
 export default function CpResults({ dados, animStop, animEnd }){
-  console.log('CpResults --------- animStop =', animStop);
+  // console.log('CpResults --------- animStop =', animStop);
 
   const {Anual: gastoAno, Mensal: gastoMes, Diário: gastoDia} = dados.totalGasto;
   const {Anual: lucroAno, Mensal: lucroMes, Diário: lucroDia} = dados.totalLucro;
@@ -11,8 +10,6 @@ export default function CpResults({ dados, animStop, animEnd }){
   const clfx = !animStop ? `${css.dvfinal} ${css.fx}` : css.dvfinal;
 
   // --------------------------------------------
-  const fxPrc = (p) => parseFloat(p.toFixed(2));
-
   const getBrPrc = (p) => {
     if(!p || p === 0){ return (p === 0 ? '0,00' : 'xxxxxxxxxx'); }
     if(Number.isInteger(p)){ return p.toLocaleString() + ',00'; }

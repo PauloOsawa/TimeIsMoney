@@ -69,7 +69,6 @@ const getDtsRestante = (dta, dtb) => {
   totDias = parseInt(getNumDays(dtGt - testDt));
   return retEnd();
 }
-
 //#endregion =======================================
 
 //#region ----------------------------- FIELD NIVER
@@ -94,6 +93,6 @@ const setaIdade = (arNasc, dthj) => {
 /* ------------------------------- */
 
 export {
-  mesesMinDays, diasSemana, getDiaWeek, meses, ehBisexto, isFevBi, getQtdAnosBis, getDiasNoMes, getNumDays,
-  getDtsRestante, setaIdade
+  mesesMinDays, diasSemana, getDiaWeek, meses, ehBisexto, isFevBi, getQtdAnosBis,
+  getDiasNoMes, getNumDays, getDtsRestante, setaIdade
 }
