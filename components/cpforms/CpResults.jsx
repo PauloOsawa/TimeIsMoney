@@ -1,6 +1,6 @@
 import css from "@/styles/CpResults.module.css";
 
-export default function CpResults({ dados, animStop, animEnd }){
+export default function CpResults({ dados, animStop }){
   // console.log('CpResults --------- animStop =', animStop);
 
   const {Anual: gastoAno, Mensal: gastoMes, Diário: gastoDia} = dados.totalGasto;
@@ -8,7 +8,17 @@ export default function CpResults({ dados, animStop, animEnd }){
   const {Anual: saldoAno, Mensal: saldoMes, Diário: saldoDia} = dados.totalSaldos;
 
   const clfx = !animStop ? `${css.dvfinal} ${css.fx}` : css.dvfinal;
+  const resultType = dados?.lastResults?.tipo;
+  const resultLength = dados.result.length;
 
+  const countPs = {
+    msgPs: resultType === 'byVal' ? resultLength : Math.min(4, resultLength),
+    saldoPs: 3,
+    idadePs: 2,
+    carPs: !dados?.hasCar ? 0 : 2,
+  }
+
+  const sumPs = countPs.msgPs + countPs.saldoPs + countPs.idadePs + countPs.carPs;
   // --------------------------------------------
   const getBrPrc = (p) => {
     if(!p || p === 0){ return (p === 0 ? '0,00' : 'xxxxxxxxxx'); }
@@ -35,9 +45,8 @@ export default function CpResults({ dados, animStop, animEnd }){
   }
   // --------------------------------------------
   const hasResult = (tipo) => {
-    const restipo = dados?.lastResults?.tipo ?? '';
     if(!dados?.lastCalc || dados?.lastCalc === 0){ console.log('sem calc'); return false; }
-    if(restipo !== tipo){ console.log('sem tipo =='); return false; }
+    if(resultType !== tipo){ return false; }
     return dados?.lastResults?.resultado;
   }
   // --------------------------------------------
@@ -46,11 +55,11 @@ export default function CpResults({ dados, animStop, animEnd }){
     if(!lastres){ return; }
     const isNever = (lastres === 'NUNCA');
     const valsearch = dados.lastResults.valor;
-    const hasPoup = dados.temPoupanca && dados.result.length > 2;
+    const hasPoup = dados.temPoupanca && resultLength > 2;
 
     return !isNever ? (<>
       <p className={css.pbold}>{getArSpns(dados.result[0])}</p>
-      <p>{dados.result[1]}</p>
+      <p>{getArSpns(dados.result[1])}</p>
       {!!hasPoup && (<p> { getArSpns(dados.result[2]) }</p>) }
       </>) : (
       <p className={css.pbold}>Infelizmente você NUNCA irá conseguir este valor!!</p>
@@ -61,7 +70,7 @@ export default function CpResults({ dados, animStop, animEnd }){
     const lastres = hasResult('byDate');
     if(lastres === false){ return; }
     const dtsearch = dados.lastResults.valor;
-    const hasPoup = dados.temPoupanca && dados.result.length > 3;
+    const hasPoup = dados.temPoupanca && resultLength > 3;
     return (<>
       <p className={css.pbold}>
         <span>{dados.result[0]}</span>
@@ -121,6 +130,8 @@ export default function CpResults({ dados, animStop, animEnd }){
         restando {dados.diasRestPniver} dias para o próximo!!
       </p>
       {getFrasesCar()}
+      <hr />
+      <p className={css.pbold}>OBRIGADO PELA PARTICIPAÇÃO!!!</p>
     </div>
   )
 }

@@ -18,7 +18,7 @@
   line-height: 1.5em; margin: 18px auto;
 }
 .dvfinal .pbold { font-weight: bold; }
-.dvfinal :is(h3, p:nth-of-type(1)){ text-shadow: 1px 1px 1px red; }
+.dvfinal :is(h3, p:nth-of-type(1), .pbold){ text-shadow: 1px 1px 1px red; }
 
 .dvfinal p span { display: inline-block; white-space: pre-wrap; }
 .dvfinal p .nobrk { white-space: nowrap; }

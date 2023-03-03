@@ -230,8 +230,8 @@ export default function useTimeMoney(hoje) {
     if (val === 0) { return setFinalDts([0, 0, 0, 0, ...arDtIni]); }
     const temPoupanca = !!poupanca && !(Array.isArray(poupanca));
     if (temPoupanca) { setPoupanca(poupanca) }
-    console.log(' ====================== function ------ setDtsByVal ---');
-    console.log('temPoupanca =', temPoupanca, poupanca );
+    // console.log(' ====================== function ------ setDtsByVal ---');
+    // console.log('temPoupanca =', temPoupanca, poupanca );
     const [hasPoupMes, hasPoupAno] = temPoupanca ? [objPoupanca.isAm, !objPoupanca.isAm] : [false,false];
     const vmontUm = temPoupanca ? getMontantePoupanca(1) : 0;
     let [vmontMes, vmontAno] = hasPoupMes ? [vmontUm, getMontantePoupanca(12)] : [0, vmontUm]

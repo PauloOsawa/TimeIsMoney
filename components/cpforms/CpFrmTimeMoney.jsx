@@ -8,6 +8,7 @@ import CpResults from "./CpResults";
 
 export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
+  const debugMode = false;
   const {
     dados, setbirth, addMoney, setgastos, setlucros, setSaldos,
     setPoupData, calcAll, showresult, setShowresult, animStop, setAnimStop } = useTimeMoney(hoje);
@@ -25,7 +26,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
 
   const isSameResult = (val) => {
-    if(!dados?.lastCalc){ console.log('sem DADOS'); return false; }
+    if(!dados?.lastCalc){ return false; }
     const same = ((val - dados.lastCalc) === 0);
     return (same && dados.result?.length);
   }
@@ -63,8 +64,12 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     e.preventDefault();
     if(isShowRes()){
       blockForm();
-      if(animStop === false){ setAnimStop(true); }
-      console.log('NO backfld --- Showing Results stopAnim=', animStop);
+      if(animStop === false){
+        // console.log('NO backfld --- Showing Results stopAnim=', animStop);
+        setAnimStop(true);
+        return;
+      }
+      hideDvResults();
       return;
     }
     goFld(fldact.current.previousElementSibling);
@@ -103,14 +108,10 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     }
   }
   //#region ----------------- CP RESULTS functions ---------
-  const animEnd = (clearAnim) => {
+  const animEnd = () => {
     blockForm();
-    console.log('animEnd',  animStop,  clearAnim);
-    // clearAnim();
-    // if(animStop){ clearAnim(); }
-
+    console.log('animEnd',  animStop);
   }
-
   //#endregion ---------
 
   //#region --------------------- FLDSET fldcalc ----------
@@ -164,12 +165,32 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#endregion --------
 
   //#region --------------------- FLDSET fldpoupanca ------
-  const validaPoupanca = (montante) => {
-    const inputjuros = document.querySelector('.'+css.inptjuros);
-    if(!inputjuros.validity.valid){ return false; }
-    const juros = parseFloat(inputjuros.value.replace(',', '.'));
+  const goCalcField = () => {
+    showNextFld();
+    const dv = fldact.current.querySelector('div:not(:nth-child(3), .'+css.hidenb+')');
+    const inptValid = dv.querySelector('input').validity?.valid;
+    enabBtnCalc(dv.querySelector('button'), inptValid);
+  }
 
-    const selperiodo = inputjuros.nextElementSibling;
+  const validaJuros = (reset) => {
+    const inputjuros = document.querySelector('.'+css.inptjuros);
+    if(inputjuros){
+      if(reset){ inputjuros.value = 1; return; }
+      const juros = parseFloat(inputjuros.value.replace(',', '.'));
+      if(!inputjuros.validity.valid || !(juros > 0)){
+        inputjuros.value = ''; inputjuros.focus();
+        return false;
+      }
+      return juros;
+    }
+    return false;
+  }
+
+  const validaPoupanca = (montante) => {
+    const juros = validaJuros();
+    if(!juros){ return; }
+
+    const selperiodo = document.querySelector('.'+css.inptjuros).nextElementSibling;
     const periodo = selperiodo.item(selperiodo.selectedIndex).value;
 
     const isam = (periodo === 'mensal');
@@ -179,20 +200,19 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
 
   const setaPoupanca = (montante) => {
-    if(!montante){ setPoupData(); return; }
-    const objPoup = validaPoupanca(montante);
-    if(objPoup){ setPoupData(objPoup); showNextFld(); return; }
+    if(!montante){ return; }
+    const isReset = (montante === 'reset');
+    const objPoup = !isReset ? validaPoupanca(montante) : null;
+    if(objPoup || isReset){ setPoupData(objPoup); goCalcField(); }
   }
 
   const resetPoup = (e) => {
-    const inputjuros = document.querySelector('.'+css.inptjuros);
-    if(inputjuros){ inputjuros.value = 1; }
+    validaJuros('reset');
     const dvhidepoup = document.querySelector('.'+css.dvpoup);
     const dvshowpoup = document.querySelector('.'+css.dvinptspoup).parentElement;
     dvshowpoup.classList.add(css.hidenb);
     dvhidepoup.classList.remove(css.hidenb);
-    setaPoupanca();
-    showNextFld();
+    setaPoupanca('reset');
   }
 
   const showDvPoup = (e) => {
@@ -325,7 +345,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
           <div className={css.dvinptspoup}>
             <div className={css.dvjuros}>
               <label>Juros:</label>
-              <input type="text" className={css.inptjuros} defaultValue={1} pattern={"[0-9]{1,2}([,.]{1}[0-9]{1,2}){0,1}"} />
+              <input type="text" className={css.inptjuros} defaultValue={1} pattern={"[0-9]{1,2}([,.]{1}[0-9]{1,2}){0,1}"} required/>
 
               <select name="seljuros" className={css.seljuros}>
                 <option value="mensal">% ao Mês</option>
@@ -365,13 +385,14 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
     </form>
 
-    {!!showresult && (
+    {!!showresult && (<>
       <div className={`${css.dvfinal} ${css.hidenb}`} ref={dvresults}>
         <CpResults dados={dados} animStop={animStop} animEnd={animEnd} />
       </div>
-    )}
+      <button className={'btncor'} onClick={hideFrm}>FECHAR</button>
+    </>)}
 
-    {degubTags()}
+    {!!debugMode && degubTags()}
     </>
   )
 }
