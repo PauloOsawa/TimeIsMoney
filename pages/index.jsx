@@ -40,32 +40,30 @@ export default function Home(){
         </div>
 
         <div className={cldvTxt} >
-          <p>
-            Um projeto interativo, que realiza diversos cálculos financeiros, de datas, juros
-            <br /> e curiosidades diversas, tudo junto e com várias opções de escolha!
-          </p>
+          <p>Um projeto com cálculos de finanças, juros compostos, datas, e curiosidades!</p>
+
           <h3>Funciona Basicamente Assim:</h3>
-          <p>Você insere diversos tipos de gastos e lucros (anuais, mensais e até diários)!!
-          <br />Além disso, aniversários e até poupança também entram na brincadeira!!</p>
+          <p>
+            Você insere diversos tipos de gastos e lucros!! (anuais, mensais e até diários)
+          </p>
+          <p>Poupança e data de nascimento também!!</p>
 
           <div className={css.dvopts}>
-            <p>Depois de escolher e inserir tudo que tiver vontade, você poderá escolher:</p>
+            <p>Depois, poderá escolher e definir qualquer valor desejado e saber:</p>
             <ul>
-              <li>- Qualquer DATA futura, e saber quanto de SALDO terá naquela data!</li>
+              <li>- A DATA prevista do SALDO desejado!</li>
               <li>ou</li>
-              <li>- Qualquer SALDO, e saber a DATA exata que irá conseguir (ou não)!</li>
+              <li>- O SALDO previsto na DATA desejada!</li>
             </ul>
           </div>
 
-          <p>
-            Para a brincadeira ficar legal, os campos são exibidos e intercalados progressivamente
-            <br />com curiosidades, projetados para uso de celular, e também para não te matar de tédio!
-          </p>
-          <p>
-            OBS.: <b>Não armazenamos cookies nem quaisquer informações</b> suas OK?
-            <br />Você pode inventar tudo, mas pra conferir depois será mais difícil!
-          </p>
-          <p>Lembrando que todo abatimento será sempre no 1o dia do mês ok?</p>
+          <p>As telas são interativas, projetadas para seu celular, e para não te matar de tédio!</p>
+
+          <p><b>Não armazenamos cookies nem dados!!</b></p>
+
+          <p>Você pode inventar tudo, mas pra conferir depois fica difícil! <br />(experiência própria rs)</p>
+
+          <p>E abatimentos sempre no dia 01 OK?</p>
 
           <div className={css.dvinit}>
             <h2>VAMOS COMEÇAR???</h2>
