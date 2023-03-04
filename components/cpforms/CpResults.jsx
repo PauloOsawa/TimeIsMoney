@@ -11,14 +11,6 @@ export default function CpResults({ dados, animStop }){
   const resultType = dados?.lastResults?.tipo;
   const resultLength = dados.result.length;
 
-  const countPs = {
-    msgPs: resultType === 'byVal' ? resultLength : Math.min(4, resultLength),
-    saldoPs: 3,
-    idadePs: 2,
-    carPs: !dados?.hasCar ? 0 : 2,
-  }
-
-  const sumPs = countPs.msgPs + countPs.saldoPs + countPs.idadePs + countPs.carPs;
   // --------------------------------------------
   const getBrPrc = (p) => {
     if(!p || p === 0){ return (p === 0 ? '0,00' : 'xxxxxxxxxx'); }

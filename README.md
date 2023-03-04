@@ -1,73 +1,56 @@
 # Time is Money
 
-Um Projeto <b>EM FASE DE DESENVOLVIMENTO</b> com <b>ênfase em cálculos de data e finanças</b>.
+Um Projeto com <b>ÊNFASE EM CÁLCULOS DE DATA E FINANÇAS</b> em fase de <b>desenvolvimento</b>.
 
-Basicamente, recebe valores de input de datas e finanças sazonais de gastos e lucros.
+Basicamente, recebe os valores iniciais de datas, gastos, lucros e periodicidade, efetuando<br />
+todos os cálculos de abatimento financeiro e temporal <b>PARA UMA DATA OU VALOR DESEJADO</b>.
 
-Efetua todos os cálculos de abatimento financeiro e temporal para uma data ou valor desejado.
+Valores obtidos em paralelo são exibidos como curiosidades, tais como dias de vida, etc...
 
-Aproveita para exibir valores obtidos em paralelo como curiosidades, tais como dias de vida, etc...
-<br />
+Para um desafio mais interessante, foram implementados abatimentos diários e juros compostos.
+
+Interessante até demais, isso quadruplicou código, tempo, e testes, além de facilmente gerar<br />
+resultados e erros com anos de diferença, às vezes por um simples ano bissexto não calculado.
+
+Obs.: Autônomos que ganham por dia, e pagam pensão alimentícia irão concordar!!! rs
+
 
 ## Aplicação e Conteúdo
 
-Utiliza o framework NEXT.js para se diferenciar de projetos anteriores, não sendo requisito necessário.
+Utiliza o framework NEXT.js, para diversificação de projetos, não sendo requisito necessário.
 
-Realiza renderização primária entre texto de apresentação, e o formulário, com uma única página.
-<br />
+Realiza renderização primária com uma única página, entre texto de apresentação e o formulário.
 
-O formulário CpFrmTimeMoney é o controlador principal sendo responsável pela importação, renderização,
+O formulário 'CpFrmTimeMoney', controlador principal, é responsável pela importação, renderização,<br />
+e comunicação entre hook customizado e demais componentes, com passagem e obtenção de métodos e valores.
 
-e comunicação de/entre demais componentes e hook customizado, com passagem/obtenção de métodos e valores.
+Suas funções tratam lógica de renderização e erros, utilizando prioritariamente o hook useRef para isso.
 
-Suas funções tratam erros e lógica de renderização, utilizando apenas o hook useRef para isso.
-<br />
+O hook customizado 'useTimeMoney' é responsável pelas lógicas de cálculo, além da persistência <br />
+de seus valores, utilizando apenas o hook useState para isso.
 
-O hook customizado 'useTimeMoney' é responsável pelas lógicas de cálculo, além da persistência de
-
-seus valores, utilizando apenas o hook useState para isso(experimental).
-
-Suas funções contemplam cálculos específicos, enquanto as funções mais genéricas são desmembradas em mais
-
+Suas funções contemplam cálculos específicos, enquanto as funções mais genéricas são desmembradas em mais <br />
 arquivos e importadas, visando tanto a utilidade de reuso, como redução de código neste arquivo(+500 linhas).
 
-
-Os componentes de input possuem sua própria lógica quanto a validação e submissão de dados.
+Os componentes de input possuem sua própria lógica quanto a validação e submissão de dados, mas <br />
+com algumas intervenções pelo formulário(pai), quando necessário.
 <br />
 
 ## Desenvolvimento e Aviso
 
-O <b>planejamento prévio se restringiu a sua proposta de cálculos</b>, com funções massivamente testadas.
+O planejamento <b>se restringe a sua proposta de cálculos</b>, com funções massivamente testadas.
 
-Todo o resto, principalmente renderizações, possuem caráter experimental, de testes e estudo, apenas com a
+O uso de somente 2 hooks busca evolução progressiva, mas já trilha um caminho opcional e livre.
 
-premissa incondicional ao uso de somente 2 hooks, buscando 'simplicidade' e evolução progressiva de projetos.
+Todo o resto, principalmente as renderizações, possuem caráter experimental, de estudo e testes.
 
+### Não tome o projeto como exemplo, e sim um estudo, de explorações peculiares e incomuns.
 
-O <b>experimento</b> se dá por testar e manter uma <b>lógica inversa de renderização</b>, onde o useRef se
+O <b>experimento</b> se dá por testar e manter uma <b>lógica inversa de renderização</b>, onde <br />
+o useRef se destina às renderizações, e o useState à persistência de dados.
 
-destina às renderizações, e o useState à persistência de dados. Isso em prol do capricho de animações e da
+As motivações foram o capricho de animações, e telas renderizadas sem alterações de estado ou Re-renders.
 
-mágica em renderizar telas sem alterações de estado, ou disparo de Re-renders.
+Resultados interessantes e até satisfatórios de início, mas impossíveis de manter com useState.
 
-
-### Conclusão do experimento
-
-Com resultados satisfatórios de início, mas inversamente proporcionais ao aumento de renders/efeitos, cabe
-
-dizer que isso SEMPRE aumentará a verbosidade do código, por manipular diretamente o DOM com JS puro.
-
-
-Mesmo que ciente disto, da indicação para fins contrários ao uso, e de fugir um pouco aos princípios do React,
-
-é um experimento possível, com algumas vantagens, em certos cenários, mas com desvantagens não tão previsíveis.
-
-
-A conclusão mais sensata, é de que não se deve utilizar esta técnica de forma repetida, suscetiva, persistida,
-
-e/ou principalmente conjunta com useState, pela previsível verbosidade e dependência de renderização ao State.
-
-
-Renderizações condicionais, sem animação/temporização (por vezes inevitáveis), além de compor os princípios de
-
-componentização, possivelmente reduziriam o código, tempo e prevenções de erro em mais da metade.
+Renderizações condicionais, sem animação, possivelmente reduziriam tempo e código em mais da metade.

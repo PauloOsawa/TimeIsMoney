@@ -1,13 +1,6 @@
-import { useState } from 'react'
 import css from '@/styles/CpHeader.module.css'
 
 export default function Header() {
-  
-  const [ user, signOut ]  = useState();
-
-  const fnUser = (e) => {
-    e.preventDefault(); if (user) { signOut(); }
-  }
 
   return (
     <header className={css.header}>
@@ -25,8 +18,8 @@ export default function Header() {
       </div>
 
       <div className={css.dvuser}>
-        <span className={'titb'}>Sejam Bem-Vindos{user && ' ' + user?.nome + '!'}!</span>
-      </div> 
+        <span className={'titb'}>Sejam Bem-Vindos!</span>
+      </div>
     </header>
   )
 }

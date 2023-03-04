@@ -22,7 +22,7 @@
 
 .dvfinal p span { display: inline-block; white-space: pre-wrap; }
 .dvfinal p .nobrk { white-space: nowrap; }
-/* .dvfinal p:is(:nth-last-of-type(1), :nth-last-of-type(2)){ font-weight: 500;  } */
+
 .dvfinal:not(.fx) h3{ animation: animscrol 1s both; }
 /* ------------------------- DV FINAL FX -------------------- */
 .dvfinal.fx p{ animation: animp 5s ease both; }
