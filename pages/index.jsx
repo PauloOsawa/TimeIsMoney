@@ -4,15 +4,18 @@ import css from '@/styles/Home.module.css'
 import CpRelogio from '@/components/design/CpRelogio'
 import CpFrmTimeMoney from '@/components/cpforms/CpFrmTimeMoney'
 
-export default function Home({ hoje }) {
+export default function Home(){
 
   const [cldvTxt, setCldvTxt] = useState(css.dvtxt)
+  const [sthoje, setSthoje] = useState()
   const frmView = !(cldvTxt === css.dvtxt)
 
   // ---------------------------------------------------
   const scrola = (cl) => {
+    const hhh = Date.now();
+    setSthoje(hhh);
     setCldvTxt(cl);
-    document.querySelector('.'+css.dvtitle).scrollIntoView({ block:'start', behavior: 'auto'});
+    document.querySelector('.'+css.dvtitle).scrollIntoView({ block:'start', behavior: 'smooth'});
   }
   const iniciar = () => scrola(`${css.dvtxt} ${css.hiden}`);
   function hideFrm(){ if (cldvTxt !== css.dvtxt) { scrola(css.dvtxt); } }
@@ -29,8 +32,9 @@ export default function Home({ hoje }) {
       </Head>
       <main className={css.main}>
         <div className='metalbox'> <h1 className='tita'>Time Is Money</h1> </div>
+
         <div className={css.dvtitle}>
-          <CpRelogio hoje={hoje} />
+          <CpRelogio />
           <h1>Time Is Money</h1>
           <div className={css.dvmoney}> </div>
         </div>
@@ -69,13 +73,9 @@ export default function Home({ hoje }) {
           </div>
         </div>
 
-        {!!frmView && <CpFrmTimeMoney hoje={hoje} hideFrm={hideFrm} />}
+        {!!frmView && <CpFrmTimeMoney hoje={sthoje} hideFrm={hideFrm} />}
 
       </main>
     </>
   )
-}
-// ---------------------------------------------------
-export async function getStaticProps(){
-  return { props: { hoje: Date.now() }}
 }

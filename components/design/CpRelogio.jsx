@@ -9,9 +9,10 @@ export default function CpRelogio({ hoje }){
   useEffect(() => {
     if (!don) {
       const dr = drel.current;
-      dr.style.setProperty('--hours', new Date().getHours());
-      dr.style.setProperty('--mins', new Date().getMinutes());
-      dr.style.setProperty('--secs', new Date().getSeconds());
+      const dt = new Date();
+      dr.style.setProperty('--hours', dt.getHours());
+      dr.style.setProperty('--mins', dt.getMinutes());
+      dr.style.setProperty('--secs', dt.getSeconds());
       don = true;
     }
   }, [])

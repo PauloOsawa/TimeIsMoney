@@ -108,10 +108,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     }
   }
   //#region ----------------- CP RESULTS functions ---------
-  const animEnd = () => {
-    blockForm();
-    console.log('animEnd',  animStop);
-  }
+
   //#endregion ---------
 
   //#region --------------------- FLDSET fldcalc ----------
@@ -387,7 +384,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
     {!!showresult && (<>
       <div className={`${css.dvfinal} ${css.hidenb}`} ref={dvresults}>
-        <CpResults dados={dados} animStop={animStop} animEnd={animEnd} />
+        <CpResults dados={dados} animStop={animStop} />
       </div>
       <button className={'btncor'} onClick={hideFrm}>FECHAR</button>
     </>)}
