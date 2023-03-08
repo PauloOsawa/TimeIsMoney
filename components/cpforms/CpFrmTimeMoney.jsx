@@ -145,7 +145,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       const inpdt = btncalc.previousElementSibling;
       if(inpdt.nodeName !== 'INPUT' || !inpdt?.validity?.valid){ console.log('invalido'); return; }
       btncalc.classList.add('disable');
-      const strdt = inpdt.value  + ' 00:00';
+      const strdt = inpdt.value  + ' 23:59';
       const niuDt = new Date(strdt)
       if(isSameResult(niuDt)){ return showDvResults(); }
       ob = {dtCalc: niuDt}
