@@ -2,9 +2,10 @@
 .dvfinal{
   max-height: 300px; height: auto; visibility: visible;
   margin: 20px auto; padding: 25px 7px; overflow-y: scroll;
-  scroll-snap-type: block mandatory; scroll-behavior: smooth;
-  /* overscroll-behavior: contain; */
-  /* scroll-snap-stop: always;  */
+  scroll-snap-type: block proximity;
+  /* scroll-snap-type: block mandatory;  */
+  scroll-behavior: smooth;
+  /* scroll-snap-stop: always; */
   color: white; background: var(--dgrda);
   -webkit-mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);
   mask: center / 100% no-repeat linear-gradient(to bottom, transparent, black 5% 95%, transparent);

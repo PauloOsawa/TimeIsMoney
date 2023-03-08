@@ -1,10 +1,9 @@
 .frma {
-  width: 96%; max-width: 1024px; height: auto; max-height: 99vh;
+  width: 96%; max-width: 1024px; height: auto;
   padding: 0 1.4vw; margin: 10px auto; border-radius: 6px;
   border: 1px solid rgb(197, 197, 197); box-shadow: 2px 2px 4px rgb(100, 100, 100);
-  box-sizing: border-box;
-  /* transition: max-height .2s .2s; */
 }
+
 .frma > h1 {
   font-size: 2.3em; font-style: italic; color: white;
   text-shadow: 2px 2px 2px var(--corb);
@@ -12,18 +11,23 @@
 
 .lbtns { display: flex; justify-content: flex-end; gap: 30px; margin: 15px auto; }
 /*#region ----------------------------------------------- FIELDS GLOBAL  ----------- */
-/* .fld:not(.actv) { height: 0; padding: 0; margin: 0; } */
-.fld { width: 100%; height: auto; margin: 8px auto; padding: 1.4vw; }
+.fld {
+  width: 100%; height: 0; margin: 0 auto; padding: 0;
+  opacity: 0; visibility: hidden;
+}
 
 .fld.actv {
-  max-height: 80vh; opacity: 1; visibility: visible; transition: max-height .3s, visibility .2s;
+  max-height: 100%; height: auto;  margin: 8px auto;
+  padding: 1.4vw; opacity: 1; visibility: visible;
+  transition: opacity .6s;
 }
 
 .hiden, .hidenb, .fld:not(.actv) {
-  max-height: 0; visibility: hidden; display: none;
-  transition: max-height .2s, visibility .1s;
+  height: 0; max-height: 0; visibility: hidden;
+  padding: 0; margin: 0;
 }
-.hiden > *, .hidenb > *, .fld:not(.actv) > * { visibility: hidden; }
+
+.hiden > *, .hidenb > *, .fld:not(.actv) > * { display: none; }
 
 .fld legend { font-style: italic; padding: 0 7px; vertical-align: text-top; }
 .fld h3 { font-style: italic; }
@@ -34,7 +38,9 @@
 .fld > button, .fld [type="radio"] { margin: 10px; }
 .flxcol { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; }
 /*#endregion ------------------------------ */
-.dvDt, .dvsaldo { padding-top: 15px; border: 1px inset whitesmoke; }
+.dvDt, .dvsaldo { padding: 15px; border: 1px inset whitesmoke; }
+.dvDt button, .dvsaldo button{ margin-top: 15px; }
+.dvDt.hidenb, .dvsaldo.hidenb { padding: 0; margin:0; }
 /*#region --------------------------- FLD CAR -------- */
 .dvcar > button { margin: 10px; }
 /*#endregion ------------------------------ */
@@ -54,14 +60,18 @@
 /*#endregion ------------------------------ */
 
 /*#region ------------------------- DV RESULTS ----- */
-.dvfinal{ margin: 20px auto; padding: 0; background-color: red; }
-.dvfinal.hidenb{
-  margin: 0; max-height: 0; visibility: hidden; opacity: 0; display: block;
-  transition: max-height .3s, visibility .2s, opacity .2s;
+.dvfinal{ margin: 0; padding: 0; height: auto; display: block; background-color: red; }
+
+.dvfinal.hidenb, .dvfinal.hidenb > *{
+  display: block; margin: 0; padding: 0;
 }
-.dvfinal.hidenb > *{ max-height: 0; margin: 0; transition: max-height .2s; }
+.dvfinal.hidenb{
+  max-height: 0; visibility: hidden; opacity: 0;
+  transition: max-height .2s, visibility .2s, opacity .2s;
+}
+
 .dvfinal:not(.hidenb) {
-  max-height: 350px; height: auto; visibility: visible; opacity: 1;
+  margin: 20px auto; max-height: 350px; height: auto; visibility: visible; opacity: 1;
   transition: max-height .2s, visibility .2s, opacity .2s;
 }
 /*#endregion ------------------------------ */

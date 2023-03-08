@@ -9,6 +9,7 @@ import CpResults from "./CpResults";
 export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   const debugMode = false;
+  // const debugMode = true;
   const {
     dados, setbirth, addMoney, setgastos, setlucros, setSaldos,
     setPoupData, calcAll, showresult, setShowresult, animStop, setAnimStop } = useTimeMoney(hoje);
@@ -55,6 +56,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     fldact.current.classList.remove(css.actv);
     fld.classList.add(css.actv);
     fldact.current = fld;
+    fld.scrollIntoView({ block:'start', behavior: 'smooth' });
   }
   const showNextFld = (e) => {
     if (e?.target) { e.preventDefault() }
@@ -89,8 +91,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       const dvrs = document.querySelector('.'+css.dvfinal);
       if(dvrs){
         dvrs.classList.remove(css.hidenb);
-        dvrs.scrollIntoView({ block:'center', behavior: 'smooth'});
-        // dvrs.scrollTo({ top:0, behavior: 'smooth'});
+        dvrs.scrollIntoView({ block:'start', behavior: 'smooth'});
       }
       clearTimeout(timeshow);
     }, 100);
@@ -99,6 +100,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const hideDvResults = () => {
     const dvr = document.querySelector('.'+css.dvfinal);
     if(dvr){ dvr.classList.add(css.hidenb); }
+    fldact.current.scrollIntoView({ block:'start', behavior: 'smooth'});
     blockForm();
     if(showresult === true){
       const timehide = setTimeout(() =>{

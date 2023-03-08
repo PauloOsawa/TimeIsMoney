@@ -9,12 +9,6 @@ Valores obtidos em paralelo são exibidos como curiosidades, tais como dias de v
 
 Para um desafio mais interessante, foram implementados abatimentos diários e juros compostos.
 
-Interessante até demais, isso quadruplicou código, tempo, e testes, além de facilmente gerar<br />
-resultados e erros com anos de diferença, às vezes por um simples ano bissexto não calculado.
-
-Obs.: Autônomos que ganham por dia, e pagam pensão alimentícia irão concordar!!! rs
-
-
 ## Aplicação e Conteúdo
 
 Utiliza o framework NEXT.js, para diversificação de projetos, não sendo requisito necessário.
@@ -24,10 +18,10 @@ Realiza renderização primária com uma única página, entre texto de apresent
 O formulário 'CpFrmTimeMoney', controlador principal, é responsável pela importação, renderização,<br />
 e comunicação entre hook customizado e demais componentes, com passagem e obtenção de métodos e valores.
 
-Suas funções tratam lógica de renderização e erros, utilizando prioritariamente o hook useRef para isso.
+Suas funções tratam lógica de renderização e erros, utilizando <b>opcionalmente</b> apenas o hook useRef para isso.
 
-O hook customizado 'useTimeMoney' é responsável pelas lógicas de cálculo, além da persistência <br />
-de seus valores, utilizando apenas o hook useState para isso.
+O hook customizado 'useTimeMoney' é responsável pelas lógicas de cálculo, além da persistência de seus <br />
+valores, utilizando <b>opcionalmente</b> apenas o hook useState para isso.
 
 Suas funções contemplam cálculos específicos, enquanto as funções mais genéricas são desmembradas em mais <br />
 arquivos e importadas, visando tanto a utilidade de reuso, como redução de código neste arquivo(+500 linhas).
@@ -40,17 +34,15 @@ com algumas intervenções pelo formulário(pai), quando necessário.
 
 O planejamento <b>se restringe a sua proposta de cálculos</b>, com funções massivamente testadas.
 
-O uso de somente 2 hooks busca evolução progressiva, mas já trilha um caminho opcional e livre.
+O uso de apenas 2 hooks foi <b>condição opcional</b> deste 1o repositório React, e todo<br />
+desenvolvimento posterior ao 'core', possui <b>caráter experimental de estudo</b> e testes.
 
-Todo o resto, principalmente as renderizações, possuem caráter experimental, de estudo e testes.
-
-### Não tome o projeto como exemplo, e sim um estudo, de explorações peculiares e incomuns.
-
-O <b>experimento</b> se dá por testar e manter uma <b>lógica inversa de renderização</b>, onde <br />
+O experimento se dá por testar e manter uma <b>lógica inversa de renderização</b>, onde <br />
 o useRef se destina às renderizações, e o useState à persistência de dados.
 
-As motivações foram o capricho de animações, e telas renderizadas sem alterações de estado ou Re-renders.
+Em prol do capricho de animações, renderizações sem estado, estudo de re-renders e etc,<br />
+este experimento trouxe resultados tanto positivos como negativos, além dos conflitantes!
 
-Resultados interessantes e até satisfatórios de início, mas impossíveis de manter com useState.
+<b> Portanto, abstraia resultados interessantes e seu custo, sem seguir o código como um exemplo!</b>
 
-Renderizações condicionais, sem animação, possivelmente reduziriam tempo e código em mais da metade.
+Renderizações simples com useState, condicionais e sem animação, reduziriam código em mais da metade.

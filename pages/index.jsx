@@ -12,13 +12,18 @@ export default function Home(){
 
   // ---------------------------------------------------
   const scrola = (cl) => {
+    const dvtit = document.querySelector('.'+css.dvtitle);
     const hhh = Date.now();
     setSthoje(hhh);
     setCldvTxt(cl);
-    document.querySelector('.'+css.dvtitle).scrollIntoView({ block:'start', behavior: 'smooth'});
+    dvtit.scrollIntoView({ block:'start', behavior: 'smooth' });
   }
+
   const iniciar = () => scrola(`${css.dvtxt} ${css.hiden}`);
-  function hideFrm(){ if (cldvTxt !== css.dvtxt) { scrola(css.dvtxt); } }
+
+  const hideFrm = () => {
+    if (cldvTxt !== css.dvtxt){ scrola(css.dvtxt); }
+  }
 
   return (
     <>
@@ -35,33 +40,37 @@ export default function Home(){
 
         <div className={css.dvtitle}>
           <CpRelogio />
-          <h1>Time Is Money</h1>
+          <h1> is </h1>
           <div className={css.dvmoney}> </div>
         </div>
 
         <div className={cldvTxt} >
-          <p>Um projeto com cálculos de finanças, juros compostos, datas, e curiosidades!</p>
+          <p>Um projeto com cálculos de <b>finanças e datas</b>, incluindo juros compostos e curiosidades!</p>
 
           <h3>Funciona Basicamente Assim:</h3>
+
+          <p>Você terá opção desses 2 tipos de cálculo, além de definir seus valores!</p>
+
           <p>
-            Você insere diversos tipos de gastos e lucros!! (anuais, mensais e até diários)
+            Só precisamos de 01 data (nascimento), e 01 tipo de cada gasto e lucro para isso, <br />
+            podendo inserir quantos desejar.
           </p>
-          <p>Poupança e data de nascimento também!!</p>
+          <p>Além de opções anuais, mensais e até diárias, poderá definir uma poupança!</p>
 
           <div className={css.dvopts}>
-            <p>Depois, poderá escolher e definir qualquer valor desejado e saber:</p>
+            <p>Depois, escolher e definir qualquer:</p>
             <ul>
-              <li>- A DATA prevista do SALDO desejado!</li>
-              <li>ou</li>
-              <li>- O SALDO previsto na DATA desejada!</li>
+              <li>- DATA para calcular o SALDO!</li>
+              <li>ou qualquer</li>
+              <li>- SALDO para calcular a DATA!</li>
             </ul>
           </div>
 
           <p>As telas são interativas, projetadas para seu celular, e para não te matar de tédio!</p>
 
-          <p><b>Não armazenamos cookies nem dados!!</b></p>
+          <p><b>Não armazenamos os dados inseridos!!</b></p>
 
-          <p>Você pode inventar tudo, mas pra conferir depois fica difícil! <br />(experiência própria rs)</p>
+          <p>Você pode inventar tudo, mas pra conferir depois fica difícil!</p>
 
           <p>E abatimentos sempre no dia 01 OK?</p>
 

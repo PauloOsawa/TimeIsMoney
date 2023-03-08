@@ -57,7 +57,7 @@ li { line-height: 1.5em; }
 
 header, main, footer { width: 100%; overflow: hidden; }
 header, footer { min-height: 13vh; height: auto; padding: 10px 20px; }
-main { min-height: 73vh; height: auto; padding:0 0 10px 0; }
+main { min-height: 74vh; height: auto; padding:0 0 10px 0; }
 /*#endregion*/
 
 /*#region ========================================== FORMS ==== */

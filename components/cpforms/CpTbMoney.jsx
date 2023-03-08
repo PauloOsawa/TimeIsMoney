@@ -41,6 +41,7 @@ export default function CpTbMoney({ title, valores, setaVals, voltar, fecha }) {
   const addVals = (e) => {
     e.preventDefault();
     const arvals = validaInputs();
+    pmsg.current.scrollIntoView({ block:'start', behavior: 'smooth' });
     if (!arvals || arvals[1] === 0) {
       showMsg('Corrija os valores vazios ou vermelhos!!');
       return;
