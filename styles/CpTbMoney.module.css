@@ -49,3 +49,6 @@
 .cents { width: 70px; }
 
 /*#endregion ----------- */
+.selfreq, .btadd{
+  background: linear-gradient(1deg, #f5f5f5 24%, #d1d1d1 46%, #ffffff 71%);
+}

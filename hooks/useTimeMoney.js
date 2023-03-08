@@ -453,6 +453,7 @@ export default function useTimeMoney(hoje) {
 
     txtTotal += getBrPrc(totalPoup) + (totalPoup < 0 ? ' DEVEDOR!!' : '!!');
     arTxt.push(txtTotal);
+    arTxt.push(txt);
     arTxt.push("Com saldo de lucros/gastos de R$ " + getBrPrc(total) + ", ");
     arTxt.push("somado a RENDA de sua poupança, ");
     arTxt.push("que será de R$ " + getBrPrc(difMont) + "!!");

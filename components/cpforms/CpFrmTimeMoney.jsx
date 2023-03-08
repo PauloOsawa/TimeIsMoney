@@ -91,7 +91,8 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
       const dvrs = document.querySelector('.'+css.dvfinal);
       if(dvrs){
         dvrs.classList.remove(css.hidenb);
-        dvrs.scrollIntoView({ block:'start', behavior: 'smooth'});
+        const foot = document.querySelector('footer');
+        foot.scrollIntoView({ block:'end', behavior: 'smooth'});
       }
       clearTimeout(timeshow);
     }, 100);

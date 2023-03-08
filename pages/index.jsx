@@ -45,24 +45,22 @@ export default function Home(){
         </div>
 
         <div className={cldvTxt} >
-          <p>Um projeto com cálculos de <b>finanças e datas</b>, incluindo juros compostos e curiosidades!</p>
+          <p>Um projeto com cálculos de <b>data e finanças</b>, incluindo juros compostos e curiosidades!</p>
 
           <h3>Funciona Basicamente Assim:</h3>
 
-          <p>Você terá opção desses 2 tipos de cálculo, além de definir seus valores!</p>
+          <p>Você pode inserir diversos tipos de gastos e lucros (anuais, mensais e até diários).</p>
 
-          <p>
-            Só precisamos de 01 data (nascimento), e 01 tipo de cada gasto e lucro para isso, <br />
-            podendo inserir quantos desejar.
-          </p>
-          <p>Além de opções anuais, mensais e até diárias, poderá definir uma poupança!</p>
+          <p>Inclusive poupança, além de uma data em conjunto, para um mesmo cálculo!</p>
 
+          <p>Com base nesses dados, calcularemos todos os abatimentos financeiros até um valor final.</p>
+          <p>Para QUANDO ou QUANTO quiser!</p>
           <div className={css.dvopts}>
-            <p>Depois, escolher e definir qualquer:</p>
+            <p>Poderá escolher e definir qualquer:</p>
             <ul>
-              <li>- DATA para calcular o SALDO!</li>
+              <li>- DATA para calcularmos o SALDO!</li>
               <li>ou qualquer</li>
-              <li>- SALDO para calcular a DATA!</li>
+              <li>- SALDO para calcularmos a DATA!</li>
             </ul>
           </div>
 
