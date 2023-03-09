@@ -45,16 +45,26 @@ export default function Home(){
         </div>
 
         <div className={cldvTxt} >
-          <p>Um projeto com cálculos de <b>data e finanças</b>, incluindo juros compostos e curiosidades!</p>
+          <p>Um projeto com cálculos de <b>data e finanças</b>,
+            incluindo juros compostos e curiosidades!
+          </p>
 
           <h3>Funciona Basicamente Assim:</h3>
 
-          <p>Você pode inserir diversos tipos de gastos e lucros (anuais, mensais e até diários).</p>
+          <p>
+            Você pode inserir diversos <b>gastos e lucros </b>
+            <span>(anuais, mensais, e até diários)</span>
+          </p>
+          <p>
+            Inclusive uma <b>poupança</b> com juros,
+            <span> além de <b>datas</b> para cálculo conjunto!</span>
+          </p>
+          <p>
+            E com apenas esses dados, a proposta é de
+            <span> resultados finais/parciais com data e saldo</span>
+          </p>
+          <p>para QUANDO ou QUANTO quiser!</p>
 
-          <p>Inclusive poupança, além de uma data em conjunto, para um mesmo cálculo!</p>
-
-          <p>Com base nesses dados, calcularemos todos os abatimentos financeiros até um valor final.</p>
-          <p>Para QUANDO ou QUANTO quiser!</p>
           <div className={css.dvopts}>
             <p>Poderá escolher e definir qualquer:</p>
             <ul>
@@ -64,13 +74,16 @@ export default function Home(){
             </ul>
           </div>
 
-          <p>As telas são interativas, projetadas para seu celular, e para não te matar de tédio!</p>
+          <p>
+            As telas são interativas, projetadas para celular,
+            <span> e para não te matar de tédio!</span>
+          </p>
 
           <p><b>Não armazenamos os dados inseridos!!</b></p>
 
-          <p>Você pode inventar tudo, mas pra conferir depois fica difícil!</p>
+          <p>Você pode inventar tudo, voltar e conferir!</p>
 
-          <p>E abatimentos sempre no dia 01 OK?</p>
+          <p>E abatimentos mês/ano sempre dia 01 OK?</p>
 
           <div className={css.dvinit}>
             <h2>VAMOS COMEÇAR???</h2>

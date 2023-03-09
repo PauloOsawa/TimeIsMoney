@@ -4,8 +4,7 @@
 }
 
 .dvtitle > h1 {
-  font-size: 3em; font-style: italic;
-  width: 70%;
+  font-size: 3em; font-style: italic; width: 70%;
   color: white; -webkit-text-fill-color: white;
   line-height: 1em; padding: 0; margin: 0; flex: 0 3 auto;
   background:
@@ -27,14 +26,14 @@
 
 .dvtxt {
   width: 97%; max-width: 1024px; max-height: 1000px; height: auto;
-  margin: 10px auto; padding: 1vh 1.5vh; visibility: visible; opacity: 1;
-  box-shadow: 2px 2px 4px rgb(100, 100, 100); overflow: hidden;
-  transition: max-height .2s;
+  margin: 8px auto; padding: .5em; visibility: visible;
+  opacity: 1; box-shadow: 2px 2px 4px rgb(100, 100, 100);
+  overflow: hidden; transition: max-height .2s;
 }
 
 .hiden {
-  max-height: 0; padding: 0; margin: 0 auto; visibility: hidden; opacity: 0;
-  transition: max-height .25s -.1s;
+  max-height: 0; padding: 0; margin: 0 auto; visibility: hidden;
+  opacity: 0; transition: max-height .25s -.1s;
 }
 /* ---------------------------------------------------------- */
 .dvopts { font-size: 1.1em; font-style: italic; font-weight:bolder; }
@@ -42,22 +41,24 @@
 .dvtxt h3, .dvopts li{ color: var(--corb); }
 
 .dvinit {
-  width: 92%; height: auto; margin: 15px auto;
+  width: 98%; height: auto; margin: 12px auto;
   display: flex; justify-content: center;
-  align-items: center; gap: 18px;
+  align-items: center; gap: calc(12px + 1vw);
   color: rgb(220, 0, 0);
 }
 
 .dvinit > h2 {
   font-weight: bold; font-style: italic;
-  width: fit-content; padding: 0;
+  width: fit-content; padding: 0; flex: none;
   text-shadow: 1px 2px 2px rgb(83, 83, 83);
 }
+/*#region ============================================ */
+.dvtxt p{ padding: .3em; }
+.dvtxt p span { display: inline-block; white-space: pre-wrap; }
 
-/*#region ===================================== media screen =============== */
+/*#region =============================== media screen ============ */
 
-@media screen and (max-width: 600px) {
-  /* .dvtitle > h1::before, .dvtitle > h1::after { content: none; } */
-
+@media screen and (max-width: 380px) {
+  .dvinit { font-size: 94%; }
 }
 /* #endregion */
