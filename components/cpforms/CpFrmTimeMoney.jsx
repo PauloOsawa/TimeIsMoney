@@ -23,7 +23,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   //#region ============================== DATA OBJ functions ======
   const checkExistKname = (tipo, nome) => {
     const ob = (tipo in dados) ? dados[tipo].find(obj => obj.nome === nome) : false;
-    return !!ob;
+    return ob;
   }
 
   const isSameResult = (val) => {
@@ -44,7 +44,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   const submit = (e) => { e.preventDefault(); }
   const reseta = (e) => {
     if(fldact.current.getAttribute('disabled')){
-      console.log('Showing Results');
+      // console.log('Showing Results');
       if(animStop === false){ setAnimStop(true); }
       blockForm();
       return e.preventDefault();
@@ -53,10 +53,12 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
   const goFld = (fld) => {
     if ( !fld || fld.nodeName !== 'FIELDSET') { return; }
+    fldact.current.setAttribute('disabled','true');
     fldact.current.classList.remove(css.actv);
     fld.classList.add(css.actv);
     fldact.current = fld;
     fld.scrollIntoView({ block:'start', behavior: 'smooth' });
+    fld.removeAttribute('disabled');
   }
   const showNextFld = (e) => {
     if (e?.target) { e.preventDefault() }
@@ -176,12 +178,13 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
     const inputjuros = document.querySelector('.'+css.inptjuros);
     if(inputjuros){
       if(reset){ inputjuros.value = 1; return; }
-      const juros = parseFloat(inputjuros.value.replace(',', '.'));
+      const strJuros = inputjuros.value.replace(',', '.');
+      const juros = parseFloat(strJuros);
       if(!inputjuros.validity.valid || !(juros > 0)){
         inputjuros.value = ''; inputjuros.focus();
         return false;
       }
-      return juros;
+      return strJuros;
     }
     return false;
   }
@@ -233,9 +236,14 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
 
   //#region --------------------- FLDSET fldcar ----------
   const setIpva = (ipva, compPrice) => {
-    if (!checkExistKname('gastos', 'IPVA')) {
+    const dadosIpva = checkExistKname('gastos', 'IPVA');
+    if (!dadosIpva) {
       addMoney('gastos', ['IPVA','Anual', ipva ]);
+    } else if(dadosIpva.valor !== ipva) {
+      const niugastos = dados.gastos.map(g => g.nome !== 'IPVA' ? g : {...g, valor: ipva} );
+      setgastos(niugastos);
     }
+
     if (checkExistKname('gastos', 'Combustível')) {
       goFld(fldact.current.nextElementSibling);
     }
@@ -247,7 +255,7 @@ export default function CpFrmTimeMoney({ hoje, hideFrm }){
   }
 
   const showdvcar = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const dvask = e.target.parentNode;
     dvask.classList.add(css.hidenb);
     dvask.nextElementSibling.classList.remove(css.hidenb);

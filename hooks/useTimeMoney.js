@@ -68,6 +68,7 @@ export default function useTimeMoney(hoje) {
     if(!('montante' in poupanca)){ objPoupanca.montante = poupanca?.capital ?? objPoupanca.capital}
     if('juros' in poupanca){
       let jj = poupanca.juros;
+      if(typeof jj === 'string'){ jj = (1+ parseFloat(jj) / 100 ); }
       if(jj !== 0){
         jj = (Number.isInteger(jj) || jj < 1) ? (1+ jj / 100 ) : jj;
       }
@@ -268,7 +269,7 @@ export default function useTimeMoney(hoje) {
     if (!nextMaxVal) {
       const sameSign = valEhMaior(last, valNeg, true)
       const notPossible = (!valPos && last > 0) || (!sameSign && !temPoupanca)
-      if (notPossible) { console.log('----------IMPOSSIVEL'); return endSetDts('NUNCA'); }
+      if (notPossible) { return endSetDts('NUNCA'); }
     }
 
     let qdiasMes = getDiasNoMes(mes, ano);
